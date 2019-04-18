@@ -9,4 +9,8 @@ export default createGlobalStyle`
     margin: 0;
     font-family: 'Montserrat', sans-serif;
   }
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
 `
