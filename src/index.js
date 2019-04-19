@@ -1,17 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 import { Provider } from 'react-redux'
-import App from './components/App';
+import store from './store'
 import * as serviceWorker from './serviceWorker';
 import GlobalStyle from './theme/globalStyle'
-import store from './store'
+import App from './components/App';
+import Products from './components/Products'
 
 ReactDOM.render(
 	<Provider store={store}>
 		<BrowserRouter>
 			<GlobalStyle />
-			<App />
+			<App>
+				<Route path="/products" exact component={Products} />
+
+			</App>
 		</BrowserRouter>
 	</Provider>, document.getElementById('root')
 );

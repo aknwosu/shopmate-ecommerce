@@ -5,10 +5,11 @@ import { bindActionCreators } from 'redux'
 import styled from 'styled-components'
 import { fetchCustomer, login } from '../actionCreators/customers'
 import { fetchDepartments } from '../actionCreators/departments'
+import { fetchProducts } from '../actionCreators/products'
 import { getCurrentUser } from '../selectors'
-import Logo from '../styles/logo.svg'
-import CartIcon from '../styles/cart_icon.svg'
-import SearchIcon from '../styles/search_icon_white.svg'
+import Logo from '../assets/logo.svg'
+import CartIcon from '../assets/cart_icon.svg'
+import SearchIcon from '../assets/search_icon_white.svg'
 
 // eslint-disable-next-line react/prefer-stateless-function
 class Header extends Component {
@@ -21,7 +22,9 @@ class Header extends Component {
 	}
 
 	componentDidMount() {
-		this.props.dispatchFetchDepartments()
+		const { dispatchFetchDepartments, dispatchFetchProducts } = this.props
+		dispatchFetchDepartments();
+		dispatchFetchProducts()
 	}
 
 	renderDepartments = () => {
@@ -92,16 +95,18 @@ class Header extends Component {
 	}
 }
 function mapStateToProps(state) {
-	console.log('mapStateToProps====', state)
+	// console.log('mapStateToProps====', state)
 	return {
 		currentUser: getCurrentUser(state),
-		departments: state.departments.allDepartments
+		departments: state.departments.allDepartments,
+		products: state.products.allProducts
 	}
 }
 const mapDispatchToProps = dispatch => ({
 	dispatchFetchCustomer: bindActionCreators(fetchCustomer, dispatch),
 	dispatchLogin: bindActionCreators(login, dispatch),
-	dispatchFetchDepartments: bindActionCreators(fetchDepartments, dispatch)
+	dispatchFetchDepartments: bindActionCreators(fetchDepartments, dispatch),
+	dispatchFetchProducts: bindActionCreators(fetchProducts, dispatch)
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);
@@ -125,7 +130,7 @@ Header.SearchInput = styled.input`
 	border-radius: 18px;
 	padding: 7px 10px;
 	font-size: 14px;
-	background-color: #2E2E2E;
+	background-color: #9c9a9a;
   color: white;
 	width: 210px;
   padding-left: 40px;

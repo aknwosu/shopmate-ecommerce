@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const ROOT_URL = 'https://backendapi.turing.com';
+const REACT_APP_ROOT_URL = 'https://backendapi.turing.com';
 const headers = {
 	'Content-Type': 'application/json',
 	// eslint-disable-next-line no-undef
@@ -36,7 +36,7 @@ export const UPDATE_CUSTOMER_CREDIT_CARD_ERROR = 'UPDATE_CUSTOMER_CREDIT_CARD_ER
 export const fetchCustomer = () => async (dispatch) => {
 	try {
 		dispatch({ type: FETCH_USER_REQUEST });
-		const request = await axios.get(`${ROOT_URL}/customer`, { headers });
+		const request = await axios.get(`${REACT_APP_ROOT_URL}/customer`, { headers });
 		dispatch({
 			type: FETCH_USER_SUCCESS,
 			payload: request.data,
@@ -49,7 +49,7 @@ export const fetchCustomer = () => async (dispatch) => {
 export const registerCustomer = user => async (dispatch) => {
 	try {
 		dispatch({ type: REGISTER_USER_REQUEST });
-		const request = await axios.post(`${ROOT_URL}/customers`, { ...user });
+		const request = await axios.post(`${REACT_APP_ROOT_URL}/customers`, { ...user });
 		dispatch({
 			type: REGISTER_USER_SUCCESS,
 			payload: request.data,
@@ -63,7 +63,7 @@ export const registerCustomer = user => async (dispatch) => {
 export const updateCustomer = user => async (dispatch) => {
 	try {
 		dispatch({ type: UPDATE_USER_REQUEST });
-		const request = await axios.put(`${ROOT_URL}/customer`, { ...user });
+		const request = await axios.put(`${REACT_APP_ROOT_URL}/customer`, { ...user });
 		dispatch({
 			type: UPDATE_USER_SUCCESS,
 			payload: request.data,
@@ -78,7 +78,7 @@ export const updateCustomer = user => async (dispatch) => {
 export const login = (email, password) => async (dispatch) => {
 	try {
 		dispatch({ type: LOGIN_USER_REQUEST });
-		const request = await axios.post(`${ROOT_URL}/customers/login`, { email, password });
+		const request = await axios.post(`${REACT_APP_ROOT_URL}/customers/login`, { email, password });
 		dispatch({
 			type: LOGIN_USER_SUCCESS,
 			payload: request.data,
@@ -94,7 +94,7 @@ export const login = (email, password) => async (dispatch) => {
 export const loginFacebook = (email, password) => async (dispatch) => {
 	try {
 		dispatch({ type: LOGIN_USER_REQUEST });
-		const request = await axios.post(`${ROOT_URL}/customers/login`, { email, password });
+		const request = await axios.post(`${REACT_APP_ROOT_URL}/customers/login`, { email, password });
 		dispatch({
 			type: LOGIN_USER_SUCCESS,
 			payload: request.data,
@@ -110,7 +110,7 @@ export const loginFacebook = (email, password) => async (dispatch) => {
 export const updateCustomersAddress = data => async (dispatch) => {
 	try {
 		dispatch({ type: UPDATE_CUSTOMER_ADDRESS_REQUEST });
-		await axios.put(`${ROOT_URL}/customers/address`, { ...data });
+		await axios.put(`${REACT_APP_ROOT_URL}/customers/address`, { ...data });
 		dispatch({ type: UPDATE_CUSTOMER_ADDRESS_SUCCESS });
 		dispatch(fetchCustomer());
 	} catch (error) {
@@ -121,7 +121,7 @@ export const updateCustomersAddress = data => async (dispatch) => {
 export const updateCustomersCreditCard = data => async (dispatch) => {
 	try {
 		dispatch({ type: UPDATE_CUSTOMER_CREDIT_CARD_REQUEST });
-		const request = await axios.put(`${ROOT_URL}/customers/creditCard`, { data });
+		const request = await axios.put(`${REACT_APP_ROOT_URL}/customers/creditCard`, { data });
 		dispatch({
 			type: UPDATE_CUSTOMER_CREDIT_CARD_SUCCESS,
 		});

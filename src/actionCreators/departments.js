@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const ROOT_URL = 'https://backendapi.turing.com';
+const { REACT_APP_ROOT_URL } = process.env
 
 const headers = {
 	'Content-Type': 'application/json',
@@ -18,7 +18,7 @@ export const FETCH_DEPARTMENTS_ERROR = 'FETCH_DEPARTMENTS_ERROR';
 export const fetchDepartment = id => async (dispatch) => {
 	try {
 		dispatch({ type: FETCH_DEPARTMENT_REQUEST });
-		const request = await axios.get(`${ROOT_URL}/departments/${id}`, {
+		const request = await axios.get(`${REACT_APP_ROOT_URL}/departments/${id}`, {
 			headers
 		});
 		dispatch({
@@ -33,7 +33,7 @@ export const fetchDepartment = id => async (dispatch) => {
 export const fetchDepartments = () => async (dispatch) => {
 	try {
 		dispatch({ type: FETCH_DEPARTMENTS_REQUEST });
-		const request = await axios.get(`${ROOT_URL}/departments`, { headers });
+		const request = await axios.get(`${REACT_APP_ROOT_URL}/departments`, { headers });
 		dispatch({
 			type: FETCH_DEPARTMENTS_SUCCESS,
 			payload: request.data

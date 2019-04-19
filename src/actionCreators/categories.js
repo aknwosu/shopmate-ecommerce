@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const ROOT_URL = 'https://backendapi.turing.com';
+const { REACT_APP_ROOT_URL } = process.env
 
 const headers = {
 	'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ export const FETCH_DEPARTMENT_CATEGORIES_ERROR = 'FETCH_DEPARTMENT_CATEGORIES_ER
 export const fetchCategories = () => async (dispatch) => {
 	try {
 		dispatch({ type: FETCH_CATEGORIES_REQUEST });
-		const request = await axios.get(`${ROOT_URL}/categories`, {
+		const request = await axios.get(`${REACT_APP_ROOT_URL}/categories`, {
 			headers,
 		});
 		dispatch({
@@ -42,7 +42,7 @@ export const fetchCategories = () => async (dispatch) => {
 export const fetchCategory = id => async (dispatch) => {
 	try {
 		dispatch({ type: FETCH_CATEGORY_REQUEST });
-		const request = await axios.get(`${ROOT_URL}/categories/${id}`, {
+		const request = await axios.get(`${REACT_APP_ROOT_URL}/categories/${id}`, {
 			headers,
 		});
 		dispatch({
@@ -57,7 +57,7 @@ export const fetchCategory = id => async (dispatch) => {
 export const fetchProductCategories = productId => async (dispatch) => {
 	try {
 		dispatch({ type: FETCH_PRODUCT_CATEGORIES_REQUEST });
-		const request = await axios.get(`${ROOT_URL}/categories/inProduct/${productId}`, {
+		const request = await axios.get(`${REACT_APP_ROOT_URL}/categories/inProduct/${productId}`, {
 			headers,
 		});
 		dispatch({
@@ -72,7 +72,7 @@ export const fetchProductCategories = productId => async (dispatch) => {
 export const fetchDepartmentCategories = departmentId => async (dispatch) => {
 	try {
 		dispatch({ type: FETCH_DEPARTMENT_CATEGORIES_REQUEST });
-		const request = await axios.get(`${ROOT_URL}/categories/inDepartment/${departmentId}`, {
+		const request = await axios.get(`${REACT_APP_ROOT_URL}/categories/inDepartment/${departmentId}`, {
 			headers,
 		});
 		const payload = { ...request.data, department_id: departmentId };

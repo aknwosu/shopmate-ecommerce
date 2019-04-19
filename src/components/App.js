@@ -4,13 +4,16 @@ import TopBar from './TopBar'
 
 class App extends Component {
 	render() {
+		const { children } = this.props
 		return (
 			<div>
 				<TopBar />
-				<Header />
+				{children}
 			</div>
 		);
 	}
 }
-
+App.propTypes = {
+	children: PropTypes.object
+}
 export default App;

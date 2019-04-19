@@ -8,6 +8,7 @@ export default createGlobalStyle`
     padding: 0;
     margin: 0;
     font-family: 'Montserrat', sans-serif;
+    background-color: #F7F7F7;
   }
   a {
     text-decoration: none;
