@@ -5,13 +5,13 @@ import PropTypes from 'prop-types'
 
 export const Product = (props) => {
 	const { REACT_APP_IMAGE_URL } = process.env
-	const { product: { name, thumbnail } } = props
+	const { onAddToCart, product, product: { name, thumbnail } } = props
 	// console.log(product)
 	return (
 		<Product.Container>
 			<Product.Info>
 				<Product.Image url={`${REACT_APP_IMAGE_URL}${thumbnail}`} alt={thumbnail} />
-				<div>{name}</div>
+				<div onClick={() => onAddToCart(product)}>{name}</div>
 			</Product.Info>
 		</Product.Container>
 	)

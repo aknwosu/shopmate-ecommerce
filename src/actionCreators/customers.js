@@ -3,8 +3,7 @@ import axios from 'axios';
 const REACT_APP_ROOT_URL = 'https://backendapi.turing.com';
 const headers = {
 	'Content-Type': 'application/json',
-	// eslint-disable-next-line no-undef
-	accessToken: localStorage.getItem('accessToken'),
+	'USER-KEY': localStorage.getItem('accessToken'),
 };
 
 
@@ -46,10 +45,11 @@ export const fetchCustomer = () => async (dispatch) => {
 	}
 };
 
-export const registerCustomer = user => async (dispatch) => {
+export const register = (name, email, password) => async (dispatch) => {
+	console.log('register-----', name, password, email)
 	try {
 		dispatch({ type: REGISTER_USER_REQUEST });
-		const request = await axios.post(`${REACT_APP_ROOT_URL}/customers`, { ...user });
+		const request = await axios.post(`${REACT_APP_ROOT_URL}/customers`, { name, email, password });
 		dispatch({
 			type: REGISTER_USER_SUCCESS,
 			payload: request.data,
