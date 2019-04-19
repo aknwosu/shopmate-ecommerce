@@ -4,12 +4,12 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import Gbr from '../assets/gbr.svg'
+import Usd from '../assets/usd.svg'
 import ModalManager from './ModalManager'
 import { getCurrentUser } from '../selectors'
 import { fetchCustomer } from '../actionCreators/customers'
 import { setCartContent } from '../actionCreators/cart'
-
+import CartUI from '../ui/cartUI'
 
 class TopBar extends Component {
 	constructor(props) {
@@ -26,7 +26,6 @@ class TopBar extends Component {
 	}
 
 	openModal = (visibleModal) => {
-		console.log('visiblemodal=====', visibleModal)
 		this.setState({ visibleModal })
 	}
 
@@ -36,8 +35,7 @@ class TopBar extends Component {
 
 	render() {
 		const { visibleModal } = this.state
-		const { currentUser, cart: { totalPrice } } = this.props
-		console.log('this.props top bar====', this.props)
+		const { currentUser, cart: { totalPrice, cartItems } } = this.props
 		return (
 			<TopBar.Container>
 				{currentUser && currentUser.name ? (
@@ -49,17 +47,16 @@ class TopBar extends Component {
 						</TopBar.SignIn>
 					)
 				}
-
 				<TopBar.Nav>
 					<div href="#">Daily Deals</div>
 					<div href="#">Sell</div>
 					<div href="#">Help & Contact</div>
 				</TopBar.Nav>
 				<TopBar.Nav>
-					<Currency>£ GBP</Currency>
+					<Currency>$ USD</Currency>
 				</TopBar.Nav>
 				<TopBar.Nav>
-					<div>stuff</div>
+					<CartUI count={cartItems.length} secondary />
 					<div>Your bag: ${totalPrice}</div>
 				</TopBar.Nav>
 				{visibleModal && (
@@ -72,6 +69,12 @@ class TopBar extends Component {
 			</TopBar.Container>
 		)
 	}
+}
+TopBar.propTypes = {
+	cart: PropTypes.object.isRequired,
+	dispatchFetchCustomer: PropTypes.func.isRequired,
+	currentUser: PropTypes.object.isRequired,
+	dispatchSetCart: PropTypes.func.isRequired,
 }
 const mapStateToProps = state => ({
 	currentUser: getCurrentUser(state),
@@ -105,7 +108,7 @@ TopBar.Nav = styled.div`
 	}
 `
 const Currency = styled.div`
-	background: url(${Gbr});
+	background: url(${Usd});
 	background-repeat: no-repeat;
   padding-left: 30px;
 `

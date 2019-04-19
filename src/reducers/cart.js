@@ -12,7 +12,7 @@ export default function cartReducer(state = initialState, action) {
 			newState = {
 				...state,
 				cartItems: JSON.parse(localStorage.getItem('cartItems')),
-				totalPrice: JSON.parse(localStorage.getItem('totalPrice'))
+				totalPrice: Number(localStorage.getItem('totalPrice'))
 			}
 		}
 		const addedItem = action.payload
@@ -21,7 +21,7 @@ export default function cartReducer(state = initialState, action) {
 			addedItem.quantity += 1
 			newState = {
 				...state,
-				totalPrice: state.totalPrice + Number(addedItem.price),
+				totalPrice: (Number(state.totalPrice) + Number(addedItem.price)).toFixed(2)
 			}
 			localStorage.setItem('cartItems', JSON.stringify(newState.cartItems));
 			localStorage.setItem('totalPrice', newState.totalPrice);
@@ -29,7 +29,7 @@ export default function cartReducer(state = initialState, action) {
 		}
 		addedItem.quantity = 1;
 		newState.cartItems.push(addedItem)
-		newState.totalPrice = state.totalPrice + Number(addedItem.price)
+		newState.totalPrice = (Number(state.totalPrice) + Number(addedItem.price)).toFixed(2)
 		localStorage.setItem('cartItems', JSON.stringify(newState.cartItems));
 		localStorage.setItem('totalPrice', newState.totalPrice)
 		return newState
@@ -39,7 +39,7 @@ export default function cartReducer(state = initialState, action) {
 			const newState = {
 				...state,
 				cartItems: JSON.parse(localStorage.getItem('cartItems')),
-				totalPrice: JSON.parse(localStorage.getItem('totalPrice'))
+				totalPrice: localStorage.getItem('totalPrice')
 			}
 			return newState
 		}

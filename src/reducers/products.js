@@ -8,6 +8,13 @@ export default function productsReducer(state = initialState, action) {
 			allProducts: action.payload.rows
 		});
 	}
+	case 'SEARCH_PRODUCTS_SUCCESS': {
+		console.log(action.payload)
+		return {
+			...state,
+			allProducts: action.payload.rows
+		}
+	}
 	default: return state;
 	}
 }

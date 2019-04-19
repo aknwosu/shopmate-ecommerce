@@ -14,8 +14,6 @@ class Checkout extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			// departments: props.departments
-			searchText: '',
 			renderedModal: null
 		}
 	}
@@ -25,7 +23,7 @@ class Checkout extends Component {
 			cart, visibleModal, closeModal, isOpen
 		} = this.props
 		const { renderedModal } = this.state
-		console.log(this.props)
+		// console.log(this.props)
 		return (
 			<Fragment>
 				<Modal
@@ -52,8 +50,13 @@ class Checkout extends Component {
 		)
 	}
 }
+Checkout.propTypes = {
+	cart: PropTypes.object.isRequired,
+	visibleModal: PropTypes.string.isRequired,
+	isOpen: PropTypes.bool.isRequired,
+	closeModal: PropTypes.bool.isRequired,
+}
 function mapStateToProps(state) {
-	console.log('mapStateToProps====', state)
 	return {
 		currentUser: getCurrentUser(state),
 		cart: state.cart,
@@ -62,6 +65,6 @@ function mapStateToProps(state) {
 }
 const mapDispatchToProps = dispatch => ({
 	dispatchFetchProducts: bindActionCreators(fetchProducts, dispatch),
-	// dispatchAddToCart: bindActionCreators(addToCart, dispatch)
 })
+
 export default connect(mapStateToProps, mapDispatchToProps)(Checkout)

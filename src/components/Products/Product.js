@@ -6,7 +6,6 @@ import PropTypes from 'prop-types'
 export const Product = (props) => {
 	const { REACT_APP_IMAGE_URL } = process.env
 	const { onAddToCart, product, product: { name, thumbnail } } = props
-	// console.log(product)
 	return (
 		<Product.Container>
 			<Product.Info>
@@ -17,7 +16,8 @@ export const Product = (props) => {
 	)
 }
 Product.propTypes = {
-	product: PropTypes.object.isRequired
+	product: PropTypes.object.isRequired,
+	onAddToCart: PropTypes.func.isRequired,
 }
 export default Product
 
