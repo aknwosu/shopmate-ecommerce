@@ -1,0 +1,70 @@
+{
+	"parser": "babel-eslint",
+	"extends": "airbnb",
+	"plugins": ["react"],
+	"parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true,
+      "modules": true
+    }
+  },
+	"env": {
+		"es6": true,
+		"node": true,
+		"browser": true
+	},
+	"rules": {
+		"max-len": 0,
+		"no-tabs": 0,
+		"semi": 0,
+		"indent": ["error", "tab"],
+		"no-shadow": 0,
+		"no-undef": 0,
+		"no-unused-vars": 0,
+		"no-use-before-define": 0,
+		"no-unused-expressions": 0,
+		"no-mixed-operators": 0,
+		"comma-dangle": 0,
+		"prefer-destructuring": ["error", {"object": false, "array": false}],
+		"react/jsx-indent": ["error", "tab"],
+		"react/jsx-indent-props": ["error", "tab"],
+		"react/no-did-update-set-state": 0,
+		"react/no-children-prop": 0,
+		"react/jsx-no-bind": 0,
+		"react/jsx-filename-extension": 0,
+		"react/forbid-prop-types": 0,
+		"react/no-unescaped-entities":0,
+    "react/require-default-props":0,
+    "react/prefer-stateless-function": 0,
+		"react/jsx-one-expression-per-line": 0,
+		"import/extensions": ["error", "never",
+			 {
+				 "packages": "always",
+				 "png": "always",
+				 "container": "always",
+				 "svg":"always",
+				 "actions": "always",
+				 "consts": "always"
+			 }
+				],
+		"import/no-unresolved": 0,
+		"jsx-a11y/click-events-have-key-events": 0,
+		"jsx-a11y/no-static-element-interactions": [
+	  0,
+	  {
+	    "handlers": [
+	      "onClick"
+	    ]
+	  }
+	]
+	},
+	"settings": {
+		"import/resolver": {
+			"node": {
+				"paths": ["src"]
+			}
+		}
+	}
+}
