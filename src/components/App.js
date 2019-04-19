@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types'
 import Header from './Header'
 import TopBar from './TopBar'
 
@@ -14,6 +15,6 @@ class App extends Component {
 	}
 }
 App.propTypes = {
-	children: PropTypes.object
+	children: PropTypes.node
 }
 export default App;
