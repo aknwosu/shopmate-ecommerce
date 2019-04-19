@@ -5,12 +5,13 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import Header from '../Header'
 import { fetchProducts } from '../../actionCreators/products'
+import { addToCart } from '../../actionCreators/cart'
 import Sidebar from './Sidebar';
 import Product from './Product'
 
 class Products extends Component {
 	render() {
-		const { products } = this.props
+		const { products, dispatchAddToCart } = this.props
 		return (
 			<Fragment>
 				<Header />
@@ -22,6 +23,7 @@ class Products extends Component {
 								<Product
 									key={products[product].id}
 									product={products[product]}
+									onAddToCart={dispatchAddToCart}
 								/>
 							))}
 						</Products.List>
@@ -35,11 +37,13 @@ function mapStateToProps(state) {
 	console.log('mapStateToProps====', state)
 	return {
 		// currentUser: getCurrentUser(state),
+		cartItems: state.cart.cartItems,
 		products: state.products.allProducts
 	}
 }
 const mapDispatchToProps = dispatch => ({
-	dispatchFetchProducts: bindActionCreators(fetchProducts, dispatch)
+	dispatchFetchProducts: bindActionCreators(fetchProducts, dispatch),
+	dispatchAddToCart: bindActionCreators(addToCart, dispatch)
 })
 
 Products.propTypes = {

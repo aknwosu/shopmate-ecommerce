@@ -1,14 +1,55 @@
+/* eslint-disable quotes */
+/* eslint-disable react/jsx-curly-brace-presence */
 import React, { Component } from 'react'
 import styled from 'styled-components'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import Gbr from '../assets/gbr.svg'
 import ModalManager from './ModalManager'
+import { getCurrentUser } from '../selectors'
+import { fetchCustomer } from '../actionCreators/customers'
+import { setCartContent } from '../actionCreators/cart'
+
 
 class TopBar extends Component {
+	constructor(props) {
+		super(props)
+		this.state = {
+			visibleModal: null
+		}
+	}
+
+	componentDidMount() {
+		const { dispatchFetchCustomer, dispatchSetCart } = this.props
+		dispatchFetchCustomer()
+		dispatchSetCart()
+	}
+
+	openModal = (visibleModal) => {
+		console.log('visiblemodal=====', visibleModal)
+		this.setState({ visibleModal })
+	}
+
+	closeModal = (event) => {
+		this.setState({ visibleModal: null })
+	}
+
 	render() {
+		const { visibleModal } = this.state
+		const { currentUser, cart: { totalPrice } } = this.props
+		console.log('this.props top bar====', this.props)
 		return (
 			<TopBar.Container>
-				{/* <TopBar.Nav> */}
-				<TopBar.SignIn>HI! <CTAText>Sign in</CTAText> or <CTAText> Register</CTAText></TopBar.SignIn>
+				{currentUser && currentUser.name ? (
+					<div>Hello {currentUser.name}</div>
+				)
+					: (
+						<TopBar.SignIn>HI! &nbsp;
+							<CTAText onClick={() => this.openModal('signIn')}>Sign in &nbsp;</CTAText> or <CTAText onClick={() => this.openModal('register')}>&nbsp; Register</CTAText>
+						</TopBar.SignIn>
+					)
+				}
+
 				<TopBar.Nav>
 					<div href="#">Daily Deals</div>
 					<div href="#">Sell</div>
@@ -19,17 +60,31 @@ class TopBar extends Component {
 				</TopBar.Nav>
 				<TopBar.Nav>
 					<div>stuff</div>
-					<div>Your bag: {'£3.99'}</div>
+					<div>Your bag: ${totalPrice}</div>
 				</TopBar.Nav>
-				{/* </TopBar.Nav> */}
-				{/* <ModalManager /> */}
+				{visibleModal && (
+					<ModalManager
+						visibleModal={visibleModal}
+						closeModal={this.closeModal}
+						isOpen={!!visibleModal}
+					/>
+				)}
 			</TopBar.Container>
 		)
 	}
 }
-export default TopBar
+const mapStateToProps = state => ({
+	currentUser: getCurrentUser(state),
+	cart: state.cart,
+})
+const mapDispatchToProps = dispatch => ({
+	dispatchFetchCustomer: bindActionCreators(fetchCustomer, dispatch),
+	dispatchSetCart: bindActionCreators(setCartContent, dispatch),
+})
 
-const CTAText = styled.div`
+export default connect(mapStateToProps, mapDispatchToProps)(TopBar)
+
+const CTAText = styled.span`
 	color: #F62F5E
 `
 TopBar.Container = styled.div`

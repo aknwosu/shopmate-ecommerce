@@ -11,7 +11,7 @@ export default function customersReducer(state = initialState, action) {
 	}
 	case 'FETCH_USER_SUCCESS': {
 		return Object.assign({}, state, {
-			user: action.payload.user
+			user: action.payload
 		})
 	}
 	case 'REGISTER_USER_SUCCESS': {

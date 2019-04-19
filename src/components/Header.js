@@ -10,6 +10,8 @@ import { getCurrentUser } from '../selectors'
 import Logo from '../assets/logo.svg'
 import CartIcon from '../assets/cart_icon.svg'
 import SearchIcon from '../assets/search_icon_white.svg'
+import Cta from '../ui/CTABtn'
+import ModalManager from './ModalManager'
 
 // eslint-disable-next-line react/prefer-stateless-function
 class Header extends Component {
@@ -17,7 +19,8 @@ class Header extends Component {
 		super(props)
 		this.state = {
 			// departments: props.departments
-			searchText: ''
+			searchText: '',
+			visibleModal: null
 		}
 	}
 
@@ -52,7 +55,7 @@ class Header extends Component {
 
 	render() {
 		const { dispatchFetchCustomer, dispatchLogin, departments } = this.props
-		const { searchText } = this.state
+		const { searchText, visibleModal } = this.state
 		console.log('all props are===', this.props)
 		// return (
 		// 	<nav className="navbar navbar-light">
@@ -81,15 +84,23 @@ class Header extends Component {
 						placeholder="search anything"
 						onChange={e => this.onSearchTextChange(e)}
 						value={searchText}
-						onSubmit={this.handleSearchSubmit}
+						onSubmit={this.search}
 						onKeyPress={(event) => { event.key === 'Enter' && this.search() }}
 					/>
 					<span onClick={this.clearSearchText}>x</span>
 				</Header.Search>
+				<Cta onClick={() => this.setState({ visibleModal: 'checkout' })}>Checkout</Cta>
 				<Header.Cart>
 					<img src={CartIcon} alt="cart" />
 					<Header.ItemsCount>{6}</Header.ItemsCount>
 				</Header.Cart>
+				{visibleModal !== null && (
+					<ModalManager
+						visibleModal={visibleModal}
+						isOpen={!!visibleModal}
+						closeModal={() => this.setState({ visibleModal: null })}
+					/>
+				)}
 			</Header.Container>
 		)
 	}
