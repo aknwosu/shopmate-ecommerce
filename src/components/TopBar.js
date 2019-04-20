@@ -3,12 +3,14 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import Usd from '../assets/usd.svg'
 import ModalManager from './ModalManager'
 import { getCurrentUser } from '../selectors'
 import { fetchCustomer } from '../actionCreators/customers'
 import { setCartContent } from '../actionCreators/cart'
+import { fetchAttributes } from '../actionCreators/attributes'
 import CartUI from '../ui/cartUI'
 
 class TopBar extends Component {
@@ -20,9 +22,10 @@ class TopBar extends Component {
 	}
 
 	componentDidMount() {
-		const { dispatchFetchCustomer, dispatchSetCart } = this.props
+		const { dispatchFetchCustomer, dispatchSetCart, dispatchFetchAttributes } = this.props
 		dispatchFetchCustomer()
 		dispatchSetCart()
+		dispatchFetchAttributes()
 	}
 
 	openModal = (visibleModal) => {
@@ -75,6 +78,7 @@ TopBar.propTypes = {
 	dispatchFetchCustomer: PropTypes.func.isRequired,
 	currentUser: PropTypes.object.isRequired,
 	dispatchSetCart: PropTypes.func.isRequired,
+	dispatchFetchAttributes: PropTypes.func.isRequired
 }
 const mapStateToProps = state => ({
 	currentUser: getCurrentUser(state),
@@ -83,6 +87,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 	dispatchFetchCustomer: bindActionCreators(fetchCustomer, dispatch),
 	dispatchSetCart: bindActionCreators(setCartContent, dispatch),
+	dispatchFetchAttributes: bindActionCreators(fetchAttributes, dispatch),
+
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(TopBar)

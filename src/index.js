@@ -7,6 +7,7 @@ import * as serviceWorker from './serviceWorker';
 import GlobalStyle from './theme/globalStyle'
 import App from './components/App';
 import Products from './components/Products'
+import ProductDetail from './components/Products/ProductDetail'
 
 ReactDOM.render(
 	<Provider store={store}>
@@ -14,6 +15,7 @@ ReactDOM.render(
 			<GlobalStyle />
 			<App>
 				<Route path="/products" exact component={Products} />
+				<Route path="/products/:id" exact component={ProductDetail} />
 
 			</App>
 		</BrowserRouter>

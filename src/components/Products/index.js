@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
+import { withRouter } from 'react-router'
 import Header from '../Header'
 import { fetchProducts } from '../../actionCreators/products'
 import { addToCart } from '../../actionCreators/cart'
@@ -10,6 +11,10 @@ import Sidebar from './Sidebar';
 import Product from './Product'
 
 class Products extends Component {
+	renderProductDetails = (id) => {
+		this.props.history.push(`/products/${id}`)
+	}
+
 	render() {
 		const { products, dispatchAddToCart } = this.props
 		return (
@@ -24,6 +29,7 @@ class Products extends Component {
 									key={products[product].id}
 									product={products[product]}
 									onAddToCart={dispatchAddToCart}
+									renderProductDetails={this.renderProductDetails}
 								/>
 							))}
 						</Products.List>
@@ -47,9 +53,9 @@ const mapDispatchToProps = dispatch => ({
 })
 
 Products.propTypes = {
-	products: PropTypes.object.isRequired
+	products: PropTypes.array.isRequired
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Products)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Products))
 
 Products.Container = styled.div`
 	display: flex;

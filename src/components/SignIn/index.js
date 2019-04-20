@@ -147,7 +147,6 @@ export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SignIn))
 SignIn.LogInContainer = styled.div`
 	height: 380px;
 	width: 480px;
-	/* background-color: rebeccapurple */
 	position: absolute;
 	top: 0;
 	height: 100%;

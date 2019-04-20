@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 import { fetchCustomer, login } from '../actionCreators/customers'
 import { fetchDepartments } from '../actionCreators/departments'
 import { fetchProducts, searchProducts } from '../actionCreators/products'
@@ -98,7 +99,7 @@ Header.propTypes = {
 	dispatchSearchProducts: PropTypes.func.isRequired,
 	dispatchFetchDepartments: PropTypes.func.isRequired,
 	dispatchFetchProducts: PropTypes.func.isRequired,
-	departments: PropTypes.object.isRequired,
+	departments: PropTypes.array.isRequired,
 
 }
 function mapStateToProps(state) {
