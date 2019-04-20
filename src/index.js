@@ -15,7 +15,7 @@ ReactDOM.render(
 			<GlobalStyle />
 			<App>
 				<Route path="/products" exact component={Products} />
-				<Route path="/products/:id" exact component={ProductDetail} />
+				<Route path="/products/:product_id" exact component={ProductDetail} />
 
 			</App>
 		</BrowserRouter>
