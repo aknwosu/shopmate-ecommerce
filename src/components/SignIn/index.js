@@ -35,8 +35,7 @@ class SignIn extends Component {
 	}
 
 
-	onClickSignin = (event) => {
-		// event.stopPropagation()
+	onClickSignin = () => {
 		const { dispatchLogin, closeModal } = this.props
 		const { email, password } = this.state
 		dispatchLogin(email, password)
@@ -44,8 +43,7 @@ class SignIn extends Component {
 		closeModal()
 	}
 
-	onClickRegister = (event) => {
-		// event.stopPropagation()
+	onClickRegister = () => {
 		const { dispatchRegister, closeModal } = this.props
 		const { name, email, password } = this.state
 		dispatchRegister(name, email, password)

@@ -1,5 +1,8 @@
 const initialState = {
-	allProducts: {}
+	allProducts: {},
+	productDetail: {},
+	productReviews: [],
+	productRating: 0
 };
 export default function productsReducer(state = initialState, action) {
 	switch (action.type) {
@@ -9,10 +12,27 @@ export default function productsReducer(state = initialState, action) {
 		});
 	}
 	case 'SEARCH_PRODUCTS_SUCCESS': {
-		console.log(action.payload)
 		return {
 			...state,
 			allProducts: action.payload.rows
+		}
+	}
+	case 'FETCH_PRODUCT_DETAIL_SUCCESS': {
+		return {
+			...state,
+			productDetail: action.payload
+		}
+	}
+
+	case 'FETCH_PRODUCT_REVIEWS_SUCCESS': {
+		console.log('action.payload=======>>', action.payload)
+		let totalReviews = 0
+		action.payload.map(review => totalReviews += review.rating)
+		totalReviews /= (action.payload.length)
+		return {
+			...state,
+			productReviews: action.payload,
+			productRating: totalReviews.toFixed(2)
 		}
 	}
 	default: return state;

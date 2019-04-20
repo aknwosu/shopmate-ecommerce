@@ -23,7 +23,6 @@ class Checkout extends Component {
 			cart, visibleModal, closeModal, isOpen
 		} = this.props
 		const { renderedModal } = this.state
-		// console.log(this.props)
 		return (
 			<Fragment>
 				<Modal

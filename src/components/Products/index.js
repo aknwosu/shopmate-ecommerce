@@ -5,18 +5,19 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router'
 import Header from '../Header'
-import { fetchProducts } from '../../actionCreators/products'
+import { fetchProducts, fetchProductDetail } from '../../actionCreators/products'
 import { addToCart } from '../../actionCreators/cart'
 import Sidebar from './Sidebar';
 import Product from './Product'
 
 class Products extends Component {
 	renderProductDetails = (id) => {
+		this.props.dispatchFetchProductDetail(id)
 		this.props.history.push(`/products/${id}`)
 	}
 
 	render() {
-		const { products, dispatchAddToCart } = this.props
+		const { products, dispatchAddToCart, productDetail } = this.props
 		return (
 			<Fragment>
 				<Header />
@@ -30,6 +31,7 @@ class Products extends Component {
 									product={products[product]}
 									onAddToCart={dispatchAddToCart}
 									renderProductDetails={this.renderProductDetails}
+									productDetail={productDetail}
 								/>
 							))}
 						</Products.List>
@@ -44,12 +46,14 @@ function mapStateToProps(state) {
 	return {
 		// currentUser: getCurrentUser(state),
 		cartItems: state.cart.cartItems,
-		products: state.products.allProducts
+		products: state.products.allProducts,
+		productDetail: state.products.productDetail
 	}
 }
 const mapDispatchToProps = dispatch => ({
 	dispatchFetchProducts: bindActionCreators(fetchProducts, dispatch),
-	dispatchAddToCart: bindActionCreators(addToCart, dispatch)
+	dispatchAddToCart: bindActionCreators(addToCart, dispatch),
+	dispatchFetchProductDetail: bindActionCreators(fetchProductDetail, dispatch),
 })
 
 Products.propTypes = {
