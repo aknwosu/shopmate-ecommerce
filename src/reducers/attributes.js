@@ -12,7 +12,6 @@ export default function attributesReducer(state = initialState, action) {
 		});
 	}
 	case 'FETCH_ATTRIBUTE_VALUE_SUCCESS': {
-		console.log(action.payload)
 		return {
 			...state,
 			attributeValues: {
