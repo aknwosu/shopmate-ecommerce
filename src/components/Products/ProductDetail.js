@@ -13,6 +13,7 @@ import Cta from '../../ui/CTABtn'
 
 
 import { fetchProductDetail, fetchProductReviews } from '../../actionCreators/products'
+import { addToCart } from '../../actionCreators/cart'
 
 class ProductDetail extends Component {
 	constructor(props) {
@@ -20,7 +21,7 @@ class ProductDetail extends Component {
 		this.state = {
 			selectedSize: '',
 			selectedColor: '',
-			quantity: 1
+			quantity: 1,
 		}
 	}
 
@@ -39,11 +40,26 @@ class ProductDetail extends Component {
 	}
 
 	onChangeQuantity = (value) => {
-		console.log('onChangeQuantity========>>>>>', value)
-		if (value < 1) {
+		if (value < 0) {
 			return
 		}
 		this.setState({ quantity: value })
+	}
+
+	addToCart = () => {
+		const { selectedColor, selectedSize, quantity } = this.state
+		const { dispatchAddToCart, productDetail: { name, product_id, price, image } } = this.props
+		const cartItem = {
+			product_id,
+			name,
+			quantity,
+			actualPrice: price,
+			price: Number(price) * quantity,
+			color: selectedColor,
+			size: selectedSize,
+			image
+		}
+		dispatchAddToCart(cartItem)
 	}
 
 	renderProductDetails = () => {
@@ -80,6 +96,8 @@ class ProductDetail extends Component {
 							{attributeValues.Color && attributeValues.Color.values.map(values => (
 								<ColorPicker
 									color={values.value}
+									active={selectedColor === values.value}
+									onClick={() => this.selectAttr('selectedColor', values.value)}
 								/>
 							))}
 						</div>
@@ -100,7 +118,7 @@ class ProductDetail extends Component {
 						value={this.state.quantity}
 						onChange={(value) => { this.onChangeQuantity(value) }}
 					/>
-					<Cta>Add to cart</Cta>
+					<Cta onClick={this.addToCart}>Add to cart</Cta>
 				</ProductDetail.Info>
 
 			</ProductDetail.Container>
@@ -109,8 +127,6 @@ class ProductDetail extends Component {
 
 	render() {
 		const { productDetail } = this.props
-
-		console.log('le product details props ========>', this.props)
 		return (
 			<div>
 				{productDetail && this.renderProductDetails()}
@@ -120,7 +136,6 @@ class ProductDetail extends Component {
 	}
 }
 function mapStateToProps(state) {
-	console.log('mapStateToProps====', state)
 	return {
 		// currentUser: getCurrentUser(state),
 		cartItems: state.cart.cartItems,
@@ -131,7 +146,7 @@ function mapStateToProps(state) {
 }
 const mapDispatchToProps = dispatch => ({
 	// dispatchFetchProducts: bindActionCreators(fetchProducts, dispatch),
-	// dispatchAddToCart: bindActionCreators(addToCart, dispatch),
+	dispatchAddToCart: bindActionCreators(addToCart, dispatch),
 	dispatchFetchProductDetail: bindActionCreators(fetchProductDetail, dispatch),
 	dispatchFetchProductReviews: bindActionCreators(fetchProductReviews, dispatch),
 })

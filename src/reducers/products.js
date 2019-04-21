@@ -25,7 +25,6 @@ export default function productsReducer(state = initialState, action) {
 	}
 
 	case 'FETCH_PRODUCT_REVIEWS_SUCCESS': {
-		console.log('action.payload=======>>', action.payload)
 		let totalReviews = 0
 		action.payload.map(review => totalReviews += review.rating)
 		totalReviews /= (action.payload.length)

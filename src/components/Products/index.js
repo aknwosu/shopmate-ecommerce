@@ -42,7 +42,6 @@ class Products extends Component {
 	}
 }
 function mapStateToProps(state) {
-	console.log('mapStateToProps====', state)
 	return {
 		// currentUser: getCurrentUser(state),
 		cartItems: state.cart.cartItems,

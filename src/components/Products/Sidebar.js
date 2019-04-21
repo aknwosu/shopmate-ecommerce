@@ -43,7 +43,6 @@ class Sidebar extends Component {
 }
 
 function mapStateToProps(state) {
-	console.log('mapStateToProps====', state)
 	return {
 		products: state.products.allProducts,
 		allAttributes: state.attributes.allAttributes,

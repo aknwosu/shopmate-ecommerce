@@ -22,7 +22,6 @@ class SignIn extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		console.log('new props', this.props)
 		if (this.props.currentUser !== prevProps.currentUser) {
 			this.props.history.push('/products')
 		}
@@ -62,7 +61,6 @@ class SignIn extends Component {
 	render() {
 		const { visibleModal, closeModal } = this.props
 		const { email, password, name } = this.state
-		console.log(this.state)
 		return (
 			<Modal
 				handleClose={closeModal}

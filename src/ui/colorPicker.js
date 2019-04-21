@@ -2,12 +2,20 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-const ColorPicker = ({ color, active }) => (
-	<ColorPicker.Container
-		color={color}
-		active={active}
-	/>
-)
+const ColorPicker = (props) => {
+	const {
+		color,
+		active,
+		...restProps
+	} = props
+	return (
+		<ColorPicker.Container
+			color={color}
+			active={active}
+			{...restProps}
+		/>
+	)
+}
 ColorPicker.Container = styled.li`
 background-color: ${({ color }) => color};
 height: 25px;
