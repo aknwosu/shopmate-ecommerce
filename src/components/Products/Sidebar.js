@@ -14,39 +14,56 @@ class Sidebar extends Component {
 		}
 	}
 
-	render() {
-		const { allAttributes, attributeValues } = this.props
+renderCategories = () => {
+	const { categories } = this.props
+	return (
+		categories.map(category => (
+			<div>
+				{category.name}
+			</div>
+		))
+	)
+}
 
-		return (
-			<Sidebar.Container>
-				<div>
-					<Sidebar.Attr>Color</Sidebar.Attr>
-					<Sidebar.ColorAttr>
-						{attributeValues.Color && attributeValues.Color.values.map(values => (
-							<ColorPicker
-								color={values.value}
-							/>
-						))}
-					</Sidebar.ColorAttr>
-				</div>
-				<div>
-					<Sidebar.Attr>Size</Sidebar.Attr>
-					<Sidebar.ColorAttr>
-						{attributeValues.Size && attributeValues.Size.values.map(values => (
-							<SizePicker size={values.value} />
-						))}
-					</Sidebar.ColorAttr>
-				</div>
-			</Sidebar.Container>
-		)
-	}
+render() {
+	const {
+		allAttributes, attributeValues, allDepartments, categories
+	} = this.props
+	// console.log('all departments==========', allDepartments)
+	return (
+		<Sidebar.Container>
+			<div>
+				<Sidebar.Attr>Color</Sidebar.Attr>
+				<Sidebar.ColorAttr>
+					{attributeValues.Color && attributeValues.Color.values.map(values => (
+						<ColorPicker
+							color={values.value}
+						/>
+					))}
+				</Sidebar.ColorAttr>
+			</div>
+			<div>
+				<Sidebar.Attr>Size</Sidebar.Attr>
+				<Sidebar.ColorAttr>
+					{attributeValues.Size && attributeValues.Size.values.map(values => (
+						<SizePicker size={values.value} />
+					))}
+				</Sidebar.ColorAttr>
+			</div>
+			{categories && this.renderCategories()}
+		</Sidebar.Container>
+	)
+}
 }
 
 function mapStateToProps(state) {
+	console.log('mapStateToPropsmapStateToPropsmapStateToProps', state)
 	return {
 		products: state.products.allProducts,
 		allAttributes: state.attributes.allAttributes,
-		attributeValues: state.attributes.attributeValues
+		attributeValues: state.attributes.attributeValues,
+		departments: state.departments.allDepartments,
+		categories: state.categories.allCategories
 	}
 }
 const mapDispatchToProps = dispatch => ({
