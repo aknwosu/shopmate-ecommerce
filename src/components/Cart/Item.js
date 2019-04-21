@@ -7,7 +7,9 @@ import AddSubtractCta from '../../ui/number-input'
 
 const CartItem = (props) => {
 	const {
-		dispatchSubtractFromCart, dispatchAddToCart, cartItem: {price, actualPrice, product_id, image, name, quantity, color, size }
+		dispatchSubtractFromCart, dispatchAddToCart, cartItem: {
+			price, actualPrice, product_id, image, name, quantity, color, size
+		}
 	} = props
 	const { REACT_APP_IMAGE_URL } = process.env
 

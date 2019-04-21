@@ -7,17 +7,29 @@ import { withRouter } from 'react-router'
 import Header from '../Header'
 import { fetchProducts, fetchProductDetail } from '../../actionCreators/products'
 import { addToCart } from '../../actionCreators/cart'
+import { fetchProductAttributes } from '../../actionCreators/attributes'
 import Sidebar from './Sidebar';
 import Product from './Product'
+import Pagination from '../Pagination';
+
 
 class Products extends Component {
 	renderProductDetails = (id) => {
 		this.props.dispatchFetchProductDetail(id)
+		this.props.dispatchFetchProductAttributes(id)
 		this.props.history.push(`/products/${id}`)
 	}
 
+	onPageChanged = (pageNumber) => {
+		const { dispatchFetchProducts } = this.props
+		dispatchFetchProducts(pageNumber)
+	}
+
 	render() {
-		const { products, dispatchAddToCart, productDetail } = this.props
+		const {
+			products, dispatchAddToCart, productDetail, productsCount
+		} = this.props
+		console.log('product props', this.props)
 		return (
 			<Fragment>
 				<Header />
@@ -25,6 +37,7 @@ class Products extends Component {
 					<Products.Wrapper>
 						<Sidebar />
 						<Products.List>
+							<Pagination totalCount={productsCount} onPageChanged={this.onPageChanged} />
 							{products && Object.keys(products).map(product => (
 								<Product
 									key={products[product].id}
@@ -46,6 +59,7 @@ function mapStateToProps(state) {
 		// currentUser: getCurrentUser(state),
 		cartItems: state.cart.cartItems,
 		products: state.products.allProducts,
+		productsCount: state.products.count,
 		productDetail: state.products.productDetail
 	}
 }
@@ -53,6 +67,7 @@ const mapDispatchToProps = dispatch => ({
 	dispatchFetchProducts: bindActionCreators(fetchProducts, dispatch),
 	dispatchAddToCart: bindActionCreators(addToCart, dispatch),
 	dispatchFetchProductDetail: bindActionCreators(fetchProductDetail, dispatch),
+	dispatchFetchProductAttributes: bindActionCreators(fetchProductAttributes, dispatch),
 })
 
 Products.propTypes = {
