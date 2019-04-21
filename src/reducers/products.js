@@ -36,6 +36,22 @@ export default function productsReducer(state = initialState, action) {
 			productRating: totalReviews.toFixed(2)
 		}
 	}
+
+	case 'FETCH_PRODUCTS_IN_DEPARTMENT_SUCCESS': {
+		return {
+			...state,
+			allProducts: action.payload.rows,
+			count: action.payload.count
+		}
+	}
+
+	case 'FETCH_PRODUCTS_IN_CATEGORY_SUCCESS': {
+		return {
+			...state,
+			allProducts: action.payload.rows,
+			count: action.payload.count
+		}
+	}
 	default: return state;
 	}
 }
