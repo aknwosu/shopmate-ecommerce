@@ -24,24 +24,42 @@ class Header extends Component {
 		}
 	}
 
+	// eslint-disable-next-line consistent-return
 	componentDidMount() {
-		const { dispatchFetchDepartments, dispatchFetchProducts } = this.props
+		console.log('header props=======>>>', this.props)
+		const {
+			dispatchFetchDepartments, dispatchFetchProductsInDepartment, dispatchFetchProducts, match: { params }
+		} = this.props
 		dispatchFetchDepartments();
+		if (params.department_id) {
+			return dispatchFetchProductsInDepartment(params.department_id, params.department_id)
+		}
 		dispatchFetchProducts()
 	}
 
-	getDepartmentData = (deptId) => {
+	getDepartmentData = (dept) => {
 		const { dispatchFetchProductsInDepartment } = this.props
-		dispatchFetchProductsInDepartment(deptId)
-		this.props.history.push(`/products/department/${deptId}`)
+		const { name, department_id } = dept
+		dispatchFetchProductsInDepartment(department_id)
+		this.props.history.push(`/products/department/${name}/${department_id}`)
 	}
 
 	renderDepartments = () => {
-		const { departments } = this.props
-
+		const { departments, match: { params } } = this.props
 		return Object.keys(departments).map((data, i) => {
 			const department = departments[data]
-			return <div key={department.name} className="department" onClick={() => { this.getDepartmentData(department.department_id) }}>{department.name}</div>
+			return (
+				<Header.Dept
+					key={department.name}
+					className="department"
+					isActive={params.department_name === department.name}
+					onClick={() => {
+						this.getDepartmentData(department);
+					}}
+				>
+					{department.name}
+				</Header.Dept>
+			);
 		})
 	}
 
@@ -72,7 +90,12 @@ class Header extends Component {
 		const { searchText, visibleModal } = this.state
 		return (
 			<Header.Container>
-				<Header.Logo src={Logo} alt="shopmate" />
+				<Header.Logo
+					src={Logo}
+					alt="shopmate"
+					onClick={() =>	this.props.history.push('/products')
+					}
+				/>
 				<Header.Departments>
 					{this.renderDepartments()}
 				</Header.Departments>
@@ -192,4 +215,10 @@ Header.CTASearch = styled.div`
 	position: absolute;
 	left: 15px;
 	top: 10px;
+`
+
+Header.Dept = styled.div`
+	color:  ${({ isActive }) => (isActive ? '#F62F5E' : 'white')};
+	font-weight: ${({ isActive }) => isActive && 'bold'};
+	cursor: pointer;
 `

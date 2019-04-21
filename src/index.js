@@ -16,7 +16,7 @@ ReactDOM.render(
 			<App>
 				<Route path="/products" exact component={Products} />
 				<Route path="/products/:product_id" exact component={ProductDetail} />
-				<Route path="/products/inDepartment/:department_id" component={Products} />
+				<Route path="/products/department/:department_name/:department_id" component={Products} />
 			</App>
 		</BrowserRouter>
 	</Provider>, document.getElementById('root')
