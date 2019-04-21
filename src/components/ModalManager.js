@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import SignIn from './SignIn'
 import CartItems from './Cart/CartItems'
 import PaymentSummary from './PaymentSummary'
+import Profile from './Profile'
 
 class ModalManager extends Component {
 	render() {
@@ -15,6 +16,7 @@ class ModalManager extends Component {
 				)}
 				{visibleModal === 'checkout' && <CartItems {...this.props} />}
 				{visibleModal === 'paymentSummary' && <PaymentSummary {...this.props} />}
+				{visibleModal === 'profile' && <Profile {...this.props} />}
 			</div>
 		)
 	}

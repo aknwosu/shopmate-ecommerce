@@ -57,5 +57,5 @@ Pagination.Number = styled.li`
 	background: -ms-linear-gradient(#FFF,#F6F6F6);
 	background: linear-gradient(#FFF,#F6F6F6);
 	border: ${({ isActive }) => (isActive ? 'none' : '1px solid #d3d3d4')};
-}
+	cursor: pointer;
 `
