@@ -1,7 +1,8 @@
 const initialState = {
 	allAttributes: [],
 	attributesCount: 0,
-	attributeValues: {}
+	attributeValues: {},
+	attributesInProduct: []
 };
 export default function attributesReducer(state = initialState, action) {
 	switch (action.type) {
@@ -19,6 +20,12 @@ export default function attributesReducer(state = initialState, action) {
 				[action.payload.attributeName]: action.payload
 			}
 		};
+	}
+	case 'FETCH_PRODUCT_ATTRIBUTES_SUCCESS': {
+		return {
+			...state,
+			attributesInProduct: action.payload
+		}
 	}
 
 	default: return state;

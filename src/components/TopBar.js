@@ -11,6 +11,9 @@ import { getCurrentUser } from '../selectors'
 import { fetchCustomer } from '../actionCreators/customers'
 import { setCartContent } from '../actionCreators/cart'
 import { fetchAttributes } from '../actionCreators/attributes'
+import { fetchDepartments } from '../actionCreators/departments'
+import { fetchCategories } from '../actionCreators/categories'
+
 import CartUI from '../ui/cartUI'
 
 class TopBar extends Component {
@@ -22,10 +25,12 @@ class TopBar extends Component {
 	}
 
 	componentDidMount() {
-		const { dispatchFetchCustomer, dispatchSetCart, dispatchFetchAttributes } = this.props
+		const { dispatchFetchCustomer, dispatchSetCart, dispatchFetchAttributes, dispatchFetchDepartments, dispatchFetchCategories } = this.props
 		dispatchFetchCustomer()
 		dispatchSetCart()
 		dispatchFetchAttributes()
+		dispatchFetchDepartments()
+		dispatchFetchCategories()
 	}
 
 	openModal = (visibleModal) => {
@@ -88,6 +93,8 @@ const mapDispatchToProps = dispatch => ({
 	dispatchFetchCustomer: bindActionCreators(fetchCustomer, dispatch),
 	dispatchSetCart: bindActionCreators(setCartContent, dispatch),
 	dispatchFetchAttributes: bindActionCreators(fetchAttributes, dispatch),
+	dispatchFetchDepartments: bindActionCreators(fetchDepartments, dispatch),
+	dispatchFetchCategories: bindActionCreators(fetchCategories, dispatch),
 
 })
 

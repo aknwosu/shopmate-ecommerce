@@ -10,7 +10,8 @@ import ColorPicker from '../../ui/colorPicker'
 import SizePicker from '../../ui/sizePicker'
 import AddSubtractCta from '../../ui/number-input'
 import Cta from '../../ui/CTABtn'
-
+import { ErrorText } from '../../ui/Typography'
+import { fetchProductAttributes } from '../../actionCreators/attributes'
 
 import { fetchProductDetail, fetchProductReviews } from '../../actionCreators/products'
 import { addToCart } from '../../actionCreators/cart'
@@ -22,33 +23,47 @@ class ProductDetail extends Component {
 			selectedSize: '',
 			selectedColor: '',
 			quantity: 1,
+			errors: ''
 		}
 	}
 
 	componentDidUpdate() {
 		const {
-			productDetail, dispatchFetchProductDetail, dispatchFetchProductReviews, match: { params }
+			productDetail, dispatchFetchProductDetail, dispatchFetchProductAttributes, dispatchFetchProductReviews, match: { params }
 		} = this.props
 		if (!productDetail.product_id) {
 			dispatchFetchProductDetail(params.product_id)
 			dispatchFetchProductReviews(params.product_id)
+			dispatchFetchProductAttributes(params.product_id)
 		}
 	}
 
 	selectAttr = (name, value) => {
-		this.setState({ [name]: value })
+		this.setState({ [name]: value, errors: '' })
 	}
 
 	onChangeQuantity = (value) => {
 		if (value < 0) {
 			return
 		}
-		this.setState({ quantity: value })
+		this.setState({ quantity: value, errors: '' })
 	}
 
 	addToCart = () => {
-		const { selectedColor, selectedSize, quantity } = this.state
-		const { dispatchAddToCart, productDetail: { name, product_id, price, image } } = this.props
+		const {
+			selectedColor, selectedSize, quantity, errors
+		} = this.state
+		if (!selectedColor || !selectedSize || quantity < 1) {
+			// if (!selectedColor) {
+			this.setState({ errors: 'Please select attributes for your selected' })
+			return
+			// }
+		}
+		const {
+			dispatchAddToCart, productDetail: {
+				name, product_id, price, image
+			}
+		} = this.props
 		const cartItem = {
 			product_id,
 			name,
@@ -64,13 +79,18 @@ class ProductDetail extends Component {
 
 	renderProductDetails = () => {
 		const { REACT_APP_IMAGE_URL } = process.env
-		const { selectedSize, selectedColor } = this.state
+		const { selectedSize, selectedColor, errors } = this.state
 		const {
-			attributeValues,
+			// attributeValues,
+			attributesInProduct,
 			productDetail: {
 				image, image_2, thumbnail, name, price
 			}
 		} = this.props
+		console.log('trying to map product attributes', this.props)
+		const productColors = attributesInProduct && attributesInProduct.filter(attribute => attribute.attribute_name === 'Color')
+		const productSizes = attributesInProduct && attributesInProduct.filter(attribute => attribute.attribute_name === 'Size')
+
 		return (
 			<ProductDetail.Container>
 				<ProductDetail.ImageWrapper>
@@ -93,11 +113,11 @@ class ProductDetail extends Component {
 					<ProductDetail.Attr>
 						<div>Color</div>
 						<div>
-							{attributeValues.Color && attributeValues.Color.values.map(values => (
+							{productColors && productColors.map(attr => (
 								<ColorPicker
-									color={values.value}
-									active={selectedColor === values.value}
-									onClick={() => this.selectAttr('selectedColor', values.value)}
+									color={attr.attribute_value}
+									active={selectedColor === attr.attribute_value}
+									onClick={() => this.selectAttr('selectedColor', attr.attribute_value)}
 								/>
 							))}
 						</div>
@@ -105,11 +125,11 @@ class ProductDetail extends Component {
 					<ProductDetail.Attr>
 						<div>Size</div>
 						<div>
-							{attributeValues.Size && attributeValues.Size.values.map(values => (
+							{productSizes && productSizes.map(attr => (
 								<SizePicker
-									size={values.value}
-									active={selectedSize === values.value}
-									onClick={() => this.selectAttr('selectedSize', values.value)}
+									size={attr.attribute_value}
+									active={selectedSize === attr.attribute_value}
+									onClick={() => this.selectAttr('selectedSize', attr.attribute_value)}
 								/>
 							))}
 						</div>
@@ -118,6 +138,7 @@ class ProductDetail extends Component {
 						value={this.state.quantity}
 						onChange={(value) => { this.onChangeQuantity(value) }}
 					/>
+					{errors && <ErrorText>{errors}</ErrorText>}
 					<Cta onClick={this.addToCart}>Add to cart</Cta>
 				</ProductDetail.Info>
 
@@ -141,7 +162,8 @@ function mapStateToProps(state) {
 		cartItems: state.cart.cartItems,
 		products: state.products.allProducts,
 		productDetail: state.products.productDetail,
-		attributeValues: state.attributes.attributeValues
+		attributeValues: state.attributes.attributeValues,
+		attributesInProduct: state.attributes.attributesInProduct
 	}
 }
 const mapDispatchToProps = dispatch => ({
@@ -149,6 +171,7 @@ const mapDispatchToProps = dispatch => ({
 	dispatchAddToCart: bindActionCreators(addToCart, dispatch),
 	dispatchFetchProductDetail: bindActionCreators(fetchProductDetail, dispatch),
 	dispatchFetchProductReviews: bindActionCreators(fetchProductReviews, dispatch),
+	dispatchFetchProductAttributes: bindActionCreators(fetchProductAttributes, dispatch),
 })
 
 ProductDetail.propTypes = {
