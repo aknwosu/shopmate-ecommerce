@@ -1,20 +1,19 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import SignIn from './SignIn'
-import Checkout from './Checkout'
+import CartItems from './Cart/CartItems'
 import PaymentSummary from './PaymentSummary'
 
 class ModalManager extends Component {
 	render() {
 		const { visibleModal, closeModal } = this.props
-		console.log('modal manager')
 		return (
 			<div>
 				<div>Modals</div>
 				{(visibleModal === 'signIn' || visibleModal === 'register') && (
 					<SignIn {...this.props} />
 				)}
-				{visibleModal === 'checkout' && <Checkout {...this.props} />}
+				{visibleModal === 'checkout' && <CartItems {...this.props} />}
 				{visibleModal === 'paymentSummary' && <PaymentSummary {...this.props} />}
 			</div>
 		)

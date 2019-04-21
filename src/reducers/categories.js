@@ -1,5 +1,5 @@
 const initialState = {
-	allCategories: {},
+	allCategories: [],
 	selectedCategory: {},
 	productCategories: [],
 	departmentCategories: {}
@@ -8,7 +8,7 @@ export default function categoriesReducer(state = initialState, action) {
 	switch (action.type) {
 	case 'FETCH_CATEGORIES_SUCCESS': {
 		return Object.assign({}, state, {
-			categories: action.payload.categories
+			allCategories: action.payload.rows
 		});
 	}
 	case 'FETCH_CATEGORY_SUCCESS': {

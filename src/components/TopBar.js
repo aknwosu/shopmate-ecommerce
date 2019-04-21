@@ -3,13 +3,18 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
-import Gbr from '../assets/gbr.svg'
+import Usd from '../assets/usd.svg'
 import ModalManager from './ModalManager'
 import { getCurrentUser } from '../selectors'
 import { fetchCustomer } from '../actionCreators/customers'
 import { setCartContent } from '../actionCreators/cart'
+import { fetchAttributes } from '../actionCreators/attributes'
+import { fetchDepartments } from '../actionCreators/departments'
+import { fetchCategories } from '../actionCreators/categories'
 
+import CartUI from '../ui/cartUI'
 
 class TopBar extends Component {
 	constructor(props) {
@@ -20,13 +25,15 @@ class TopBar extends Component {
 	}
 
 	componentDidMount() {
-		const { dispatchFetchCustomer, dispatchSetCart } = this.props
+		const { dispatchFetchCustomer, dispatchSetCart, dispatchFetchAttributes, dispatchFetchDepartments, dispatchFetchCategories } = this.props
 		dispatchFetchCustomer()
 		dispatchSetCart()
+		dispatchFetchAttributes()
+		dispatchFetchDepartments()
+		dispatchFetchCategories()
 	}
 
 	openModal = (visibleModal) => {
-		console.log('visiblemodal=====', visibleModal)
 		this.setState({ visibleModal })
 	}
 
@@ -36,8 +43,7 @@ class TopBar extends Component {
 
 	render() {
 		const { visibleModal } = this.state
-		const { currentUser, cart: { totalPrice } } = this.props
-		console.log('this.props top bar====', this.props)
+		const { currentUser, cart: { totalPrice, cartItems } } = this.props
 		return (
 			<TopBar.Container>
 				{currentUser && currentUser.name ? (
@@ -49,17 +55,16 @@ class TopBar extends Component {
 						</TopBar.SignIn>
 					)
 				}
-
 				<TopBar.Nav>
 					<div href="#">Daily Deals</div>
 					<div href="#">Sell</div>
 					<div href="#">Help & Contact</div>
 				</TopBar.Nav>
 				<TopBar.Nav>
-					<Currency>£ GBP</Currency>
+					<Currency>$ USD</Currency>
 				</TopBar.Nav>
 				<TopBar.Nav>
-					<div>stuff</div>
+					<CartUI count={cartItems.length} secondary />
 					<div>Your bag: ${totalPrice}</div>
 				</TopBar.Nav>
 				{visibleModal && (
@@ -73,6 +78,13 @@ class TopBar extends Component {
 		)
 	}
 }
+TopBar.propTypes = {
+	cart: PropTypes.object.isRequired,
+	dispatchFetchCustomer: PropTypes.func.isRequired,
+	currentUser: PropTypes.object.isRequired,
+	dispatchSetCart: PropTypes.func.isRequired,
+	dispatchFetchAttributes: PropTypes.func.isRequired
+}
 const mapStateToProps = state => ({
 	currentUser: getCurrentUser(state),
 	cart: state.cart,
@@ -80,6 +92,10 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 	dispatchFetchCustomer: bindActionCreators(fetchCustomer, dispatch),
 	dispatchSetCart: bindActionCreators(setCartContent, dispatch),
+	dispatchFetchAttributes: bindActionCreators(fetchAttributes, dispatch),
+	dispatchFetchDepartments: bindActionCreators(fetchDepartments, dispatch),
+	dispatchFetchCategories: bindActionCreators(fetchCategories, dispatch),
+
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(TopBar)
@@ -105,7 +121,7 @@ TopBar.Nav = styled.div`
 	}
 `
 const Currency = styled.div`
-	background: url(${Gbr});
+	background: url(${Usd});
 	background-repeat: no-repeat;
   padding-left: 30px;
 `

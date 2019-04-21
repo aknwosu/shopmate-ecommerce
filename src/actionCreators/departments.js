@@ -33,7 +33,7 @@ export const fetchDepartment = id => async (dispatch) => {
 export const fetchDepartments = () => async (dispatch) => {
 	try {
 		dispatch({ type: FETCH_DEPARTMENTS_REQUEST });
-		const request = await axios.get(`${REACT_APP_ROOT_URL}/departments`, { headers });
+		const request = await axios.get(`${REACT_APP_ROOT_URL}/departments`);
 		dispatch({
 			type: FETCH_DEPARTMENTS_SUCCESS,
 			payload: request.data

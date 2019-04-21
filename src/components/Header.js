@@ -1,24 +1,24 @@
 import React, { Component } from 'react';
-import { Link, BrowserRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
+import { withRouter } from 'react-router'
 import { fetchCustomer, login } from '../actionCreators/customers'
 import { fetchDepartments } from '../actionCreators/departments'
-import { fetchProducts } from '../actionCreators/products'
+import { fetchProducts, searchProducts, fetchProductsInDepartment } from '../actionCreators/products'
 import { getCurrentUser } from '../selectors'
 import Logo from '../assets/logo.svg'
-import CartIcon from '../assets/cart_icon.svg'
 import SearchIcon from '../assets/search_icon_white.svg'
 import Cta from '../ui/CTABtn'
 import ModalManager from './ModalManager'
+import CartUI from '../ui/cartUI'
 
 // eslint-disable-next-line react/prefer-stateless-function
 class Header extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			// departments: props.departments
 			searchText: '',
 			visibleModal: null
 		}
@@ -30,12 +30,18 @@ class Header extends Component {
 		dispatchFetchProducts()
 	}
 
+	getDepartmentData = (deptId) => {
+		const { dispatchFetchProductsInDepartment } = this.props
+		dispatchFetchProductsInDepartment(deptId)
+		this.props.history.push(`/products/department/${deptId}`)
+	}
+
 	renderDepartments = () => {
 		const { departments } = this.props
 
 		return Object.keys(departments).map((data, i) => {
 			const department = departments[data]
-			return <div key={i} className="department" onClick={() => {}}>{department.name}</div>
+			return <div key={department.name} className="department" onClick={() => { this.getDepartmentData(department.department_id) }}>{department.name}</div>
 		})
 	}
 
@@ -48,29 +54,22 @@ class Header extends Component {
 	}
 
 	search = () => {
-		if (this.state.searchText) {
-			console.log('this.state===', this.state.searchText)
+		const { searchText } = this.state;
+		const { dispatchSearchProducts } = this.props
+		if (searchText) {
+			dispatchSearchProducts(searchText)
+		}
+	}
+
+	onKeyPress = ({ key }) => {
+		if (key === 'Enter') {
+			this.search()
 		}
 	}
 
 	render() {
-		const { dispatchFetchCustomer, dispatchLogin, departments } = this.props
+		const { cart: { cartItems } } = this.props
 		const { searchText, visibleModal } = this.state
-		console.log('all props are===', this.props)
-		// return (
-		// 	<nav className="navbar navbar-light">
-		// 		<ul className="nav navbar-nav">
-		// 			<li className="nav-item">
-		// 				<Link to="/">Home</Link>
-		// 			</li>
-		// 			<li className="nav-item">
-		// 				<div onClick={() => dispatchFetchCustomer()}>Resources</div>
-		// 				<div onClick={() => { dispatchLogin('newb@test.com', 'testing') }}>Login</div>
-		// 			</li>
-		// 		</ul>
-		// 	</nav>
-
-		// );
 		return (
 			<Header.Container>
 				<Header.Logo src={Logo} alt="shopmate" />
@@ -78,22 +77,19 @@ class Header extends Component {
 					{this.renderDepartments()}
 				</Header.Departments>
 				<Header.Search>
-					<Header.CTASearch onClick={this.search()} />
+					<Header.CTASearch onClick={this.search} />
 					<Header.SearchInput
 						autoFocus
 						placeholder="search anything"
 						onChange={e => this.onSearchTextChange(e)}
 						value={searchText}
 						onSubmit={this.search}
-						onKeyPress={(event) => { event.key === 'Enter' && this.search() }}
+						onKeyPress={this.onKeyPress}
 					/>
 					<span onClick={this.clearSearchText}>x</span>
 				</Header.Search>
 				<Cta onClick={() => this.setState({ visibleModal: 'checkout' })}>Checkout</Cta>
-				<Header.Cart>
-					<img src={CartIcon} alt="cart" />
-					<Header.ItemsCount>{6}</Header.ItemsCount>
-				</Header.Cart>
+				<CartUI count={cartItems.length} />
 				{visibleModal !== null && (
 					<ModalManager
 						visibleModal={visibleModal}
@@ -105,9 +101,17 @@ class Header extends Component {
 		)
 	}
 }
+Header.propTypes = {
+	cart: PropTypes.object.isRequired,
+	dispatchSearchProducts: PropTypes.func.isRequired,
+	dispatchFetchDepartments: PropTypes.func.isRequired,
+	dispatchFetchProducts: PropTypes.func.isRequired,
+	departments: PropTypes.array.isRequired,
+
+}
 function mapStateToProps(state) {
-	// console.log('mapStateToProps====', state)
 	return {
+		cart: state.cart,
 		currentUser: getCurrentUser(state),
 		departments: state.departments.allDepartments,
 		products: state.products.allProducts
@@ -117,10 +121,12 @@ const mapDispatchToProps = dispatch => ({
 	dispatchFetchCustomer: bindActionCreators(fetchCustomer, dispatch),
 	dispatchLogin: bindActionCreators(login, dispatch),
 	dispatchFetchDepartments: bindActionCreators(fetchDepartments, dispatch),
-	dispatchFetchProducts: bindActionCreators(fetchProducts, dispatch)
+	dispatchFetchProducts: bindActionCreators(fetchProducts, dispatch),
+	dispatchSearchProducts: bindActionCreators(searchProducts, dispatch),
+	dispatchFetchProductsInDepartment: bindActionCreators(fetchProductsInDepartment, dispatch),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header))
 
 Header.Logo = styled.img`
 	

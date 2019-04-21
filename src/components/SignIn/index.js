@@ -22,7 +22,6 @@ class SignIn extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		console.log('new props', this.props)
 		if (this.props.currentUser !== prevProps.currentUser) {
 			this.props.history.push('/products')
 		}
@@ -35,8 +34,7 @@ class SignIn extends Component {
 	}
 
 
-	onClickSignin = (event) => {
-		// event.stopPropagation()
+	onClickSignin = () => {
 		const { dispatchLogin, closeModal } = this.props
 		const { email, password } = this.state
 		dispatchLogin(email, password)
@@ -44,8 +42,7 @@ class SignIn extends Component {
 		closeModal()
 	}
 
-	onClickRegister = (event) => {
-		// event.stopPropagation()
+	onClickRegister = () => {
 		const { dispatchRegister, closeModal } = this.props
 		const { name, email, password } = this.state
 		dispatchRegister(name, email, password)
@@ -64,7 +61,6 @@ class SignIn extends Component {
 	render() {
 		const { visibleModal, closeModal } = this.props
 		const { email, password, name } = this.state
-		console.log(this.state)
 		return (
 			<Modal
 				handleClose={closeModal}
@@ -147,7 +143,6 @@ export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SignIn))
 SignIn.LogInContainer = styled.div`
 	height: 380px;
 	width: 480px;
-	/* background-color: rebeccapurple */
 	position: absolute;
 	top: 0;
 	height: 100%;
