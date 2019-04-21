@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
+import { withRouter } from 'react-router'
 import { fetchCustomer, login } from '../actionCreators/customers'
 import { fetchDepartments } from '../actionCreators/departments'
-import { fetchProducts, searchProducts } from '../actionCreators/products'
+import { fetchProducts, searchProducts, fetchProductsInDepartment } from '../actionCreators/products'
 import { getCurrentUser } from '../selectors'
 import Logo from '../assets/logo.svg'
 import SearchIcon from '../assets/search_icon_white.svg'
@@ -29,12 +30,18 @@ class Header extends Component {
 		dispatchFetchProducts()
 	}
 
+	getDepartmentData = (deptId) => {
+		const { dispatchFetchProductsInDepartment } = this.props
+		dispatchFetchProductsInDepartment(deptId)
+		this.props.history.push(`/products/department/${deptId}`)
+	}
+
 	renderDepartments = () => {
 		const { departments } = this.props
 
 		return Object.keys(departments).map((data, i) => {
 			const department = departments[data]
-			return <div key={department.name} className="department" onClick={() => {}}>{department.name}</div>
+			return <div key={department.name} className="department" onClick={() => { this.getDepartmentData(department.department_id) }}>{department.name}</div>
 		})
 	}
 
@@ -116,10 +123,10 @@ const mapDispatchToProps = dispatch => ({
 	dispatchFetchDepartments: bindActionCreators(fetchDepartments, dispatch),
 	dispatchFetchProducts: bindActionCreators(fetchProducts, dispatch),
 	dispatchSearchProducts: bindActionCreators(searchProducts, dispatch),
-
+	dispatchFetchProductsInDepartment: bindActionCreators(fetchProductsInDepartment, dispatch),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header))
 
 Header.Logo = styled.img`
 	

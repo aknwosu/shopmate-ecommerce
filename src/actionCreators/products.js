@@ -15,10 +15,21 @@ export const FETCH_PRODUCT_DETAIL_ERROR = 'FETCH_PRODUCT_DETAIL_ERROR'
 export const FETCH_PRODUCT_REVIEWS_SUCCESS = 'FETCH_PRODUCT_REVIEWS_SUCCESS'
 export const FETCH_PRODUCT_REVIEWS_ERROR = 'FETCH_PRODUCT_REVIEWS_ERROR'
 
-export const fetchProducts = () => async (dispatch) => {
+export const FETCH_PRODUCTS_IN_CATEGORY_SUCCESS = 'FETCH_PRODUCTS_IN_CATEGORY_SUCCESS'
+export const FETCH_PRODUCTS_IN_CATEGORY_ERROR = 'FETCH_PRODUCTS_IN_CATEGORY_ERROR'
+
+export const FETCH_PRODUCTS_IN_DEPARTMENT_SUCCESS = 'FETCH_PRODUCTS_IN_DEPARTMENT_SUCCESS'
+export const FETCH_PRODUCTS_IN_DEPARTMENT_ERROR = 'FETCH_PRODUCTS_IN_DEPARTMENT_ERROR'
+
+export const fetchProducts = page => async (dispatch) => {
 	try {
 		dispatch({ type: FETCH_PRODUCTS_REQUEST });
-		const request = await axios.get(`${REACT_APP_ROOT_URL}/products`)
+		let request;
+		if (page) {
+			request = await axios.get(`${REACT_APP_ROOT_URL}/products?page=${page}`)
+		} else {
+			request = await axios.get(`${REACT_APP_ROOT_URL}/products`)
+		}
 		dispatch({
 			type: FETCH_PRODUCTS_SUCCESS,
 			payload: request.data,
@@ -61,5 +72,29 @@ export const fetchProductReviews = productId => async (dispatch) => {
 		});
 	} catch (error) {
 		dispatch({ type: FETCH_PRODUCT_REVIEWS_ERROR, payload: error, error: true });
+	}
+};
+
+export const fetchProductsInCategory = categoryId => async (dispatch) => {
+	try {
+		const request = await axios.get(`${REACT_APP_ROOT_URL}/products/inCategory/${categoryId}`)
+		dispatch({
+			type: FETCH_PRODUCTS_IN_CATEGORY_SUCCESS,
+			payload: request.data,
+		});
+	} catch (error) {
+		dispatch({ type: FETCH_PRODUCTS_IN_CATEGORY_ERROR, payload: error, error: true });
+	}
+};
+
+export const fetchProductsInDepartment = deptId => async (dispatch) => {
+	try {
+		const request = await axios.get(`${REACT_APP_ROOT_URL}/products/inDepartment/${deptId}`)
+		dispatch({
+			type: FETCH_PRODUCTS_IN_DEPARTMENT_SUCCESS,
+			payload: request.data,
+		});
+	} catch (error) {
+		dispatch({ type: FETCH_PRODUCTS_IN_DEPARTMENT_ERROR, payload: error, error: true });
 	}
 };

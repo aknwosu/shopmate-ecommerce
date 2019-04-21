@@ -46,7 +46,6 @@ export const fetchCustomer = () => async (dispatch) => {
 };
 
 export const register = (name, email, password) => async (dispatch) => {
-	console.log('register-----', name, password, email)
 	try {
 		dispatch({ type: REGISTER_USER_REQUEST });
 		const request = await axios.post(`${REACT_APP_ROOT_URL}/customers`, { name, email, password });
@@ -54,7 +53,6 @@ export const register = (name, email, password) => async (dispatch) => {
 			type: REGISTER_USER_SUCCESS,
 			payload: request.data,
 		});
-		console.log(request);
 	} catch (error) {
 		dispatch({ type: REGISTER_USER_ERROR, payload: error, error: true });
 	}
@@ -68,7 +66,6 @@ export const updateCustomer = user => async (dispatch) => {
 			type: UPDATE_USER_SUCCESS,
 			payload: request.data,
 		});
-		console.log(request);
 	} catch (error) {
 		dispatch({ type: UPDATE_USER_ERROR, payload: error, error: true });
 	}
@@ -83,7 +80,6 @@ export const login = (email, password) => async (dispatch) => {
 			type: LOGIN_USER_SUCCESS,
 			payload: request.data,
 		});
-		console.log(request);
 		localStorage.setItem('accessToken', request.data.accessToken);
 	} catch (error) {
 		dispatch({ type: LOGIN_USER_ERROR, payload: error, error: true });
@@ -99,7 +95,6 @@ export const loginFacebook = (email, password) => async (dispatch) => {
 			type: LOGIN_USER_SUCCESS,
 			payload: request.data,
 		});
-		console.log(request);
 		localStorage.setItem('accessToken', request.data.accessToken);
 	} catch (error) {
 		dispatch({ type: LOGIN_USER_ERROR, payload: error, error: true });
@@ -125,7 +120,6 @@ export const updateCustomersCreditCard = data => async (dispatch) => {
 		dispatch({
 			type: UPDATE_CUSTOMER_CREDIT_CARD_SUCCESS,
 		});
-		console.log(request);
 	} catch (error) {
 		dispatch({ type: UPDATE_CUSTOMER_CREDIT_CARD_ERROR, payload: error, error: true });
 	}
