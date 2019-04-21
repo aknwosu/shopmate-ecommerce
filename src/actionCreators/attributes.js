@@ -62,7 +62,7 @@ export const fetchAttributeValue = attribute => async (dispatch) => {
 	}
 };
 
-export const fetchProductAttribute = productId => async (dispatch) => {
+export const fetchProductAttributes = productId => async (dispatch) => {
 	try {
 		dispatch({ type: FETCH_PRODUCT_ATTRIBUTES_REQUEST });
 		const request = await axios.get(`${REACT_APP_ROOT_URL}/attributes/inProduct/${productId}`)
