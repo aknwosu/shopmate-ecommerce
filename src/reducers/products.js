@@ -2,13 +2,15 @@ const initialState = {
 	allProducts: {},
 	productDetail: {},
 	productReviews: [],
-	productRating: 0
+	productRating: 0,
+	count: 0
 };
 export default function productsReducer(state = initialState, action) {
 	switch (action.type) {
 	case 'FETCH_PRODUCTS_SUCCESS': {
 		return Object.assign({}, state, {
-			allProducts: action.payload.rows
+			allProducts: action.payload.rows,
+			count: action.payload.count
 		});
 	}
 	case 'SEARCH_PRODUCTS_SUCCESS': {
