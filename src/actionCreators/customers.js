@@ -105,7 +105,7 @@ export const loginFacebook = (email, password) => async (dispatch) => {
 export const updateCustomersAddress = data => async (dispatch) => {
 	try {
 		dispatch({ type: UPDATE_CUSTOMER_ADDRESS_REQUEST });
-		await axios.put(`${REACT_APP_ROOT_URL}/customers/address`, { ...data });
+		await axios.put(`${REACT_APP_ROOT_URL}/customers/address`, { ...data }, { headers });
 		dispatch({ type: UPDATE_CUSTOMER_ADDRESS_SUCCESS });
 		dispatch(fetchCustomer());
 	} catch (error) {

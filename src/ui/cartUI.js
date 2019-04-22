@@ -8,7 +8,7 @@ const CartUI = (props) => {
 	const { count, secondary } = props
 
 	return (
-		<CartUI.Container>
+		<CartUI.Container {...props}>
 			<img src={secondary ? CartIconDark : CartIcon} alt="cart" />
 			<CartUI.ItemsCount>{count}</CartUI.ItemsCount>
 		</CartUI.Container>

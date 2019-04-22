@@ -26,6 +26,26 @@ class CartItems extends Component {
 		// this.props.dispatchSubtractFromCart()
 	}
 
+	proceedToCheckout = () => {
+		const { currentUser, push } = this.props
+		if (!currentUser.customer_id) {
+			return this.renderProfile('signIn')
+		}
+		return push('/checkout')
+	}
+
+	closeModal = () => {
+		this.setState({ renderedModal: null })
+	}
+
+	renderProfile = (modalName) => {
+		// this.props.closeModal()
+		this.setState(prevState => ({
+			renderedModal: modalName
+		}))
+		// this.setState({ renderedModal: null }).then
+	}
+
 	renderCartItems = () => {
 		const { dispatchSubtractFromCart, dispatchAddToCart, cart: { cartItems } } = this.props
 
@@ -35,6 +55,7 @@ class CartItems extends Component {
 	}
 
 	render() {
+		console.log('cart items props, want push', this.props)
 		const {
 			cart, visibleModal, closeModal, isOpen
 		} = this.props
@@ -51,8 +72,16 @@ class CartItems extends Component {
 						{this.renderCartItems()}
 						<div>{cart.totalPrice}</div>
 						<Cta
+							onClick={() => {}}
+						>Checkout Here!!!
+						</Cta>
+						{/* <Cta
 							onClick={() => this.setState({ renderedModal: 'paymentSummary' })}
 						>Checkout Here!!!
+						</Cta> */}
+						<Cta
+							onClick={this.proceedToCheckout}
+						>Proceed to Checkout
 						</Cta>
 					</CartItems.Container>
 				</Modal>
@@ -84,7 +113,7 @@ const mapDispatchToProps = dispatch => ({
 	dispatchFetchProducts: bindActionCreators(fetchProducts, dispatch),
 	dispatchSubtractFromCart: bindActionCreators(subtractFromCart, dispatch),
 	dispatchAddToCart: bindActionCreators(addToCart, dispatch)
-	
+
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CartItems)

@@ -87,9 +87,14 @@ export const fetchProductsInCategory = categoryId => async (dispatch) => {
 	}
 };
 
-export const fetchProductsInDepartment = deptId => async (dispatch) => {
+export const fetchProductsInDepartment = (deptId, pageNumber) => async (dispatch) => {
 	try {
-		const request = await axios.get(`${REACT_APP_ROOT_URL}/products/inDepartment/${deptId}`)
+		let request;
+		if (pageNumber) {
+			request = await axios.get(`${REACT_APP_ROOT_URL}/products/inDepartment/${deptId}?page=${pageNumber}`)
+		} else {
+			request = await axios.get(`${REACT_APP_ROOT_URL}/products/inDepartment/${deptId}`)
+		}
 		dispatch({
 			type: FETCH_PRODUCTS_IN_DEPARTMENT_SUCCESS,
 			payload: request.data,

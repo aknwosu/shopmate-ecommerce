@@ -10,7 +10,6 @@ import { fetchProducts, searchProducts, fetchProductsInDepartment } from '../act
 import { getCurrentUser } from '../selectors'
 import Logo from '../assets/logo.svg'
 import SearchIcon from '../assets/search_icon_white.svg'
-import Cta from '../ui/CTABtn'
 import ModalManager from './ModalManager'
 import CartUI from '../ui/cartUI'
 
@@ -24,24 +23,41 @@ class Header extends Component {
 		}
 	}
 
+	// eslint-disable-next-line consistent-return
 	componentDidMount() {
-		const { dispatchFetchDepartments, dispatchFetchProducts } = this.props
+		const {
+			dispatchFetchDepartments, dispatchFetchProductsInDepartment, dispatchFetchProducts, match: { params }
+		} = this.props
 		dispatchFetchDepartments();
+		if (params.department_id) {
+			return dispatchFetchProductsInDepartment(params.department_id, params.department_id)
+		}
 		dispatchFetchProducts()
 	}
 
-	getDepartmentData = (deptId) => {
-		const { dispatchFetchProductsInDepartment } = this.props
-		dispatchFetchProductsInDepartment(deptId)
-		this.props.history.push(`/products/department/${deptId}`)
+	getDepartmentData = (dept) => {
+		const { dispatchFetchProductsInDepartment, push } = this.props
+		const { name, department_id } = dept
+		dispatchFetchProductsInDepartment(department_id)
+		push(`/products/department/${name}/${department_id}`)
 	}
 
 	renderDepartments = () => {
-		const { departments } = this.props
-
+		const { departments, match: { params } } = this.props
 		return Object.keys(departments).map((data, i) => {
 			const department = departments[data]
-			return <div key={department.name} className="department" onClick={() => { this.getDepartmentData(department.department_id) }}>{department.name}</div>
+			return (
+				<Header.Dept
+					key={department.name}
+					className="department"
+					isActive={params.department_name === department.name}
+					onClick={() => {
+						this.getDepartmentData(department);
+					}}
+				>
+					{department.name}
+				</Header.Dept>
+			);
 		})
 	}
 
@@ -68,11 +84,16 @@ class Header extends Component {
 	}
 
 	render() {
-		const { cart: { cartItems } } = this.props
+		const { push, cart: { cartItems } } = this.props
 		const { searchText, visibleModal } = this.state
 		return (
 			<Header.Container>
-				<Header.Logo src={Logo} alt="shopmate" />
+				<Header.Logo
+					src={Logo}
+					alt="shopmate"
+					onClick={() =>	push('/products')
+					}
+				/>
 				<Header.Departments>
 					{this.renderDepartments()}
 				</Header.Departments>
@@ -88,13 +109,16 @@ class Header extends Component {
 					/>
 					<span onClick={this.clearSearchText}>x</span>
 				</Header.Search>
-				<Cta onClick={() => this.setState({ visibleModal: 'checkout' })}>Checkout</Cta>
-				<CartUI count={cartItems.length} />
+				<CartUI
+					onClick={() => this.setState({ visibleModal: 'checkout' })}
+					count={cartItems.length}
+				/>
 				{visibleModal !== null && (
 					<ModalManager
 						visibleModal={visibleModal}
 						isOpen={!!visibleModal}
 						closeModal={() => this.setState({ visibleModal: null })}
+						push={push}
 					/>
 				)}
 			</Header.Container>
@@ -107,14 +131,18 @@ Header.propTypes = {
 	dispatchFetchDepartments: PropTypes.func.isRequired,
 	dispatchFetchProducts: PropTypes.func.isRequired,
 	departments: PropTypes.array.isRequired,
-
+	push: PropTypes.func.isRequired,
+	dispatchFetchProductsInDepartment: PropTypes.func.isRequired,
+	match: PropTypes.func.isRequired,
 }
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
 	return {
 		cart: state.cart,
 		currentUser: getCurrentUser(state),
 		departments: state.departments.allDepartments,
-		products: state.products.allProducts
+		products: state.products.allProducts,
+		push: ownProps.history.push,
+
 	}
 }
 const mapDispatchToProps = dispatch => ({
@@ -192,4 +220,10 @@ Header.CTASearch = styled.div`
 	position: absolute;
 	left: 15px;
 	top: 10px;
+`
+
+Header.Dept = styled.div`
+	color:  ${({ isActive }) => (isActive ? '#F62F5E' : 'white')};
+	font-weight: ${({ isActive }) => isActive && 'bold'};
+	cursor: pointer;
 `

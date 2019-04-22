@@ -25,7 +25,9 @@ class TopBar extends Component {
 	}
 
 	componentDidMount() {
-		const { dispatchFetchCustomer, dispatchSetCart, dispatchFetchAttributes, dispatchFetchDepartments, dispatchFetchCategories } = this.props
+		const {
+			dispatchFetchCustomer, dispatchSetCart, dispatchFetchAttributes, dispatchFetchDepartments, dispatchFetchCategories
+		} = this.props
 		dispatchFetchCustomer()
 		dispatchSetCart()
 		dispatchFetchAttributes()
