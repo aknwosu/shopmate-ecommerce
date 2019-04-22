@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router'
 import Header from '../Header'
-import { fetchProducts, fetchProductDetail } from '../../actionCreators/products'
+import { fetchProducts, fetchProductDetail, fetchProductsInDepartment } from '../../actionCreators/products'
 import { addToCart } from '../../actionCreators/cart'
 import { fetchProductAttributes } from '../../actionCreators/attributes'
 import Sidebar from './Sidebar';
@@ -21,8 +21,11 @@ class Products extends Component {
 	}
 
 	onPageChanged = (pageNumber) => {
-		const { dispatchFetchProducts } = this.props
-		dispatchFetchProducts(pageNumber)
+		const { dispatchFetchProducts, dispatchFetchProductsInDepartment, match: { params } } = this.props
+		if (params.department_id) {
+			return dispatchFetchProductsInDepartment(params.department_id, pageNumber)
+		}
+		return dispatchFetchProducts(pageNumber)
 	}
 
 	render() {
@@ -68,6 +71,7 @@ const mapDispatchToProps = dispatch => ({
 	dispatchAddToCart: bindActionCreators(addToCart, dispatch),
 	dispatchFetchProductDetail: bindActionCreators(fetchProductDetail, dispatch),
 	dispatchFetchProductAttributes: bindActionCreators(fetchProductAttributes, dispatch),
+	dispatchFetchProductsInDepartment: bindActionCreators(fetchProductsInDepartment, dispatch),
 })
 
 Products.propTypes = {
