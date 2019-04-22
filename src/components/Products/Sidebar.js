@@ -18,7 +18,7 @@ renderCategories = () => {
 	const { categories } = this.props
 	return (
 		categories.map(category => (
-			<div>
+			<div key={category.name}>
 				{category.name}
 			</div>
 		))
@@ -36,6 +36,7 @@ render() {
 				<Sidebar.ColorAttr>
 					{attributeValues.Color && attributeValues.Color.values.map(values => (
 						<ColorPicker
+							key={values.value}
 							color={values.value}
 						/>
 					))}

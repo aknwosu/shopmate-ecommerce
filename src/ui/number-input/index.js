@@ -48,7 +48,7 @@ const AddSubtractInput = (props) => {
 		<InputWrap>
 			<AddSubtractCta
 				type="subtract"
-				onClick={() => { onChange(value - 1) }}
+				onClick={() => { onChange(value - 1, 'subtract') }}
 				disabled={value === 0}
 			/>
 			<AddSubtractInput.Input
@@ -60,7 +60,7 @@ const AddSubtractInput = (props) => {
 			/>
 			<AddSubtractCta
 				type="add"
-				onClick={() => { onChange(value + 1) }}
+				onClick={() => { onChange(value + 1, 'add') }}
 			/>
 		</InputWrap>
 	)

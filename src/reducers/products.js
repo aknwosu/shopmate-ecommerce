@@ -1,5 +1,5 @@
 const initialState = {
-	allProducts: {},
+	allProducts: [],
 	productDetail: {},
 	productReviews: [],
 	productRating: 0,

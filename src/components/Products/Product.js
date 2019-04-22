@@ -15,7 +15,7 @@ export const Product = (props) => {
 		<Product.Container>
 			<Product.Info>
 				<Product.Image url={`${REACT_APP_IMAGE_URL}${thumbnail}`} alt={thumbnail} />
-				<PrimaryTitle onClick={() => onAddToCart(product)}>{name}</PrimaryTitle>
+				<PrimaryTitle>{name}</PrimaryTitle>
 				<SecondaryTitle>{`$ ${price}`}</SecondaryTitle>
 				<Product.StyledCta onClick={() => renderProductDetails(product_id)}>Buy Now</Product.StyledCta>
 			</Product.Info>
