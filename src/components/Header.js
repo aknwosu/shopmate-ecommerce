@@ -133,7 +133,7 @@ Header.propTypes = {
 	departments: PropTypes.array.isRequired,
 	push: PropTypes.func.isRequired,
 	dispatchFetchProductsInDepartment: PropTypes.func.isRequired,
-	match: PropTypes.func.isRequired,
+	match: PropTypes.object.isRequired,
 }
 function mapStateToProps(state, ownProps) {
 	return {

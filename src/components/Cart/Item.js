@@ -7,20 +7,20 @@ import AddSubtractCta from '../../ui/number-input'
 
 const CartItem = (props) => {
 	const {
-		dispatchSubtractFromCart, dispatchAddToCart, cartItem: {
+		dispatchAddToCart, dispatchDeleteCartItem, cartItem: {
 			price, actualPrice, product_id, image, name, quantity, color, size
 		}
 	} = props
 	const { REACT_APP_IMAGE_URL } = process.env
 
-	const onChangeQuantity = (value) => {
-		console.log('changed cart item quantity', value)
+	const onChangeQuantity = (value, type) => {
+		console.log('changed cart item quantity', value, type)
 		const cartItem = {
 			product_id,
 			name,
-			quantity: value,
+			quantity: type === 'subtract' ? -1 : 1,
 			actualPrice,
-			price: Number(price) - actualPrice,
+			price: type === 'subtract' ? -actualPrice : actualPrice,
 			color,
 			size,
 			image
@@ -40,9 +40,9 @@ const CartItem = (props) => {
 			<AddSubtractCta
 				min={1}
 				value={quantity}
-				onChange={(value, item) => { onChangeQuantity(value, item) }}
+				onChange={(value, type) => { onChangeQuantity(value, type) }}
 			/>
-			<div>delete</div>
+			<div onClick={() => { dispatchDeleteCartItem(props.cartItem) }}>delete</div>
 		</CartItem.Detail>
 	)
 }

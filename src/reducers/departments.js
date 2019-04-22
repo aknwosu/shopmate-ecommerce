@@ -1,5 +1,5 @@
 const initialState = {
-	allDepartments: {}
+	allDepartments: []
 };
 export default function departmentsReducer(state = initialState, action) {
 	switch (action.type) {
