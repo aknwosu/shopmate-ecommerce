@@ -4,7 +4,9 @@ import { bindActionCreators } from 'redux'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { fetchProducts } from '../../actionCreators/products'
-import { subtractFromCart, addToCart } from '../../actionCreators/cart'
+import {
+	subtractFromCart, addToCart, generateUniqueCartId, deleteCartItem
+} from '../../actionCreators/cart'
 import { getCurrentUser } from '../../selectors'
 import Modal from '../../ui/ModalBase'
 import Cta from '../../ui/CTABtn'
@@ -27,10 +29,12 @@ class CartItems extends Component {
 	}
 
 	proceedToCheckout = () => {
-		const { currentUser, push } = this.props
+		const { currentUser, push, dispatchGenerateUniqueCartId } = this.props
 		if (!currentUser.customer_id) {
 			return this.renderProfile('signIn')
 		}
+
+		this.dispatchGenerateUniqueCartId()
 		return push('/checkout')
 	}
 
@@ -47,15 +51,16 @@ class CartItems extends Component {
 	}
 
 	renderCartItems = () => {
-		const { dispatchSubtractFromCart, dispatchAddToCart, cart: { cartItems } } = this.props
+		const {
+			dispatchSubtractFromCart, dispatchAddToCart, dispatchDeleteCartItem, cart: { cartItems }
+		} = this.props
 
 		return (
-			cartItems.map(item => <CartItem dispatchSubtractFromCart={dispatchSubtractFromCart} dispatchAddToCart={dispatchAddToCart} cartItem={item} />)
+			cartItems.map(item => <CartItem dispatchDeleteCartItem={dispatchDeleteCartItem} dispatchAddToCart={dispatchAddToCart} cartItem={item} />)
 		)
 	}
 
 	render() {
-		console.log('cart items props, want push', this.props)
 		const {
 			cart, visibleModal, closeModal, isOpen
 		} = this.props
@@ -100,19 +105,23 @@ CartItems.propTypes = {
 	cart: PropTypes.object.isRequired,
 	visibleModal: PropTypes.string.isRequired,
 	isOpen: PropTypes.bool.isRequired,
-	closeModal: PropTypes.bool.isRequired,
+	closeModal: PropTypes.func.isRequired,
+	dispatchGenerateUniqueCartId: PropTypes.func.isRequired,
+	push: PropTypes.func.isRequired,
 }
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
 	return {
 		currentUser: getCurrentUser(state),
 		cart: state.cart,
-		products: state.products.allProducts
+		products: state.products.allProducts,
 	}
 }
 const mapDispatchToProps = dispatch => ({
 	dispatchFetchProducts: bindActionCreators(fetchProducts, dispatch),
 	dispatchSubtractFromCart: bindActionCreators(subtractFromCart, dispatch),
-	dispatchAddToCart: bindActionCreators(addToCart, dispatch)
+	dispatchAddToCart: bindActionCreators(addToCart, dispatch),
+	dispatchDeleteCartItem: bindActionCreators(deleteCartItem, dispatch),
+	dispatchGenerateUniqueCartId: bindActionCreators(generateUniqueCartId, dispatch)
 
 })
 
