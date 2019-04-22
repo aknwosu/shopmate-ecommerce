@@ -8,6 +8,7 @@ import GlobalStyle from './theme/globalStyle'
 import App from './components/App';
 import Products from './components/Products'
 import ProductDetail from './components/Products/ProductDetail'
+import Checkout from './components/Checkout'
 
 ReactDOM.render(
 	<Provider store={store}>
@@ -17,6 +18,7 @@ ReactDOM.render(
 				<Route path="/products" exact component={Products} />
 				<Route path="/products/:product_id" exact component={ProductDetail} />
 				<Route path="/products/department/:department_name/:department_id" component={Products} />
+				<Route path="/checkout" exact component={Checkout} />
 			</App>
 		</BrowserRouter>
 	</Provider>, document.getElementById('root')

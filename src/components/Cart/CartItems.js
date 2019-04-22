@@ -27,11 +27,11 @@ class CartItems extends Component {
 	}
 
 	proceedToCheckout = () => {
-		const { currentUser } = this.props
+		const { currentUser, push } = this.props
 		if (!currentUser.customer_id) {
 			return this.renderProfile('signIn')
 		}
-		return this.renderProfile('profile')
+		return push('/checkout')
 	}
 
 	closeModal = () => {
@@ -55,6 +55,7 @@ class CartItems extends Component {
 	}
 
 	render() {
+		console.log('cart items props, want push', this.props)
 		const {
 			cart, visibleModal, closeModal, isOpen
 		} = this.props

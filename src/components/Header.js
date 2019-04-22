@@ -10,7 +10,6 @@ import { fetchProducts, searchProducts, fetchProductsInDepartment } from '../act
 import { getCurrentUser } from '../selectors'
 import Logo from '../assets/logo.svg'
 import SearchIcon from '../assets/search_icon_white.svg'
-import Cta from '../ui/CTABtn'
 import ModalManager from './ModalManager'
 import CartUI from '../ui/cartUI'
 
@@ -26,7 +25,6 @@ class Header extends Component {
 
 	// eslint-disable-next-line consistent-return
 	componentDidMount() {
-		console.log('header props=======>>>', this.props)
 		const {
 			dispatchFetchDepartments, dispatchFetchProductsInDepartment, dispatchFetchProducts, match: { params }
 		} = this.props
@@ -38,10 +36,10 @@ class Header extends Component {
 	}
 
 	getDepartmentData = (dept) => {
-		const { dispatchFetchProductsInDepartment } = this.props
+		const { dispatchFetchProductsInDepartment, push } = this.props
 		const { name, department_id } = dept
 		dispatchFetchProductsInDepartment(department_id)
-		this.props.history.push(`/products/department/${name}/${department_id}`)
+		push(`/products/department/${name}/${department_id}`)
 	}
 
 	renderDepartments = () => {
@@ -86,14 +84,14 @@ class Header extends Component {
 	}
 
 	render() {
-		const { cart: { cartItems } } = this.props
+		const { push, cart: { cartItems } } = this.props
 		const { searchText, visibleModal } = this.state
 		return (
 			<Header.Container>
 				<Header.Logo
 					src={Logo}
 					alt="shopmate"
-					onClick={() =>	this.props.history.push('/products')
+					onClick={() =>	push('/products')
 					}
 				/>
 				<Header.Departments>
@@ -111,13 +109,16 @@ class Header extends Component {
 					/>
 					<span onClick={this.clearSearchText}>x</span>
 				</Header.Search>
-				<Cta onClick={() => this.setState({ visibleModal: 'checkout' })}>Checkout</Cta>
-				<CartUI count={cartItems.length} />
+				<CartUI
+					onClick={() => this.setState({ visibleModal: 'checkout' })}
+					count={cartItems.length}
+				/>
 				{visibleModal !== null && (
 					<ModalManager
 						visibleModal={visibleModal}
 						isOpen={!!visibleModal}
 						closeModal={() => this.setState({ visibleModal: null })}
+						push={push}
 					/>
 				)}
 			</Header.Container>
@@ -130,14 +131,18 @@ Header.propTypes = {
 	dispatchFetchDepartments: PropTypes.func.isRequired,
 	dispatchFetchProducts: PropTypes.func.isRequired,
 	departments: PropTypes.array.isRequired,
-
+	push: PropTypes.func.isRequired,
+	dispatchFetchProductsInDepartment: PropTypes.func.isRequired,
+	match: PropTypes.func.isRequired,
 }
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
 	return {
 		cart: state.cart,
 		currentUser: getCurrentUser(state),
 		departments: state.departments.allDepartments,
-		products: state.products.allProducts
+		products: state.products.allProducts,
+		push: ownProps.history.push,
+
 	}
 }
 const mapDispatchToProps = dispatch => ({

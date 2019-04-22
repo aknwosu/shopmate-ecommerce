@@ -29,7 +29,6 @@ render() {
 	const {
 		allAttributes, attributeValues, allDepartments, categories
 	} = this.props
-	// console.log('all departments==========', allDepartments)
 	return (
 		<Sidebar.Container>
 			<div>
