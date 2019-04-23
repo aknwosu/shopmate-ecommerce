@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'
 import styled from 'styled-components'
-import { fetchProducts } from '../../actionCreators/products'
+import { fetchProducts, fetchProductsInCategory } from '../../actionCreators/products'
+import { fetchCategory } from '../../actionCreators/categories'
 import { selectDepartmentCategories } from '../../selectors'
 import ColorPicker from '../../ui/colorPicker'
 import SizePicker from '../../ui/sizePicker'
@@ -19,13 +20,27 @@ class Sidebar extends Component {
 		console.log(this.props)
 	}
 
-renderCategories = categories => (
-	categories.length && categories.map(category => (
-		<div key={category.name}>
-			{category.name}
-		</div>
-	))
-)
+	onCategorySelect = (categoryId) => {
+		const { dispatchFetchCategory, dispatchFetchProductsInCategory } = this.props
+		dispatchFetchProductsInCategory(categoryId)
+		dispatchFetchCategory(categoryId)
+	}
+
+renderCategories = (categories) => {
+	const { selectedCategory } = this.props
+	console.log('selectedCategory==========>>>', selectedCategory)
+	return (
+		categories.length && categories.map(category => (
+			<Category
+				key={category.name}
+				isActive={category.category_id === selectedCategory.category_id}
+				onClick={() => this.onCategorySelect(category.category_id)}
+			>
+				{category.name}
+			</Category>
+		))
+	)
+}
 
 render() {
 	const {
@@ -55,6 +70,7 @@ render() {
 					))}
 				</Sidebar.ColorAttr>
 			</div>
+			<div>Categories</div>
 			{routeParams.department_id
 				? this.renderCategories(departmentCategories)
 				: this.renderCategories(allCategories)
@@ -65,11 +81,11 @@ render() {
 }
 
 function mapStateToProps(state, ownProps) {
-	console.log('sidebar own props====', ownProps)
 	let departmentCategories = []
+	let departmentName = ''
 	if (ownProps.routeParams.department_id) {
 		departmentCategories = selectDepartmentCategories(state, ownProps.routeParams.department_id)
-		// state.categories.departmentCategories[ownProps.routeParams.department_id]
+		departmentName = ownProps.routeParams.department_name
 	}
 	return {
 		products: state.products.allProducts,
@@ -77,11 +93,15 @@ function mapStateToProps(state, ownProps) {
 		attributeValues: state.attributes.attributeValues,
 		departments: state.departments.allDepartments,
 		allCategories: state.categories.allCategories,
-		departmentCategories: departmentCategories || []
+		departmentCategories: departmentCategories || [],
+		departmentName,
+		selectedCategory: state.categories.selectedCategory
 	}
 }
 const mapDispatchToProps = dispatch => ({
-	dispatchFetchProducts: bindActionCreators(fetchProducts, dispatch)
+	dispatchFetchProducts: bindActionCreators(fetchProducts, dispatch),
+	dispatchFetchProductsInCategory: bindActionCreators(fetchProductsInCategory, dispatch),
+	dispatchFetchCategory: bindActionCreators(fetchCategory, dispatch)
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sidebar)
@@ -102,4 +122,13 @@ Sidebar.ColorAttr = styled.ul`
 `
 Sidebar.Attr = styled.div`
 	font-weight: bold;
+`
+const Category = styled.div`
+  margin: 10px;
+	background-color: ${({ isActive }) => isActive && '#F62F5E'};
+  padding: 10px 0;
+  text-align: center;
+	font-weight: bold;
+	color: ${({ isActive }) => isActive && '#FFF'};
+
 `

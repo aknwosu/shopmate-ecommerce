@@ -5,7 +5,9 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router'
 import Header from '../Header'
-import { fetchProducts, fetchProductDetail, fetchProductsInDepartment } from '../../actionCreators/products'
+import {
+	fetchProducts, fetchProductDetail, fetchProductsInDepartment, fetchProductsInCategory
+} from '../../actionCreators/products'
 import { addToCart } from '../../actionCreators/cart'
 import { fetchDepartmentCategories } from '../../actionCreators/categories'
 import { fetchProductAttributes } from '../../actionCreators/attributes'
@@ -80,7 +82,8 @@ const mapDispatchToProps = dispatch => ({
 	dispatchFetchProductDetail: bindActionCreators(fetchProductDetail, dispatch),
 	dispatchFetchProductAttributes: bindActionCreators(fetchProductAttributes, dispatch),
 	dispatchFetchProductsInDepartment: bindActionCreators(fetchProductsInDepartment, dispatch),
-	dispatchFetchDepartmentCategories: bindActionCreators(fetchDepartmentCategories, dispatch)
+	dispatchFetchDepartmentCategories: bindActionCreators(fetchDepartmentCategories, dispatch),
+	dispatchFetchProductsInCategory: bindActionCreators(fetchProductsInCategory, dispatch)
 })
 
 Products.propTypes = {

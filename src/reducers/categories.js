@@ -13,7 +13,7 @@ export default function categoriesReducer(state = initialState, action) {
 	}
 	case 'FETCH_CATEGORY_SUCCESS': {
 		return Object.assign({}, state, {
-			selectedCategory: action.payload.category
+			selectedCategory: action.payload
 		});
 	}
 	case 'FETCH_PRODUCT_CATEGORIES_SUCCESS': {
