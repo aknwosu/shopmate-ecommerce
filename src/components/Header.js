@@ -88,31 +88,33 @@ class Header extends Component {
 		const { searchText, visibleModal } = this.state
 		return (
 			<Header.Container>
-				<Header.Logo
-					src={Logo}
-					alt="shopmate"
-					onClick={() =>	push('/products')
-					}
-				/>
-				<Header.Departments>
-					{this.renderDepartments()}
-				</Header.Departments>
-				<Header.Search>
-					<Header.CTASearch onClick={this.search} />
-					<Header.SearchInput
-						autoFocus
-						placeholder="search anything"
-						onChange={e => this.onSearchTextChange(e)}
-						value={searchText}
-						onSubmit={this.search}
-						onKeyPress={this.onKeyPress}
+				<Header.Links>
+					<Header.Logo
+						src={Logo}
+						alt="shopmate"
+						onClick={() =>	push('/products')
+						}
 					/>
-					<span onClick={this.clearSearchText}>x</span>
-				</Header.Search>
-				<CartUI
-					onClick={() => this.setState({ visibleModal: 'checkout' })}
-					count={cartItems.length}
-				/>
+					<Header.Departments>
+						{this.renderDepartments()}
+					</Header.Departments>
+					<Header.Search>
+						<Header.CTASearch onClick={this.search} />
+						<Header.SearchInput
+							autoFocus
+							placeholder="search anything"
+							onChange={e => this.onSearchTextChange(e)}
+							value={searchText}
+							onSubmit={this.search}
+							onKeyPress={this.onKeyPress}
+						/>
+						<span onClick={this.clearSearchText}>x</span>
+					</Header.Search>
+					<CartUI
+						onClick={() => this.setState({ visibleModal: 'checkout' })}
+						count={cartItems.length}
+					/>
+				</Header.Links>
 				{visibleModal !== null && (
 					<ModalManager
 						visibleModal={visibleModal}
@@ -159,8 +161,14 @@ export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header))
 Header.Logo = styled.img`
 	
 `
+
 Header.Container = styled.div`
 	background-color: #2E2E2E;
+	
+`
+Header.Links = styled.div`
+	width: 960px;
+	margin: auto;
 	height: 72px;
 	display: flex;
 	padding: 0 30px;
@@ -226,4 +234,9 @@ Header.Dept = styled.div`
 	color:  ${({ isActive }) => (isActive ? '#F62F5E' : 'white')};
 	font-weight: ${({ isActive }) => isActive && 'bold'};
 	cursor: pointer;
+	margin: auto 20px;
+	:hover{
+		text-decoration: underline;
+		
+	}
 `
