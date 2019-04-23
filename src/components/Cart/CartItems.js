@@ -34,7 +34,7 @@ class CartItems extends Component {
 			return this.renderProfile('signIn')
 		}
 
-		this.dispatchGenerateUniqueCartId()
+		dispatchGenerateUniqueCartId()
 		return push('/checkout')
 	}
 

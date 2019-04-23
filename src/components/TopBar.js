@@ -48,34 +48,36 @@ class TopBar extends Component {
 		const { currentUser, cart: { totalPrice, cartItems } } = this.props
 		return (
 			<TopBar.Container>
-				{currentUser && currentUser.name ? (
-					<div>Hello {currentUser.name}</div>
-				)
-					: (
-						<TopBar.SignIn>HI! &nbsp;
-							<CTAText onClick={() => this.openModal('signIn')}>Sign in &nbsp;</CTAText> or <CTAText onClick={() => this.openModal('register')}>&nbsp; Register</CTAText>
-						</TopBar.SignIn>
+				<TopBar.Links>
+					{currentUser && currentUser.name ? (
+						<div>Hello {currentUser.name}</div>
 					)
-				}
-				<TopBar.Nav>
-					<div href="#">Daily Deals</div>
-					<div href="#">Sell</div>
-					<div href="#">Help & Contact</div>
-				</TopBar.Nav>
-				<TopBar.Nav>
-					<Currency>$ USD</Currency>
-				</TopBar.Nav>
-				<TopBar.Nav>
-					<CartUI count={cartItems.length} secondary />
-					<div>Your bag: ${totalPrice}</div>
-				</TopBar.Nav>
-				{visibleModal && (
-					<ModalManager
-						visibleModal={visibleModal}
-						closeModal={this.closeModal}
-						isOpen={!!visibleModal}
-					/>
-				)}
+						: (
+							<TopBar.SignIn>HI! &nbsp;
+								<CTAText onClick={() => this.openModal('signIn')}>Sign in &nbsp;</CTAText> or <CTAText onClick={() => this.openModal('register')}>&nbsp; Register</CTAText>
+							</TopBar.SignIn>
+						)
+					}
+					<TopBar.Nav>
+						<div href="#">Daily Deals</div>
+						<div href="#">Sell</div>
+						<div href="#">Help & Contact</div>
+					</TopBar.Nav>
+					<TopBar.Nav>
+						<Currency>$ USD</Currency>
+					</TopBar.Nav>
+					<TopBar.Nav>
+						<CartUI count={cartItems.length} secondary />
+						<div>Your bag: ${totalPrice}</div>
+					</TopBar.Nav>
+					{visibleModal && (
+						<ModalManager
+							visibleModal={visibleModal}
+							closeModal={this.closeModal}
+							isOpen={!!visibleModal}
+						/>
+					)}
+				</TopBar.Links>
 			</TopBar.Container>
 		)
 	}
@@ -103,17 +105,21 @@ const mapDispatchToProps = dispatch => ({
 export default connect(mapStateToProps, mapDispatchToProps)(TopBar)
 
 const CTAText = styled.span`
-	color: #F62F5E
+	color: #F62F5E;
 `
 TopBar.Container = styled.div`
-	/* width: 100%; */
+	width: 100%;
+	background-color: #FFF;
+`
+TopBar.Links = styled.div`
+	width: 960px;
+	margin: auto;
 	font-size: 15px;
 	font-weight: bold;
 	color: #2E2E2E;
 	padding: 15px 30px;
 	display: flex;
   justify-content: space-between;
-	background-color: white;
 `
 TopBar.Nav = styled.div`
 	display: flex;

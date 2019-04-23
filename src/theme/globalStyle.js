@@ -14,4 +14,8 @@ export default createGlobalStyle`
     text-decoration: none;
     color: inherit;
   }
+  
+  p { 
+    line-height: 24px;
+  }
 `

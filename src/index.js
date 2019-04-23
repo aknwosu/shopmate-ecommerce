@@ -6,6 +6,7 @@ import store from './store'
 import * as serviceWorker from './serviceWorker';
 import GlobalStyle from './theme/globalStyle'
 import App from './components/App';
+import Home from './components/Home'
 import Products from './components/Products'
 import ProductDetail from './components/Products/ProductDetail'
 import Checkout from './components/Checkout'
@@ -15,6 +16,7 @@ ReactDOM.render(
 		<BrowserRouter>
 			<GlobalStyle />
 			<App>
+				<Route path="/" exact component={Home} />
 				<Route path="/products" exact component={Products} />
 				<Route path="/products/:product_id" exact component={ProductDetail} />
 				<Route path="/products/department/:department_name/:department_id" component={Products} />
