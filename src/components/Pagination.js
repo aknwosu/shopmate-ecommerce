@@ -36,13 +36,13 @@ export default Pagination;
 
 
 Pagination.Container = styled.div`
-width: 100%;
-`
+width: 100%;`
 Pagination.Wrapper = styled.ul`
 	display: flex;
   list-style: none;
 `
 Pagination.Number = styled.li`
+	cursor: pointer;
 	margin-right: 10px;
 	display: inline;
 	margin: 0 5px 0 0;
@@ -57,5 +57,4 @@ Pagination.Number = styled.li`
 	background: -ms-linear-gradient(#FFF,#F6F6F6);
 	background: linear-gradient(#FFF,#F6F6F6);
 	border: ${({ isActive }) => (isActive ? 'none' : '1px solid #d3d3d4')};
-	cursor: pointer;
 `

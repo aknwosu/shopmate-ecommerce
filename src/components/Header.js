@@ -164,7 +164,7 @@ Header.Logo = styled.img`
 
 Header.Container = styled.div`
 	background-color: #2E2E2E;
-	
+	min-width: 960px;
 `
 Header.Links = styled.div`
 	width: 960px;

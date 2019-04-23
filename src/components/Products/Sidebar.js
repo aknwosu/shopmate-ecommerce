@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'
 import styled from 'styled-components'
 import { fetchProducts } from '../../actionCreators/products'
+import { selectDepartmentCategories } from '../../selectors'
 import ColorPicker from '../../ui/colorPicker'
 import SizePicker from '../../ui/sizePicker'
 
@@ -14,20 +15,21 @@ class Sidebar extends Component {
 		}
 	}
 
-renderCategories = () => {
-	const { categories } = this.props
-	return (
-		categories.map(category => (
-			<div key={category.name}>
-				{category.name}
-			</div>
-		))
-	)
-}
+	componentDidMount() {
+		console.log(this.props)
+	}
+
+renderCategories = categories => (
+	categories.length && categories.map(category => (
+		<div key={category.name}>
+			{category.name}
+		</div>
+	))
+)
 
 render() {
 	const {
-		allAttributes, attributeValues, allDepartments, categories
+		allAttributes, attributeValues, allDepartments, allCategories, routeParams, departmentCategories
 	} = this.props
 	return (
 		<Sidebar.Container>
@@ -46,24 +48,36 @@ render() {
 				<Sidebar.Attr>Size</Sidebar.Attr>
 				<Sidebar.ColorAttr>
 					{attributeValues.Size && attributeValues.Size.values.map(values => (
-						<SizePicker size={values.value} />
+						<SizePicker
+							key={values.attribute_value_id}
+							size={values.value}
+						/>
 					))}
 				</Sidebar.ColorAttr>
 			</div>
-			{categories && this.renderCategories()}
+			{routeParams.department_id
+				? this.renderCategories(departmentCategories)
+				: this.renderCategories(allCategories)
+			}
 		</Sidebar.Container>
 	)
 }
 }
 
-function mapStateToProps(state) {
-	console.log('mapStateToPropsmapStateToPropsmapStateToProps', state)
+function mapStateToProps(state, ownProps) {
+	console.log('sidebar own props====', ownProps)
+	let departmentCategories = []
+	if (ownProps.routeParams.department_id) {
+		departmentCategories = selectDepartmentCategories(state, ownProps.routeParams.department_id)
+		// state.categories.departmentCategories[ownProps.routeParams.department_id]
+	}
 	return {
 		products: state.products.allProducts,
 		allAttributes: state.attributes.allAttributes,
 		attributeValues: state.attributes.attributeValues,
 		departments: state.departments.allDepartments,
-		categories: state.categories.allCategories
+		allCategories: state.categories.allCategories,
+		departmentCategories: departmentCategories || []
 	}
 }
 const mapDispatchToProps = dispatch => ({

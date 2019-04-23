@@ -7,6 +7,7 @@ import { withRouter } from 'react-router'
 import Header from '../Header'
 import { fetchProducts, fetchProductDetail, fetchProductsInDepartment } from '../../actionCreators/products'
 import { addToCart } from '../../actionCreators/cart'
+import { fetchDepartmentCategories } from '../../actionCreators/categories'
 import { fetchProductAttributes } from '../../actionCreators/attributes'
 import Sidebar from './Sidebar';
 import Product from './Product'
@@ -14,6 +15,13 @@ import Pagination from '../Pagination';
 
 
 class Products extends Component {
+	componentDidMount() {
+		const { match: { params }, dispatchFetchDepartmentCategories } = this.props
+		if (params.department_id) {
+			dispatchFetchDepartmentCategories(params.department_id)
+		}
+	}
+
 	renderProductDetails = (id) => {
 		this.props.dispatchFetchProductDetail(id)
 		this.props.dispatchFetchProductAttributes(id)
@@ -30,7 +38,7 @@ class Products extends Component {
 
 	render() {
 		const {
-			products, dispatchAddToCart, productDetail, productsCount
+			products, dispatchAddToCart, productDetail, productsCount, match: { params }
 		} = this.props
 		console.log('product props', this.props)
 		return (
@@ -38,12 +46,12 @@ class Products extends Component {
 				<Header />
 				<Products.Container>
 					<Products.Wrapper>
-						<Sidebar />
+						<Sidebar routeParams={params} />
 						<Products.List>
 							<Pagination totalCount={productsCount} onPageChanged={this.onPageChanged} />
 							{products && Object.keys(products).map(product => (
 								<Product
-									key={products[product].id}
+									key={product}
 									product={products[product]}
 									onAddToCart={dispatchAddToCart}
 									renderProductDetails={this.renderProductDetails}
@@ -63,7 +71,7 @@ function mapStateToProps(state) {
 		cartItems: state.cart.cartItems,
 		products: state.products.allProducts,
 		productsCount: state.products.count,
-		productDetail: state.products.productDetail
+		productDetail: state.products.productDetail,
 	}
 }
 const mapDispatchToProps = dispatch => ({
@@ -72,10 +80,14 @@ const mapDispatchToProps = dispatch => ({
 	dispatchFetchProductDetail: bindActionCreators(fetchProductDetail, dispatch),
 	dispatchFetchProductAttributes: bindActionCreators(fetchProductAttributes, dispatch),
 	dispatchFetchProductsInDepartment: bindActionCreators(fetchProductsInDepartment, dispatch),
+	dispatchFetchDepartmentCategories: bindActionCreators(fetchDepartmentCategories, dispatch)
 })
 
 Products.propTypes = {
-	products: PropTypes.array.isRequired
+	products: PropTypes.array.isRequired,
+	dispatchAddToCart: PropTypes.func.isRequired,
+	productDetail: PropTypes.object,
+	productsCount: PropTypes.number.isRequired,
 }
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Products))
 

@@ -11,8 +11,6 @@ import { getCurrentUser } from '../../selectors'
 import Modal from '../../ui/ModalBase'
 import Cta from '../../ui/CTABtn'
 import ModalManager from '../ModalManager'
-import AddSubtractCta from '../../ui/number-input'
-import ColorPicker from '../../ui/colorPicker'
 import CartItem from './Item'
 
 class CartItems extends Component {
@@ -21,11 +19,6 @@ class CartItems extends Component {
 		this.state = {
 			renderedModal: null
 		}
-	}
-
-	onChangeQuantity = (value, item) => {
-		console.log('changed cart item quantity', value, item)
-		// this.props.dispatchSubtractFromCart()
 	}
 
 	proceedToCheckout = () => {
@@ -52,7 +45,7 @@ class CartItems extends Component {
 
 	renderCartItems = () => {
 		const {
-			dispatchSubtractFromCart, dispatchAddToCart, dispatchDeleteCartItem, cart: { cartItems }
+			dispatchAddToCart, dispatchDeleteCartItem, cart: { cartItems }
 		} = this.props
 
 		return (
@@ -108,6 +101,9 @@ CartItems.propTypes = {
 	closeModal: PropTypes.func.isRequired,
 	dispatchGenerateUniqueCartId: PropTypes.func.isRequired,
 	push: PropTypes.func.isRequired,
+	dispatchAddToCart: PropTypes.func.isRequired,
+	dispatchDeleteCartItem: PropTypes.func.isRequired,
+	currentUser: PropTypes.object,
 }
 function mapStateToProps(state, ownProps) {
 	return {

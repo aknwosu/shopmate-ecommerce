@@ -30,6 +30,7 @@ CartUI.Container = styled.div`
 	position: relative;
   bottom: 0;
 	width: 29px;
+	cursor: pointer;
 `
 CartUI.ItemsCount = styled.div`
 	text-align: center;
