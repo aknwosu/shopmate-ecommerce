@@ -11,7 +11,7 @@ import {
 import { addToCart } from '../../actionCreators/cart'
 import { fetchDepartmentCategories } from '../../actionCreators/categories'
 import { fetchProductAttributes } from '../../actionCreators/attributes'
-import Sidebar from './Sidebar';
+import Filter from './Filter';
 import Product from './Product'
 import Pagination from '../Pagination';
 
@@ -25,8 +25,9 @@ class Products extends Component {
 	}
 
 	renderProductDetails = (id) => {
-		this.props.dispatchFetchProductDetail(id)
-		this.props.dispatchFetchProductAttributes(id)
+		const { dispatchFetchProductDetail, dispatchFetchProductAttributes } = this.props
+		dispatchFetchProductDetail(id)
+		dispatchFetchProductAttributes(id)
 		this.props.history.push(`/products/${id}`)
 	}
 
@@ -48,7 +49,7 @@ class Products extends Component {
 				<Header />
 				<Products.Container>
 					<Products.Wrapper>
-						<Sidebar routeParams={params} />
+						<Filter routeParams={params} />
 						<Products.List>
 							<Pagination totalCount={productsCount} onPageChanged={this.onPageChanged} />
 							{products && Object.keys(products).map(product => (
@@ -89,7 +90,12 @@ const mapDispatchToProps = dispatch => ({
 Products.propTypes = {
 	products: PropTypes.array.isRequired,
 	dispatchAddToCart: PropTypes.func.isRequired,
+	dispatchFetchDepartmentCategories: PropTypes.func.isRequired,
+	dispatchFetchProductDetail: PropTypes.func.isRequired,
+	dispatchFetchProductAttributes: PropTypes.func.isRequired,
+	dispatchFetchProductsInDepartment: PropTypes.func.isRequired,
 	productDetail: PropTypes.object,
+	match: PropTypes.object,
 	productsCount: PropTypes.number.isRequired,
 }
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Products))
