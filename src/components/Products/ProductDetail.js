@@ -54,10 +54,8 @@ class ProductDetail extends Component {
 			selectedColor, selectedSize, quantity, errors
 		} = this.state
 		if (!selectedColor || !selectedSize || quantity < 1) {
-			// if (!selectedColor) {
 			this.setState({ errors: 'Please select attributes for your selected' })
 			return
-			// }
 		}
 		const {
 			dispatchAddToCart, productDetail: {
@@ -175,7 +173,12 @@ const mapDispatchToProps = dispatch => ({
 })
 
 ProductDetail.propTypes = {
-	productDetail: PropTypes.object.isRequired
+	productDetail: PropTypes.object.isRequired,
+	dispatchAddToCart: PropTypes.func.isRequired,
+	dispatchFetchProductDetail: PropTypes.func.isRequired,
+	dispatchFetchProductAttributes: PropTypes.func.isRequired,
+	dispatchFetchProductReviews: PropTypes.func.isRequired,
+	attributesInProduct: PropTypes.array.isRequired
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ProductDetail)
 

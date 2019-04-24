@@ -10,6 +10,7 @@ import Home from './components/Home'
 import Products from './components/Products'
 import ProductDetail from './components/Products/ProductDetail'
 import Checkout from './components/Checkout'
+import UpdateProfile from './components/UpdateAddress'
 
 ReactDOM.render(
 	<Provider store={store}>
@@ -21,6 +22,7 @@ ReactDOM.render(
 				<Route path="/products/:product_id" exact component={ProductDetail} />
 				<Route path="/products/department/:department_name/:department_id" component={Products} />
 				<Route path="/checkout" exact component={Checkout} />
+				<Route path="/updateAddress" exact component={UpdateProfile} />
 			</App>
 		</BrowserRouter>
 	</Provider>, document.getElementById('root')

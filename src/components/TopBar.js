@@ -67,7 +67,11 @@ class TopBar extends Component {
 						<Currency>$ USD</Currency>
 					</TopBar.Nav>
 					<TopBar.Nav>
-						<CartUI count={cartItems.length} secondary />
+						<CartUI
+							count={cartItems.length}
+							onClick={() => this.setState({ visibleModal: 'checkout' })}
+							secondary
+						/>
 						<div>Your bag: ${totalPrice}</div>
 					</TopBar.Nav>
 					{visibleModal && (
@@ -87,7 +91,9 @@ TopBar.propTypes = {
 	dispatchFetchCustomer: PropTypes.func.isRequired,
 	currentUser: PropTypes.object.isRequired,
 	dispatchSetCart: PropTypes.func.isRequired,
-	dispatchFetchAttributes: PropTypes.func.isRequired
+	dispatchFetchAttributes: PropTypes.func.isRequired,
+	dispatchFetchDepartments: PropTypes.func.isRequired,
+	dispatchFetchCategories: PropTypes.func.isRequired
 }
 const mapStateToProps = state => ({
 	currentUser: getCurrentUser(state),
@@ -110,6 +116,7 @@ const CTAText = styled.span`
 TopBar.Container = styled.div`
 	width: 100%;
 	background-color: #FFF;
+	min-width: 960px;
 `
 TopBar.Links = styled.div`
 	width: 960px;

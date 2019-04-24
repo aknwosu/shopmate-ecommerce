@@ -28,6 +28,7 @@ export default function productsReducer(state = initialState, action) {
 
 	case 'FETCH_PRODUCT_REVIEWS_SUCCESS': {
 		let totalReviews = 0
+		// eslint-disable-next-line no-return-assign
 		action.payload.map(review => totalReviews += review.rating)
 		totalReviews /= (action.payload.length)
 		return {
@@ -49,7 +50,7 @@ export default function productsReducer(state = initialState, action) {
 		return {
 			...state,
 			allProducts: action.payload.rows,
-			count: action.payload.count
+			count: action.payload.count,
 		}
 	}
 	default: return state;

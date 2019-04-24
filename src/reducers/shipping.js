@@ -1,6 +1,8 @@
 const initialState = {
 	shippingRegions: [],
-	shippingForRegion: []
+	shippingForRegion: [],
+	shippingType: {},
+	tax: []
 }
 
 export default function shippingReducer(state = initialState, action) {
@@ -16,6 +18,18 @@ export default function shippingReducer(state = initialState, action) {
 		return {
 			...state,
 			shippingForRegion: action.payload
+		}
+	}
+	case 'UPDATE_SHIPPING_TYPE': {
+		return {
+			...state,
+			shippingType: action.payload
+		}
+	}
+	case 'GET_TAX_SUCCESS': {
+		return {
+			...state,
+			tax: action.payload
 		}
 	}
 	default: return state;

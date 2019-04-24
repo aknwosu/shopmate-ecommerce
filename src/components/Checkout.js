@@ -4,12 +4,27 @@ import { bindActionCreators } from 'redux'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { getCurrentUser } from '../selectors'
+import { createOrder } from '../actionCreators/cart'
 
+import ModalManager from './ModalManager'
 
 class Checkout extends Component {
+	constructor(props) {
+		super(props)
+		this.state = {
+			visibleModal: null
+		}
+	}
+
+	componentDidUpdate() {
+		const { shippingType, push } = this.props
+		if (!shippingType.shipping_id) {
+			push('/updateAddress')
+		}
+	}
+
 	renderCartSummary = () => {
 		const { cartItems } = this.props
-		console.log('cart============>>>>>', cartItems)
 		return (
 			<div>
 				<div>Checkout</div>
@@ -21,18 +36,26 @@ class Checkout extends Component {
 							<Checkout.Th>Quantity</Checkout.Th>
 							<Checkout.Th>Price</Checkout.Th>
 						</Checkout.Tr>
-						{cartItems.map(item => (
-							<Checkout.Tr>
-								<Checkout.Td>{item.name}</Checkout.Td>
-								<Checkout.Td>{item.quantity}</Checkout.Td>
-								<Checkout.Td>{item.price}</Checkout.Td>
-							</Checkout.Tr>
-						))}
+						<tbody>
+							{cartItems.map(item => (
+								<Checkout.Tr>
+									<Checkout.Td>{item.name}</Checkout.Td>
+									<Checkout.Td>{item.quantity}</Checkout.Td>
+									<Checkout.Td>{item.price}</Checkout.Td>
+								</Checkout.Tr>
+							))}
+						</tbody>
 					</Checkout.Table>
 				</div>
 
 			</div>
 		)
+	}
+
+	completePayment = () => {
+		const { dispatchCreateOrder } = this.props
+		dispatchCreateOrder()
+		this.setState({ visibleModal: 'paymentSummary' })
 	}
 
 	renderAddress = () => {
@@ -45,6 +68,14 @@ class Checkout extends Component {
 	}
 
 	render() {
+		const { visibleModal } = this.state
+		const { totalPrice, shippingType, tax } = this.props
+		const salesTax = tax.find(taxType => taxType.tax_id === 1)
+		let paymentTotal = Number(totalPrice) + Number(shippingType.shipping_cost)
+		if (salesTax) {
+			const taxPercentage = (Number(salesTax.tax_percentage) / 100) + 1
+			paymentTotal *= taxPercentage
+		}
 		return (
 			<Checkout.Container>
 				<Checkout.Details>
@@ -54,18 +85,44 @@ class Checkout extends Component {
 				<Checkout.Hr />
 				<div> Checkout page</div>
 				<div>Summary</div>
+				<div>Product total: {`$ ${totalPrice}`}</div>
+				<div>{`Shipping: $ ${shippingType.shipping_cost}`}</div>
+				{salesTax && <div>Sales Tax: {salesTax.tax_type}</div>}
+				<div>{`Total Payment: $ ${paymentTotal}`}</div>
 				<div>stuff</div>
+				<div onClick={this.completePayment}>Complete Payment</div>
+				{visibleModal !== null && (
+					<ModalManager
+						visibleModal={visibleModal}
+						isOpen={!!visibleModal}
+						closeModal={() => this.setState({ visibleModal: null })}
+					/>
+				)}
 			</Checkout.Container>
 		)
 	}
 }
-function mapStateToProps(state) {
+Checkout.propTypes = {
+	cartItems: PropTypes.array.isRequired,
+	totalPrice: PropTypes.number.isRequired,
+	push: PropTypes.func.isRequired,
+	shippingType: PropTypes.object.isRequired,
+	dispatchCreateOrder: PropTypes.func.isRequired,
+	tax: PropTypes.object.isRequired,
+}
+function mapStateToProps(state, ownProps) {
 	return {
-		currentUser: getCurrentUser(state),
-		cartItems: state.cart.cartItems
+		cartItems: state.cart.cartItems,
+		totalPrice: state.cart.totalPrice,
+		shippingType: state.shipping.shippingType,
+		push: ownProps.history.push,
+		tax: state.shipping.tax
 	}
 }
-export default connect(mapStateToProps)(Checkout)
+const mapDispatchToProps = (dispatch, ownProps) => ({
+	dispatchCreateOrder: bindActionCreators(createOrder, dispatch),
+})
+export default connect(mapStateToProps, mapDispatchToProps)(Checkout)
 
 Checkout.Table = styled.table`
   font-family: arial, sans-serif;
@@ -73,7 +130,7 @@ Checkout.Table = styled.table`
   width: 100%;
 `
 Checkout.Td = styled.td`
-	border: none
+	border: none;
   text-align: left;
   padding: 8px;
 `
@@ -85,6 +142,7 @@ Checkout.Th = styled.th`
 Checkout.Tr = styled.tr`
 	:nth-child(even) {
   	background-color: #EFEFEF;
+	}
 `
 Checkout.Container = styled.div`
 	margin: 50px;

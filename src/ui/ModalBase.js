@@ -45,7 +45,7 @@ Modal.Container = styled.div`
 	`
 
 Modal.Body = styled.div`
-	padding: 20px;
+	/* padding: 20px; */
 	background: #fff;
 	border-radius: 2px;
 	display: inline-block;

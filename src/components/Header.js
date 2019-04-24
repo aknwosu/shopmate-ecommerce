@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router'
 import { fetchCustomer, login } from '../actionCreators/customers'
+import { fetchDepartmentCategories } from '../actionCreators/categories'
 import { fetchDepartments } from '../actionCreators/departments'
 import { fetchProducts, searchProducts, fetchProductsInDepartment } from '../actionCreators/products'
 import { getCurrentUser } from '../selectors'
@@ -36,9 +37,10 @@ class Header extends Component {
 	}
 
 	getDepartmentData = (dept) => {
-		const { dispatchFetchProductsInDepartment, push } = this.props
+		const { dispatchFetchProductsInDepartment, dispatchFetchDepartmentCategories, push } = this.props
 		const { name, department_id } = dept
 		dispatchFetchProductsInDepartment(department_id)
+		dispatchFetchDepartmentCategories(department_id)
 		push(`/products/department/${name}/${department_id}`)
 	}
 
@@ -135,6 +137,7 @@ Header.propTypes = {
 	departments: PropTypes.array.isRequired,
 	push: PropTypes.func.isRequired,
 	dispatchFetchProductsInDepartment: PropTypes.func.isRequired,
+	dispatchFetchDepartmentCategories: PropTypes.func.isRequired,
 	match: PropTypes.object.isRequired,
 }
 function mapStateToProps(state, ownProps) {
@@ -154,6 +157,7 @@ const mapDispatchToProps = dispatch => ({
 	dispatchFetchProducts: bindActionCreators(fetchProducts, dispatch),
 	dispatchSearchProducts: bindActionCreators(searchProducts, dispatch),
 	dispatchFetchProductsInDepartment: bindActionCreators(fetchProductsInDepartment, dispatch),
+	dispatchFetchDepartmentCategories: bindActionCreators(fetchDepartmentCategories, dispatch)
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header))
@@ -164,7 +168,7 @@ Header.Logo = styled.img`
 
 Header.Container = styled.div`
 	background-color: #2E2E2E;
-	
+	min-width: 960px;
 `
 Header.Links = styled.div`
 	width: 960px;

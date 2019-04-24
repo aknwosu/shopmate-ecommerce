@@ -6,6 +6,7 @@ import cart from './cart'
 import attributes from './attributes'
 import categories from './categories'
 import shipping from './shipping'
+import order from './order'
 
 export default combineReducers({
 	customers,
@@ -14,5 +15,6 @@ export default combineReducers({
 	cart,
 	attributes,
 	categories,
-	shipping
+	shipping,
+	order
 })
