@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'
 import styled from 'styled-components'
+import { withRouter } from 'react-router'
 import PropTypes from 'prop-types'
 import { fetchProducts } from '../../actionCreators/products'
 import {
@@ -10,8 +11,10 @@ import {
 import { getCurrentUser } from '../../selectors'
 import Modal from '../../ui/ModalBase'
 import Cta from '../../ui/CTABtn'
+// eslint-disable-next-line import/no-cycle
 import ModalManager from '../ModalManager'
 import CartItem from './Item'
+import { PrimaryTitle } from '../../ui/Typography'
 
 class CartItems extends Component {
 	constructor(props) {
@@ -21,26 +24,24 @@ class CartItems extends Component {
 		}
 	}
 
+	backToProducts = () => {
+		const { push, closeModal } = this.props
+		closeModal();
+		push('/products')
+	}
+
 	proceedToCheckout = () => {
 		const { currentUser, push, dispatchGenerateUniqueCartId } = this.props
 		if (!currentUser.customer_id) {
 			return this.renderProfile('signIn')
 		}
-
-		dispatchGenerateUniqueCartId()
-		return push('/checkout')
-	}
-
-	closeModal = () => {
-		this.setState({ renderedModal: null })
+		return push('/updateAddress')
 	}
 
 	renderProfile = (modalName) => {
-		// this.props.closeModal()
 		this.setState(prevState => ({
 			renderedModal: modalName
 		}))
-		// this.setState({ renderedModal: null }).then
 	}
 
 	renderCartItems = () => {
@@ -55,7 +56,7 @@ class CartItems extends Component {
 
 	render() {
 		const {
-			cart, visibleModal, closeModal, isOpen
+			cart, cart: { totalPrice, cartItems }, visibleModal, closeModal, isOpen, push
 		} = this.props
 		const { renderedModal } = this.state
 		return (
@@ -66,21 +67,21 @@ class CartItems extends Component {
 					handleClose={closeModal}
 				>
 					<CartItems.Container>
-						<div>hello from checkout</div>
+						<CartItems.Title>
+							<div>{`${cartItems.length} Items in Your Cart`}</div>
+							<div>{`$ ${totalPrice}`}</div>
+						</CartItems.Title>
 						{this.renderCartItems()}
-						<div>{cart.totalPrice}</div>
-						<Cta
-							onClick={() => {}}
-						>Checkout Here!!!
-						</Cta>
-						{/* <Cta
-							onClick={() => this.setState({ renderedModal: 'paymentSummary' })}
-						>Checkout Here!!!
-						</Cta> */}
-						<Cta
-							onClick={this.proceedToCheckout}
-						>Proceed to Checkout
-						</Cta>
+						<CartItems.CtaGroup>
+							<Cta
+								onClick={this.backToProducts}
+							>Back to Shop
+							</Cta>
+							<Cta
+								onClick={this.proceedToCheckout}
+							>Proceed to Checkout
+							</Cta>
+						</CartItems.CtaGroup>
 					</CartItems.Container>
 				</Modal>
 				{renderedModal !== null && (
@@ -110,6 +111,7 @@ function mapStateToProps(state, ownProps) {
 		currentUser: getCurrentUser(state),
 		cart: state.cart,
 		products: state.products.allProducts,
+		push: ownProps.history.push,
 	}
 }
 const mapDispatchToProps = dispatch => ({
@@ -121,8 +123,23 @@ const mapDispatchToProps = dispatch => ({
 
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(CartItems)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CartItems))
 
 CartItems.Container = styled.div`
 	width: 940px;
+	`
+CartItems.Title = styled(PrimaryTitle)`
+	margin-bottom: 25px;
+	margin-top: 25px;
+	border-bottom: 2px solid;
+	padding: 20px;
+	font-size: 25px;
+	display: flex;
+  justify-content: space-between;
+`
+CartItems.CtaGroup = styled.div`
+	background-color: #EFEFEF;
+	padding: 20px;
+	justify-content: space-between;
+	display: flex;
 `

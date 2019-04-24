@@ -33,7 +33,7 @@ renderCategories = (categories) => {
 
 render() {
 	const {
-		allAttributes, attributeValues, allCategories, routeParams, departmentCategories
+		attributeValues, allCategories, routeParams, departmentCategories
 	} = this.props
 	return (
 		<Filter.Container>
@@ -74,6 +74,9 @@ Filter.propTypes = {
 	dispatchFetchProductsInCategory: PropTypes.func.isRequired,
 	departmentCategories: PropTypes.array.isRequired,
 	selectedCategory: PropTypes.string,
+	attributeValues: PropTypes.array.isRequired,
+	allCategories: PropTypes.array.isRequired,
+	routeParams: PropTypes.object.isRequired,
 }
 
 function mapStateToProps(state, ownProps) {

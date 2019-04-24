@@ -46,10 +46,15 @@ const CartItem = (props) => {
 		</CartItem.Detail>
 	)
 }
+CartItem.propTypes = {
+	dispatchAddToCart: PropTypes.func.isRequired,
+	dispatchDeleteCartItem: PropTypes.func.isRequired,
+	cartItem: PropTypes.object.isRequired,
+}
 export default CartItem
 CartItem.Image = styled.img`
-	height: 90px;
-	width: 90px;
+	height: 60px;
+	width: 65px;
 `
 CartItem.Detail = styled.div`
 	display: flex;

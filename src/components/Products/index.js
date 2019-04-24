@@ -12,6 +12,7 @@ import { addToCart } from '../../actionCreators/cart'
 import { fetchDepartmentCategories } from '../../actionCreators/categories'
 import { fetchProductAttributes } from '../../actionCreators/attributes'
 import Filter from './Filter';
+// eslint-disable-next-line import/no-named-as-default
 import Product from './Product'
 import Pagination from '../Pagination';
 
@@ -25,10 +26,10 @@ class Products extends Component {
 	}
 
 	renderProductDetails = (id) => {
-		const { dispatchFetchProductDetail, dispatchFetchProductAttributes } = this.props
+		const { dispatchFetchProductDetail, dispatchFetchProductAttributes, push } = this.props
 		dispatchFetchProductDetail(id)
 		dispatchFetchProductAttributes(id)
-		this.props.history.push(`/products/${id}`)
+		push(`/products/${id}`)
 	}
 
 	onPageChanged = (pageNumber) => {
@@ -68,13 +69,14 @@ class Products extends Component {
 		)
 	}
 }
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
 	return {
 		// currentUser: getCurrentUser(state),
 		cartItems: state.cart.cartItems,
 		products: state.products.allProducts,
 		productsCount: state.products.count,
 		productDetail: state.products.productDetail,
+		push: ownProps.history.push,
 	}
 }
 const mapDispatchToProps = dispatch => ({
@@ -97,6 +99,8 @@ Products.propTypes = {
 	productDetail: PropTypes.object,
 	match: PropTypes.object,
 	productsCount: PropTypes.number.isRequired,
+	dispatchFetchProducts: PropTypes.func.isRequired,
+	push: PropTypes.func.isRequired
 }
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Products))
 
