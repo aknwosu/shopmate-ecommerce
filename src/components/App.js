@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
-import Header from './Header'
-import TopBar from './TopBar'
 
-class App extends Component {
+export class App extends Component {
 	render() {
 		const { children } = this.props
 		return (
 			<div>
-				<TopBar />
 				{children}
 			</div>
 		);

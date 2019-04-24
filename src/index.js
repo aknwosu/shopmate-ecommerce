@@ -5,8 +5,13 @@ import { Provider } from 'react-redux'
 import store from './store'
 import * as serviceWorker from './serviceWorker';
 import GlobalStyle from './theme/globalStyle'
+// eslint-disable-next-line import/no-named-as-default
 import App from './components/App';
+import TopBar from './components/TopBar'
+import Header from './components/Header'
+
 import Home from './components/Home'
+
 import Products from './components/Products'
 import ProductDetail from './components/Products/ProductDetail'
 import Checkout from './components/Checkout'
@@ -16,6 +21,8 @@ ReactDOM.render(
 	<Provider store={store}>
 		<BrowserRouter>
 			<GlobalStyle />
+			<TopBar />
+			<Header />
 			<App>
 				<Route path="/" exact component={Home} />
 				<Route path="/products" exact component={Products} />

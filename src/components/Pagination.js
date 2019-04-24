@@ -36,7 +36,11 @@ export default Pagination;
 
 
 Pagination.Container = styled.div`
-width: 100%;`
+	width: 100%;
+	@media screen and (max-width: 425px) {
+		width: auto;
+	}
+`
 Pagination.Wrapper = styled.ul`
 	display: flex;
   list-style: none;

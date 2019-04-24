@@ -31,10 +31,13 @@ class CartItems extends Component {
 	}
 
 	proceedToCheckout = () => {
-		const { currentUser, push, dispatchGenerateUniqueCartId } = this.props
+		const {
+			currentUser, push, dispatchGenerateUniqueCartId, closeModal
+		} = this.props
 		if (!currentUser.customer_id) {
 			return this.renderProfile('signIn')
 		}
+		closeModal()
 		return push('/updateAddress')
 	}
 
@@ -108,7 +111,8 @@ CartItems.propTypes = {
 }
 function mapStateToProps(state, ownProps) {
 	return {
-		currentUser: getCurrentUser(state),
+		// currentUser: getCurrentUser(state),
+		currentUser: state.customers.user,
 		cart: state.cart,
 		products: state.products.allProducts,
 		push: ownProps.history.push,
@@ -127,6 +131,11 @@ export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CartItems
 
 CartItems.Container = styled.div`
 	width: 940px;
+	@media screen and (max-width: 425px) {
+		width: 100vw;
+    max-height: 630px;
+    overflow: scroll;
+	}
 	`
 CartItems.Title = styled(PrimaryTitle)`
 	margin-bottom: 25px;
@@ -136,6 +145,10 @@ CartItems.Title = styled(PrimaryTitle)`
 	font-size: 25px;
 	display: flex;
   justify-content: space-between;
+	@media screen and (max-width: 425px) {
+		width: 91%;
+		font-size: 16px;
+	}
 `
 CartItems.CtaGroup = styled.div`
 	background-color: #EFEFEF;

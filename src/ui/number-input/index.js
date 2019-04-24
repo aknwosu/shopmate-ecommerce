@@ -80,20 +80,26 @@ const CircleImg = styled.img`
 	height: 42px;
 	margin: 0 15px;
 	cursor: pointer;
+	@media screen and (max-width: 425px) {
+		width: 30px;
+		height: 30px;
+		margin: auto 10px;
+  }
 `
 const InputWrap = styled.div`
-	max-width: 150px;
 	margin: 20px 0;
 	display: flex;
 	flex-direction: row;
-	justify-content: center;
+	justify-content: inherit;
 	align-items: space-between;
 	align-self: center;
+	@media screen and (max-width: 425px) {
+		margin: auto 10px;
+  }
 `
 AddSubtractInput.Input = styled.input`
 	height: 20px;
 	width: 20px;
-	/* max-width: ${({ width = '100%' }) => width}; */
 	text-align: center;
 	border: 1px solid grey;
 	border-radius: 4px;
@@ -103,5 +109,7 @@ AddSubtractInput.Input = styled.input`
 	::placeholder {
 		color: grey;
 	}
-
+	@media screen and (max-width: 425px) {
+		padding: 5px 6px;
+  }
 `
