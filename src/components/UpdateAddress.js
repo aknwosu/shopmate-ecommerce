@@ -91,9 +91,10 @@ class UpdateAddress extends Component {
 		const {
 			address_1, address_2, city, region, postal_code, country, shipping_region_id, errors, shipping_id
 		} = this.state
+		const { shippingType } = this.props
 		const { dispatchUpdateAddress, 	dispatchGenerateUniqueCartId, push } = this.props
-		if (!address_1 || !city || !region || !postal_code || !country || !shipping_region_id || !shipping_id) {
-			this.setState({ errors: true })
+		if (!address_1 || !city || !region || !postal_code || !country || !shipping_region_id || !shipping_id || !shippingType) {
+			return this.setState({ errors: true })
 		}
 		dispatchUpdateAddress(this.state)
 		dispatchGenerateUniqueCartId()
@@ -164,9 +165,8 @@ class UpdateAddress extends Component {
 						autoFocus
 					/>
 				</UpdateAddress.InfoRow>
-				<div>Select Shipping *</div>
-				{errors && <div>The fields marked with * are required</div>}
-				<div>
+				<UpdateAddress.Ship>
+					<div>Select Shipping *</div>
 					{shippingForRegion.map(shipping => (
 						<div>
 							<input
@@ -179,8 +179,10 @@ class UpdateAddress extends Component {
 						</div>
 
 					))}
-				</div>
-				<Cta onClick={this.updateShipping}>Next step</Cta>
+					{errors && <div>The fields marked with * are required</div>}
+					<Cta onClick={this.updateShipping}>Next step</Cta>
+				</UpdateAddress.Ship>
+
 			</UpdateAddress.Container>
 		)
 	}
@@ -245,4 +247,14 @@ UpdateAddress.InfoRow = styled.div`
 `
 UpdateAddress.Title = styled(PrimaryTitle)`
 	text-align: center;
+`
+UpdateAddress.Ship = styled.div`
+	padding-left: 55px;
+	display: flex;
+	flex-direction: column;
+	> * {
+		margin-top: 30px;
+		margin-bottom: 30px;
+		
+	}
 `

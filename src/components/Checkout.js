@@ -73,7 +73,9 @@ class Checkout extends Component {
 
 	render() {
 		const { visibleModal } = this.state
-		const { totalPrice, shippingType, tax } = this.props
+		const {
+			totalPrice, shippingType, tax, push
+		} = this.props
 		const salesTax = tax.find(taxType => taxType.tax_id === 1)
 		let paymentTotal = Number(totalPrice) + Number(shippingType.shipping_cost)
 		if (salesTax) {
@@ -91,10 +93,11 @@ class Checkout extends Component {
 				<div>Product total: {`$ ${totalPrice}`}</div>
 				<div>{`Shipping: $ ${shippingType.shipping_cost}`}</div>
 				{salesTax && <div>Sales Tax: {salesTax.tax_type}</div>}
-				<div>{`Total Payment: $ ${paymentTotal}`}</div>
+				<div>{`Total Payment: $ ${paymentTotal.toFixed(0)}`}</div>
 				<Cta onClick={this.completePayment}>Complete Payment</Cta>
 				{visibleModal !== null && (
 					<ModalManager
+						push={push}
 						visibleModal={visibleModal}
 						isOpen={!!visibleModal}
 						closeModal={() => this.setState({ visibleModal: null })}
