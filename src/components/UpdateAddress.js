@@ -126,7 +126,7 @@ class UpdateAddress extends Component {
 						label="Full Name *"
 						type="text"
 						onChange={this.onChange('name')}
-						value={email}
+						value={name}
 						autoFocus
 					/>
 					<Input
