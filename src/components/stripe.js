@@ -8,7 +8,6 @@ import { bindActionCreators } from 'redux'
 import Cta from '../ui/CTABtn'
 import { ErrorText } from '../ui/Typography'
 
-// import { injectStripe } from 'react-stripe-elements'
 class CheckoutForm extends Component {
 	constructor(props) {
 		super(props);
@@ -52,8 +51,6 @@ class CheckoutForm extends Component {
 			headers: { 'Content-Type': 'application/json', 	'user-key': localStorage.getItem('accessToken'), },
 			data
 		});
-		console.log('response from paid', response.paid)
-		// if (response.paid === true) this.setState({ paymentCompleted: 'true' })
 		if (response.status === 200) {
 			this.setState({ paymentCompleted: true })
 		} else {
@@ -88,9 +85,7 @@ class CheckoutForm extends Component {
 		);
 	}
 }
-const mapStateToProps = (state, ownProps) => {
-	console.log('paidpaidpaidpaidpaid', ownProps)
-	return ({
+const mapStateToProps = (state, ownProps) => ({
 		currentUser: state.customers.user,
 		shippingType: state.shipping.shippingType,
 		totalPrice: state.cart.totalPrice,
@@ -98,7 +93,6 @@ const mapStateToProps = (state, ownProps) => {
 		orderID: state.order.orderID,
 		push: ownProps.push
 	})
-}
 export default connect(mapStateToProps)(injectStripe(CheckoutForm))
 
 const StyledCta = styled(Cta)`

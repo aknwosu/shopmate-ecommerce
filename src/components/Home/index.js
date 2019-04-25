@@ -11,7 +11,6 @@ const Home = (props) => {
 	const { history: { push } } = props
 	return (
 		<Home.Container>
-			{console.log('home props', props)}
 			<Home.Hero>
 				<h1>
 				BackGround and <br /> Development

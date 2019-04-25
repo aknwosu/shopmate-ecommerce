@@ -145,7 +145,6 @@ Header.propTypes = {
 	match: PropTypes.object.isRequired,
 }
 function mapStateToProps(state, ownProps) {
-	console.log('header own props', ownProps)
 	return {
 		cart: state.cart,
 		currentUser: getCurrentUser(state),

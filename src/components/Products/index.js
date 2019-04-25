@@ -58,7 +58,6 @@ class Products extends Component {
 			products, dispatchAddToCart, productDetail, productsCount, match: { params }
 		} = this.props
 		const { showFilter } = this.state
-		console.log('showFilter===', showFilter)
 		return (
 			<Fragment>
 				<Products.Container>

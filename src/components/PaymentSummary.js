@@ -15,8 +15,8 @@ class PaySummary extends Component {
 
 	render() {
 		const {
- closeModal, totalPrice, shippingType, push 
-} = this.props
+			closeModal, totalPrice, shippingType, push
+		} = this.props
 		return (
 			<StripeProvider apiKey="pk_test_NcwpaplBCuTL6I0THD44heRe">
 				<Modal handleClose={closeModal}>
@@ -31,17 +31,13 @@ class PaySummary extends Component {
 		);
 	}
 }
-const mapStateToProps = (state, ownProps) => {
-	console.log('PaySummaryPaySummaryPaySummaryPaySummary', ownProps)
-
-	return ({
+const mapStateToProps = (state, ownProps) => ({
 		currentUser: state.customers.user,
 		shippingType: state.shipping.shippingType,
 		totalPrice: state.cart.totalPrice,
 		orderID: state.order.orderID,
 		push: ownProps.push
 	})
-}
 const mapDispatchToProps = dispatch => ({
 	dispatchFetchOrder: bindActionCreators(fetchOrder, dispatch),
 })
