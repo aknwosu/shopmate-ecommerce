@@ -12,7 +12,7 @@ import { ErrorText, PrimaryTitle } from '../ui/Typography'
 import Modal from '../ui/ModalBase'
 import Cta from '../ui/CTABtn';
 import { getCurrentUser } from '../selectors'
-import { updateCustomersAddress } from '../actionCreators/customers'
+import { updateCustomersAddress, updateCustomer } from '../actionCreators/customers'
 import { generateUniqueCartId } from '../actionCreators/cart'
 import { fetchAllShippingRegions, fetchShippingForRegion, updateShippingType } from '../actionCreators/shipping'
 
@@ -29,7 +29,14 @@ class UpdateAddress extends Component {
 			country: '',
 			shipping_region_id: '',
 			shipping_id: '',
-			errors: false
+			errors: false,
+			name: '',
+			email: '',
+			password: '',
+			day_phone: '',
+			mob_phone: '',
+			eve_phone: '',
+			profileErrors: ''
 		}
 	}
 
@@ -37,12 +44,13 @@ class UpdateAddress extends Component {
 		const {
 			dispatchFetchAllRegions, currentUser: {
 				address_1, address_2, city, region, postal_code, country, shipping_region_id, errors,
+				name, email, password, day_phone, mob_phone
 			}
 		} = this.props
 		dispatchFetchAllRegions()
 
 		this.setState({
-			address_1, address_2, city, region, postal_code, country, shipping_region_id
+			address_1, address_2, city, region, postal_code, country, shipping_region_id, name, email, password, day_phone, mob_phone
 		})
 	}
 
@@ -50,13 +58,14 @@ class UpdateAddress extends Component {
 		const {
 			dispatchFetchAllRegions, currentUser: {
 				address_1, address_2, city, region, postal_code, country, shipping_region_id, errors,
+				name, email, password, day_phone, mob_phone
 			}
 		} = this.props
 		if (address_1 !== this.state.address_1 && city !== this.state.city) {
 			dispatchFetchAllRegions()
 
 			this.setState({
-				address_1, address_2, city, region, postal_code, country, shipping_region_id
+				address_1, address_2, city, region, postal_code, country, shipping_region_id, name, email, password, day_phone, mob_phone
 			})
 		}
 	}
@@ -85,6 +94,82 @@ class UpdateAddress extends Component {
 			[name]: value,
 		})
 		dispatchUpdateShippingType(value)
+	}
+
+	updateProfile = () => {
+		const { dispatchUpdateCustomer } = this.props
+		const {
+			name, email, password, day_phone, mob_phone, eve_phone, profileErrors
+		} = this.state
+		if (!name || !email) {
+			return this.setState({ profileErrors: 'Email and password are required to update your profile' })
+		}
+		const user = {}
+		user.name = name
+		user.email = email
+		user.password = password
+		user.day_phone = day_phone
+		user.mob_phone = mob_phone
+		user.eve_phone = eve_phone
+		return dispatchUpdateCustomer(user)
+	}
+
+	renderProfileUpdate = () => {
+		const {
+			name, email, password, day_phone, mob_phone, eve_phone, profileErrors
+		} = this.state
+		return (
+			<Profile>
+				<div>Profile</div>
+				<UpdateAddress.InfoRow>
+					<Input
+						label="Full Name *"
+						type="text"
+						onChange={this.onChange('name')}
+						value={email}
+						autoFocus
+					/>
+					<Input
+						label="Email *"
+						type="email"
+						onChange={this.onChange('email')}
+						value={email}
+						autoFocus
+					/>
+				</UpdateAddress.InfoRow>
+				<UpdateAddress.InfoRow>
+					<Input
+						label="Password"
+						type="password"
+						onChange={this.onChange('password')}
+						value={password}
+					/>
+					<Input
+						label="Day Phone"
+						type="text"
+						onChange={this.onChange('day_phone')}
+						value={day_phone}
+						autoFocus
+					/>
+				</UpdateAddress.InfoRow>
+				<UpdateAddress.InfoRow>
+					<Input
+						label="Mobile Phone"
+						type="text"
+						onChange={this.onChange('mob_phone')}
+						value={mob_phone}
+					/>
+					<Input
+						label="Evening Phone"
+						type="text"
+						onChange={this.onChange('eve_phone')}
+						value={eve_phone}
+					/>
+				</UpdateAddress.InfoRow>
+				{profileErrors && <div>{profileErrors}</div>}
+				<Cta onClick={this.updateProfile}>Update Profile</Cta>
+			</Profile>
+		)
 	}
 
 	updateShipping = () => {
@@ -116,73 +201,78 @@ class UpdateAddress extends Component {
 		})
 		return (
 			<UpdateAddress.Container>
-				<UpdateAddress.Title>Update your shipping address</UpdateAddress.Title>
-				<UpdateAddress.InfoRow>
-					<Input
-						label="Address line 1 *"
-						type="text"
-						onChange={this.onChange('address_1')}
-						value={address_1}
-						autoFocus
-					/>
-					<Input
-						label="Address line 2"
-						type="text"
-						onChange={this.onChange('address_2')}
-						value={address_2}
-						autoFocus
-					/>
-				</UpdateAddress.InfoRow>
-				<UpdateAddress.InfoRow>
-					<Input
-						label="City *"
-						type="text"
-						onChange={this.onChange('city')}
-						value={city}
-						autoFocus
-					/>
-					<Dropdown
-						label="Region *"
-						type="text"
-						options={availableRegions}
-						hasEmptySelection={false}
-						onChange={this.onChange('region')}
-					/>
-				</UpdateAddress.InfoRow>
-				<UpdateAddress.InfoRow>
-					<Input
-						label="Postal Code *"
-						type="text"
-						onChange={this.onChange('postal_code')}
-						value={postal_code}
-						autoFocus
-					/>
-					<Input
-						label="Country *"
-						type="text"
-						onChange={this.onChange('country')}
-						value={country}
-						autoFocus
-					/>
-				</UpdateAddress.InfoRow>
-				<UpdateAddress.Ship>
-					<div>Select Shipping *</div>
-					{shippingForRegion.map(shipping => (
-						<div>
-							<input
-								label="Country"
-								type="radio"
-								name="shipping_id"
-								onChange={this.onChangeShipping}
-								value={shipping.shipping_id}
-							/>{shipping.shipping_type}
-						</div>
+				<UpdateAddress.Title>Update your profile and shipping address</UpdateAddress.Title>
+				{this.renderProfileUpdate()}
+				<Profile>
+					<div>Shipping Details</div>
 
-					))}
-					{errors && <div>The fields marked with * are required</div>}
-					<Cta onClick={this.updateShipping}>Next step</Cta>
-				</UpdateAddress.Ship>
+					<UpdateAddress.InfoRow>
+						<Input
+							label="Address line 1 *"
+							type="text"
+							onChange={this.onChange('address_1')}
+							value={address_1}
+							autoFocus
+						/>
+						<Input
+							label="Address line 2"
+							type="text"
+							onChange={this.onChange('address_2')}
+							value={address_2}
+							autoFocus
+						/>
+					</UpdateAddress.InfoRow>
+					<UpdateAddress.InfoRow>
+						<Input
+							label="City *"
+							type="text"
+							onChange={this.onChange('city')}
+							value={city}
+							autoFocus
+						/>
+						<Dropdown
+							label="Region *"
+							type="text"
+							options={availableRegions}
+							hasEmptySelection={false}
+							onChange={this.onChange('region')}
+						/>
+					</UpdateAddress.InfoRow>
+					<UpdateAddress.InfoRow>
+						<Input
+							label="Postal Code *"
+							type="text"
+							onChange={this.onChange('postal_code')}
+							value={postal_code}
+							autoFocus
+						/>
+						<Input
+							label="Country *"
+							type="text"
+							onChange={this.onChange('country')}
+							value={country}
+							autoFocus
+						/>
+					</UpdateAddress.InfoRow>
 
+					<UpdateAddress.Ship>
+						<div>Select Shipping *</div>
+						{shippingForRegion.map(shipping => (
+							<div key={shipping.shipping_id}>
+								<input
+									label="Country"
+									type="radio"
+									name="shipping_id"
+									onChange={this.onChangeShipping}
+									value={shipping.shipping_id}
+								/>{shipping.shipping_type}
+							</div>
+
+						))}
+						{errors && <div>The fields marked with * are required</div>}
+						<Cta onClick={this.updateShipping}>Next step</Cta>
+					</UpdateAddress.Ship>
+				</Profile>
 			</UpdateAddress.Container>
 		)
 	}
@@ -198,6 +288,8 @@ UpdateAddress.propTypes = {
 	dispatchGenerateUniqueCartId: PropTypes.func.isRequired,
 	push: PropTypes.func.isRequired,
 	dispatchUpdateShippingType: PropTypes.func.isRequired,
+	dispatchUpdateCustomer: PropTypes.func.isRequired,
+	shippingType: PropTypes.object
 }
 const mapStateToProps = (state, ownProps) => ({
 	currentUser: state.customers.user,
@@ -208,6 +300,7 @@ const mapStateToProps = (state, ownProps) => ({
 })
 const mapDispatchToProps = dispatch => ({
 	dispatchUpdateAddress: bindActionCreators(updateCustomersAddress, dispatch),
+	dispatchUpdateCustomer: bindActionCreators(updateCustomer, dispatch),
 	dispatchFetchAllRegions: bindActionCreators(fetchAllShippingRegions, dispatch),
 	dispatchFetchShippingForRegion: bindActionCreators(fetchShippingForRegion, dispatch),
 	dispatchUpdateShippingType: bindActionCreators(updateShippingType, dispatch),
@@ -225,7 +318,7 @@ UpdateAddress.FormInput = styled.input`
 	font-size: 14px;
 `
 UpdateAddress.Container = styled.div`
-	background-color: white;
+	/* background-color: white; */
 	width: 940px;
 	padding-top: 40px;
   margin: 40px auto;
@@ -235,10 +328,13 @@ UpdateAddress.Container = styled.div`
 `
 UpdateAddress.InfoRow = styled.div`
 	display: flex;
+  padding-left: 40px;
 	justify-content: space-around;
 	> * {
 		width: 350px;
-		
+		@media screen and (max-width: 425px) {
+			width: 100%;
+		}
 	}
 	@media screen and (max-width: 425px) {
 	flex-direction: column;
@@ -256,5 +352,19 @@ UpdateAddress.Ship = styled.div`
 		margin-top: 30px;
 		margin-bottom: 30px;
 		
+	}
+`
+const Profile = styled.div`
+	margin-bottom: 50px;
+	background-color: white;
+  padding: 40px;
+	> :nth-child(1){
+		text-align: center;
+		font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 20px;
+	}
+	@media screen and (max-width: 425px) {
+		padding: 20px;
 	}
 `

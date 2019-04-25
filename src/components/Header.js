@@ -45,14 +45,14 @@ class Header extends Component {
 	}
 
 	renderDepartments = () => {
-		const { departments, match: { params } } = this.props
+		const { departments, location, match: { params } } = this.props
 		return Object.keys(departments).map((data, i) => {
 			const department = departments[data]
 			return (
 				<Header.Dept
 					key={department.name}
 					className="department"
-					isActive={params.department_name === department.name}
+					isActive={location.pathname.includes(department.name)}
 					onClick={() => {
 						this.getDepartmentData(department);
 					}}
@@ -143,6 +143,7 @@ Header.propTypes = {
 	dispatchFetchProductsInDepartment: PropTypes.func.isRequired,
 	dispatchFetchDepartmentCategories: PropTypes.func.isRequired,
 	match: PropTypes.object.isRequired,
+	location: PropTypes.object.isRequired,
 }
 function mapStateToProps(state, ownProps) {
 	return {

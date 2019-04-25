@@ -21,7 +21,7 @@ export default function customersReducer(state = initialState, action) {
 	}
 	case 'UPDATE_USER_SUCCESS': {
 		return Object.assign({}, state, {
-			user: action.payload.user
+			user: action.payload
 		})
 	}
 

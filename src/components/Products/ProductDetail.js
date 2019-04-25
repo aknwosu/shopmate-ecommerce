@@ -16,7 +16,7 @@ import { fetchProductAttributes } from '../../actionCreators/attributes'
 import { fetchProductDetail, fetchProductReviews } from '../../actionCreators/products'
 import { addToCart } from '../../actionCreators/cart'
 
-class ProductDetail extends Component {
+export class ProductDetail extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -59,15 +59,15 @@ class ProductDetail extends Component {
 		}
 		const {
 			dispatchAddToCart, productDetail: {
-				name, product_id, price, image
+				name, product_id, price, image, discounted_price
 			}
 		} = this.props
 		const cartItem = {
 			product_id,
 			name,
 			quantity,
-			actualPrice: price,
-			price: Number(price) * quantity,
+			actualPrice: Number(discounted_price) > 0 ? Number(discounted_price) : price,
+			price: Number(discounted_price) > 0 ? Number(discounted_price) * quantity : Number(price) * quantity,
 			color: selectedColor,
 			size: selectedSize,
 			image
@@ -77,12 +77,14 @@ class ProductDetail extends Component {
 
 	renderProductDetails = () => {
 		const { REACT_APP_IMAGE_URL } = process.env
-		const { selectedSize, selectedColor, errors } = this.state
 		const {
-			// attributeValues,
+			selectedSize, selectedColor, errors, quantity
+		} = this.state
+		const {
 			attributesInProduct,
+			productRating,
 			productDetail: {
-				image, image_2, thumbnail, name, price
+				image, image_2, thumbnail, name, price, discounted_price, description
 			}
 		} = this.props
 		const productColors = attributesInProduct && attributesInProduct.filter(attribute => attribute.attribute_name === 'Color')
@@ -95,23 +97,30 @@ class ProductDetail extends Component {
 					<ProductDetail.AltImages>
 						<ProductDetail.Icons src={`${REACT_APP_IMAGE_URL}${image_2}`} alt={image_2} />
 						<ProductDetail.Icons src={`${REACT_APP_IMAGE_URL}${thumbnail}`} alt={thumbnail} />
+
 					</ProductDetail.AltImages>
+					<p>{description}</p>
+
 				</ProductDetail.ImageWrapper>
 				<ProductDetail.Info>
 					<ProductDetail.SyledRating
 						// eslint-disable-next-line react/no-unknown-property
 						readonly
-						initialRating={4}
+						initialRating={Number(productRating)}
 						emptySymbol={<StarEmpty />}
 						fullSymbol={<Star />}
 					/>
 					<div>{name}</div>
-					<div>{`$ ${price}`}</div>
+					<div>
+						<div>$ {Number(discounted_price) > 0 ? discounted_price : price}</div>
+						{ Number(discounted_price) > 0 && <ProductDetail.OldPrice>${price}</ProductDetail.OldPrice>}
+					</div>
 					<ProductDetail.Attr>
 						<div>Color</div>
 						<div>
 							{productColors && productColors.map(attr => (
 								<ColorPicker
+									key={attr.attribute_value}
 									color={attr.attribute_value}
 									active={selectedColor === attr.attribute_value}
 									onClick={() => this.selectAttr('selectedColor', attr.attribute_value)}
@@ -124,6 +133,7 @@ class ProductDetail extends Component {
 						<div>
 							{productSizes && productSizes.map(attr => (
 								<SizePicker
+									key={attr.attribute_value}
 									size={attr.attribute_value}
 									active={selectedSize === attr.attribute_value}
 									onClick={() => this.selectAttr('selectedSize', attr.attribute_value)}
@@ -131,10 +141,12 @@ class ProductDetail extends Component {
 							))}
 						</div>
 					</ProductDetail.Attr>
-					<AddSubtractCta
-						value={this.state.quantity}
-						onChange={(value) => { this.onChangeQuantity(value) }}
-					/>
+					<ProductDetail.Add>
+						<AddSubtractCta
+							value={quantity}
+							onChange={(value) => { this.onChangeQuantity(value) }}
+						/>
+					</ProductDetail.Add>
 					{errors && <ErrorText>{errors}</ErrorText>}
 					<Cta onClick={this.addToCart}>Add to cart</Cta>
 				</ProductDetail.Info>
@@ -158,7 +170,8 @@ function mapStateToProps(state) {
 		products: state.products.allProducts,
 		productDetail: state.products.productDetail,
 		attributeValues: state.attributes.attributeValues,
-		attributesInProduct: state.attributes.attributesInProduct
+		attributesInProduct: state.attributes.attributesInProduct,
+		productRating: state.products.productRating,
 	}
 }
 const mapDispatchToProps = dispatch => ({
@@ -175,7 +188,9 @@ ProductDetail.propTypes = {
 	dispatchFetchProductDetail: PropTypes.func.isRequired,
 	dispatchFetchProductAttributes: PropTypes.func.isRequired,
 	dispatchFetchProductReviews: PropTypes.func.isRequired,
-	attributesInProduct: PropTypes.array.isRequired
+	attributesInProduct: PropTypes.array.isRequired,
+	productRating: PropTypes.string.isRequired,
+	match: PropTypes.object
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ProductDetail)
 
@@ -185,7 +200,9 @@ ProductDetail.Container = styled.div`
 	margin: 0 auto;
 	width: 940px;
 	height: 620px;
+	margin-top: 30px;
 	@media screen and (max-width: 425px) {
+		margin-top: 15px;
 		width: 100%;
 		flex-direction: column;
 		height: unset;
@@ -195,7 +212,7 @@ ProductDetail.ImageWrapper = styled.div`
 	width: 400px;
 	padding: 50px;
 	@media screen and (max-width: 425px) {
-		padding: 20px 0;
+		padding: 20px 15px;
 		flex-direction: column;
 		height: unset;
 		width: unset;
@@ -265,4 +282,18 @@ ProductDetail.Attr = styled.div`
   > :nth-child(2) {
     display: flex;
   }
+`
+ProductDetail.Add = styled.div`
+	display: flex;
+	margin: 20px auto;
+	justify-content: left;
+	@media screen and (max-width: 425px) {
+		justify-content: center;
+	}
+`
+ProductDetail.OldPrice = styled.div`
+	color: #F62F5E;
+	font-style: italic;
+	font-size: 16px;
+	text-decoration: line-through;
 `

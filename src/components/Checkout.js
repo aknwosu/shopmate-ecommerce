@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import { getCurrentUser } from '../selectors'
 import { createOrder } from '../actionCreators/cart'
 import Cta from '../ui/CTABtn'
+import { PrimaryTitle } from '../ui/Typography'
 
 
 import ModalManager from './ModalManager'
@@ -29,7 +30,6 @@ class Checkout extends Component {
 		const { cartItems } = this.props
 		return (
 			<div>
-				<div>Checkout</div>
 				<div>
 					<div>Order Summary</div>
 					<Checkout.Table>
@@ -63,10 +63,17 @@ class Checkout extends Component {
 	}
 
 	renderAddress = () => {
-		const { cartItems } = this.props
+		const { cartItems, user } = this.props
 		return (
 			<div>
-				<div>Delivery</div>
+				<PrimaryTitle>Delivery Details</PrimaryTitle>
+				<div>{`Name: ${user.name}`}</div>
+				<div>{`Email: ${user.email}`}</div>
+				<div>{`Address Line 1: ${user.address_1}`}</div>
+				<div>{user.address_2 && `Address Line 2: ${user.address_2}`}</div>
+				<div>{`Day Phone: ${user.day_phone}`}</div>
+				<div>{`Mobile Phone: ${user.mob_phone}`}</div>
+				<div>{`Region: ${user.region}`}</div>
 			</div>
 		)
 	}
@@ -113,10 +120,12 @@ Checkout.propTypes = {
 	push: PropTypes.func.isRequired,
 	shippingType: PropTypes.object.isRequired,
 	dispatchCreateOrder: PropTypes.func.isRequired,
-	tax: PropTypes.object.isRequired,
+	tax: PropTypes.array.isRequired,
+	user: PropTypes.object.isRequired,
 }
 function mapStateToProps(state, ownProps) {
 	return {
+		user: state.customers.user,
 		cartItems: state.cart.cartItems,
 		totalPrice: state.cart.totalPrice,
 		shippingType: state.shipping.shippingType,
@@ -151,16 +160,30 @@ Checkout.Tr = styled.tr`
 `
 Checkout.Container = styled.div`
 	margin: 50px;
+	background-color: #FFF;
+	padding: 40px;
+	@media screen and (max-width: 425px) {
+		margin: 10px;
+		padding: 20px;
+	}
 `
 Checkout.Details = styled.div`
 	display: flex;
 	> :nth-child(1) {
 		width: 50%;
 		margin-right: 20px;
+		@media screen and (max-width: 425px) {
+			width: 100%;
+		}
 	}
 	> :nth-child(2) {
+		margin-top: 20px;
 		flex: 1;
-		background:grey
+		background: #EFEFEF;
+		padding: 10px 0 10px 25px;
+		> div {
+			margin-bottom: 10px
+		}
 	}
 	@media screen and (max-width: 425px) {
 		flex-direction: column;

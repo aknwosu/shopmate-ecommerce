@@ -7,7 +7,7 @@ import menTie from '../../assets/men_tie.svg';
 import gameBegin from '../../assets/game_begin.svg';
 import NonAuthFooter from '../Footer/NonAuthFooter';
 
-const Home = (props) => {
+export const Home = (props) => {
 	const { history: { push } } = props
 	return (
 		<Home.Container>
@@ -24,7 +24,7 @@ const Home = (props) => {
 				<Home.Cta
 					onClick={() => { push('/products') }}
 					rank="secondary"
-				> View All
+				>View All
 				</Home.Cta>
 			</Home.Hero>
 			<Home.Promo>

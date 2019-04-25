@@ -36,7 +36,7 @@ Product.Container = styled.div`
 	background-color: white;
 	border-radius: 10px;
 	:hover {
-		box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+		box-shadow: 0 10px 10px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 		border: 1px solid #e9e9e9;
 	}
 `
