@@ -85,7 +85,6 @@ class ProductDetail extends Component {
 				image, image_2, thumbnail, name, price
 			}
 		} = this.props
-		console.log('trying to map product attributes', this.props)
 		const productColors = attributesInProduct && attributesInProduct.filter(attribute => attribute.attribute_name === 'Color')
 		const productSizes = attributesInProduct && attributesInProduct.filter(attribute => attribute.attribute_name === 'Size')
 
@@ -149,14 +148,12 @@ class ProductDetail extends Component {
 		return (
 			<div>
 				{productDetail && this.renderProductDetails()}
-				<div>Reviews page</div>
 			</div>
 		)
 	}
 }
 function mapStateToProps(state) {
 	return {
-		// currentUser: getCurrentUser(state),
 		cartItems: state.cart.cartItems,
 		products: state.products.allProducts,
 		productDetail: state.products.productDetail,
@@ -184,22 +181,41 @@ export default connect(mapStateToProps, mapDispatchToProps)(ProductDetail)
 
 ProductDetail.Container = styled.div`
 	display: flex;
-	padding: 50px;
 	background-color: white;
 	margin: 0 auto;
 	width: 940px;
 	height: 620px;
+	@media screen and (max-width: 425px) {
+		width: 100%;
+		flex-direction: column;
+		height: unset;
+	}
 `
 ProductDetail.ImageWrapper = styled.div`
 	width: 400px;
+	padding: 50px;
+	@media screen and (max-width: 425px) {
+		padding: 20px 0;
+		flex-direction: column;
+		height: unset;
+		width: unset;
+	}
 `
 ProductDetail.Image = styled.img`
 	width: 250px;
 	height: 270px;
+  @media screen and (max-width: 425px) {
+	  display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
 `
 ProductDetail.AltImages = styled.div`
 	display: flex;
 	margin-top: 20px;
+	@media screen and (max-width: 425px) {
+		justify-content: center;
+	}
 `
 ProductDetail.Icons = styled.img`
 	max-width: 40px;
@@ -220,6 +236,7 @@ ProductDetail.Info = styled.div`
 		font-size: 24px;
 		font-weight: bold;
 		margin-bottom: 25px;
+		flex-wrap: wrap;
 	}
 	> :nth-child(3) {
 		font-size: 12px;
@@ -227,16 +244,20 @@ ProductDetail.Info = styled.div`
 		font-weight: bold;
 		margin-bottom: 25px;
 	}
+	@media screen and (max-width: 425px) {
+		padding: 10px;
+		text-align: center;
+		display: block;
+    margin: auto;
+  }
 `
-// ProductDetail.Name = styled.div`
-// 	color: #F62F5E;
-// `
 ProductDetail.SyledRating = styled(Rating)`
-margin: 20px 0;
+	margin: 20px 0;
 `
 
 ProductDetail.Attr = styled.div`
   margin-top: 15px;
+	margin-bottom: 20px;
   > :nth-child(1) {
     color: #b4b4b4;
     font-weight: bold;

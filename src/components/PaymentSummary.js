@@ -14,14 +14,16 @@ class PaySummary extends Component {
 	}
 
 	render() {
-		// const { totalPrice, shippingType } = this.props
+		const {
+			closeModal, totalPrice, shippingType, push
+		} = this.props
 		return (
 			<StripeProvider apiKey="pk_test_NcwpaplBCuTL6I0THD44heRe">
-				<Modal>
+				<Modal handleClose={closeModal}>
 					<PaySummary.Container>
 						<h1>Payment</h1>
 						<Elements>
-							<CheckoutForm />
+							<CheckoutForm push={push} />
 						</Elements>
 					</PaySummary.Container>
 				</Modal>
@@ -30,11 +32,12 @@ class PaySummary extends Component {
 	}
 }
 const mapStateToProps = (state, ownProps) => ({
-	currentUser: state.customers.user,
-	shippingType: state.shipping.shippingType,
-	totalPrice: state.cart.totalPrice,
-	orderID: state.order.orderID
-})
+		currentUser: state.customers.user,
+		shippingType: state.shipping.shippingType,
+		totalPrice: state.cart.totalPrice,
+		orderID: state.order.orderID,
+		push: ownProps.push
+	})
 const mapDispatchToProps = dispatch => ({
 	dispatchFetchOrder: bindActionCreators(fetchOrder, dispatch),
 })

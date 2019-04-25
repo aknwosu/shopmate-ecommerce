@@ -8,7 +8,7 @@ import PropTypes from 'prop-types'
 import { withRouter } from 'react-router'
 import Input from '../ui/Input'
 import Dropdown from '../ui/dropdown'
-import { ErrorText } from '../ui/Typography'
+import { ErrorText, PrimaryTitle } from '../ui/Typography'
 import Modal from '../ui/ModalBase'
 import Cta from '../ui/CTABtn';
 import { getCurrentUser } from '../selectors'
@@ -89,11 +89,12 @@ class UpdateAddress extends Component {
 
 	updateShipping = () => {
 		const {
-			address_1, address_2, city, region, postal_code, country, shipping_region_id, errors
+			address_1, address_2, city, region, postal_code, country, shipping_region_id, errors, shipping_id
 		} = this.state
+		const { shippingType } = this.props
 		const { dispatchUpdateAddress, 	dispatchGenerateUniqueCartId, push } = this.props
-		if (!address_1 || !city || !region || !postal_code || !country || !shipping_region_id) {
-			this.setState({ errors: true })
+		if (!address_1 || !city || !region || !postal_code || !country || !shipping_region_id || !shipping_id || !shippingType) {
+			return this.setState({ errors: true })
 		}
 		dispatchUpdateAddress(this.state)
 		dispatchGenerateUniqueCartId()
@@ -101,7 +102,6 @@ class UpdateAddress extends Component {
 	}
 
 	render() {
-		console.log('modal open', this.state)
 		const {
 			address_1, address_2, city, region, postal_code, country, shipping_region_id, errors,
 		} = this.state
@@ -115,8 +115,8 @@ class UpdateAddress extends Component {
 			availableRegions.push(modRegion)
 		})
 		return (
-			// <Modal>
 			<UpdateAddress.Container>
+				<UpdateAddress.Title>Update your shipping address</UpdateAddress.Title>
 				<UpdateAddress.InfoRow>
 					<Input
 						label="Address line 1 *"
@@ -165,9 +165,8 @@ class UpdateAddress extends Component {
 						autoFocus
 					/>
 				</UpdateAddress.InfoRow>
-				<div>Select Shipping *</div>
-				{errors && <div>The fields marked with * are required</div>}
-				<div>
+				<UpdateAddress.Ship>
+					<div>Select Shipping *</div>
 					{shippingForRegion.map(shipping => (
 						<div>
 							<input
@@ -180,10 +179,11 @@ class UpdateAddress extends Component {
 						</div>
 
 					))}
-				</div>
-				<Cta onClick={this.updateShipping}>Next step</Cta>
+					{errors && <div>The fields marked with * are required</div>}
+					<Cta onClick={this.updateShipping}>Next step</Cta>
+				</UpdateAddress.Ship>
+
 			</UpdateAddress.Container>
-			// </Modal>
 		)
 	}
 }
@@ -227,12 +227,34 @@ UpdateAddress.FormInput = styled.input`
 UpdateAddress.Container = styled.div`
 	background-color: white;
 	width: 940px;
+	padding-top: 40px;
+  margin: 40px auto;
+	@media screen and (max-width: 425px) {
+		width: 100vw;
+	}
 `
 UpdateAddress.InfoRow = styled.div`
 	display: flex;
 	justify-content: space-around;
 	> * {
 		width: 350px;
+		
+	}
+	@media screen and (max-width: 425px) {
+	flex-direction: column;
+  padding: 10px 10px;
+	}
+`
+UpdateAddress.Title = styled(PrimaryTitle)`
+	text-align: center;
+`
+UpdateAddress.Ship = styled.div`
+	padding-left: 55px;
+	display: flex;
+	flex-direction: column;
+	> * {
+		margin-top: 30px;
+		margin-bottom: 30px;
 		
 	}
 `

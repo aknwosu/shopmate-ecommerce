@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router'
-import Header from '../Header'
 import {
 	fetchProducts, fetchProductDetail, fetchProductsInDepartment, fetchProductsInCategory
 } from '../../actionCreators/products'
@@ -15,9 +14,17 @@ import Filter from './Filter';
 // eslint-disable-next-line import/no-named-as-default
 import Product from './Product'
 import Pagination from '../Pagination';
+import BurgerIcon from '../../assets/burger-menu.svg'
 
 
 class Products extends Component {
+	constructor(props) {
+		super(props)
+		this.state = {
+			showFilter: false
+		}
+	}
+
 	componentDidMount() {
 		const { match: { params }, dispatchFetchDepartmentCategories } = this.props
 		if (params.department_id) {
@@ -32,6 +39,12 @@ class Products extends Component {
 		push(`/products/${id}`)
 	}
 
+	showHideFilter = () => {
+		this.setState((prevState, props) => ({
+			showFilter: !prevState.showFilter
+		}))
+	}
+
 	onPageChanged = (pageNumber) => {
 		const { dispatchFetchProducts, dispatchFetchProductsInDepartment, match: { params } } = this.props
 		if (params.department_id) {
@@ -44,13 +57,13 @@ class Products extends Component {
 		const {
 			products, dispatchAddToCart, productDetail, productsCount, match: { params }
 		} = this.props
-		console.log('product props', this.props)
+		const { showFilter } = this.state
 		return (
 			<Fragment>
-				<Header />
 				<Products.Container>
 					<Products.Wrapper>
-						<Filter routeParams={params} />
+						<Products.MenuIcon onClick={this.showHideFilter} />
+						<Filter routeParams={params} showFilter={showFilter} />
 						<Products.List>
 							<Pagination totalCount={productsCount} onPageChanged={this.onPageChanged} />
 							{products && Object.keys(products).map(product => (
@@ -108,6 +121,9 @@ Products.Container = styled.div`
 	display: flex;
 	width: 940px;
   margin: 0 auto;
+	@media screen and (max-width: 425px) {
+		width: 100vw;
+	}
 `
 
 Products.Wrapper = styled.div`
@@ -121,4 +137,17 @@ Products.List = styled.div`
 	overflow: hidden;
 	flex: 1;
 	margin-left: 20px;
+`
+Products.MenuIcon = styled.div`
+	display: none;
+	background: url(${BurgerIcon});
+	@media screen and (max-width: 425px) {
+			display: block;
+			height: 30px;
+			width: 30px;
+			background-size: contain;
+		}
+`
+const ProductsFilter = styled(Filter)`
+
 `

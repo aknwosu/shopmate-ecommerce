@@ -58,7 +58,7 @@ class TopBar extends Component {
 							</TopBar.SignIn>
 						)
 					}
-					<TopBar.Nav>
+					<TopBar.Nav mobileDisplay="none">
 						<div href="#">Daily Deals</div>
 						<div href="#">Sell</div>
 						<div href="#">Help & Contact</div>
@@ -114,19 +114,29 @@ const CTAText = styled.span`
 	color: #F62F5E;
 `
 TopBar.Container = styled.div`
-	width: 100%;
+	font-size: 15px;
+	width: 960px;
 	background-color: #FFF;
 	min-width: 960px;
+	width: 100%;
+	@media screen and (max-width: 425px) {
+		width: 100%;
+		min-width: unset;
+		font-size: 12px;
+	}
 `
 TopBar.Links = styled.div`
 	width: 960px;
 	margin: auto;
-	font-size: 15px;
 	font-weight: bold;
 	color: #2E2E2E;
 	padding: 15px 30px;
 	display: flex;
   justify-content: space-between;
+	@media screen and (max-width: 425px) {
+		width: 93%;
+		padding: 15px 10px;
+	}
 `
 TopBar.Nav = styled.div`
 	display: flex;
@@ -134,11 +144,18 @@ TopBar.Nav = styled.div`
 	div:not(:last-child) {
 		margin-right: 22px;
 	}
+	@media screen and (max-width: 425px) {
+		display: ${({ mobileDisplay }) => mobileDisplay && mobileDisplay};
+	}
+	
 `
 const Currency = styled.div`
 	background: url(${Usd});
 	background-repeat: no-repeat;
   padding-left: 30px;
+	@media screen and (max-width: 425px) {
+		background-size: 20px;
+	}
 `
 TopBar.SignIn = styled.div`
 	display: flex;

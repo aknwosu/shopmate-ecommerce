@@ -85,7 +85,6 @@ class SignIn extends Component {
 									onChange={this.handleChange}
 								/>
 								<Cta onClick={this.onClickSignin}>Sign In</Cta>
-								<div>Have an account?</div>
 							</Fragment>
 						)}
 						{visibleModal === 'register' && (
@@ -127,7 +126,7 @@ class SignIn extends Component {
 
 SignIn.propTypes = {
 	visibleModal: PropTypes.string.isRequired,
-	// onClose: PropTypes.func.isRequired,
+	closeModal: PropTypes.func.isRequired,
 	// CTA: PropTypes.func.isRequired
 }
 const mapStateToProps = (state, ownProps) => ({
@@ -141,9 +140,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SignIn))
 
 SignIn.LogInContainer = styled.div`
-	height: 380px;
+	height: 680px;
 	width: 480px;
-	position: absolute;
+	/* position: absolute; */
 	top: 0;
 	height: 100%;
 	background-color: #ffffff;
@@ -157,6 +156,8 @@ SignIn.Form = styled.div`
 	padding: 0 50px;
 	height: 100%;
 	text-align: center;
+	height: 480px;
+  background: white;
 `
 SignIn.FormInput = styled.input`
 	background-color: #eee;

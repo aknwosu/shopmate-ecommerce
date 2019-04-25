@@ -43,7 +43,11 @@ const CtaButton = styled.button`
 	white-space:nowrap;
 	overflow: hidden;
 	font-size: 16px;
-	
+	@media screen and (max-width: 425px) {
+		border-radius: 20px;
+		padding: 10px 14px;
+		width: auto;
+	}
 `
 
 const PrimaryCtaButton = styled(CtaButton)`

@@ -33,10 +33,10 @@ renderCategories = (categories) => {
 
 render() {
 	const {
-		attributeValues, allCategories, routeParams, departmentCategories
+		attributeValues, allCategories, routeParams, departmentCategories, showFilter
 	} = this.props
 	return (
-		<Filter.Container>
+		<Filter.Container showFilter={showFilter}>
 			<div>
 				<Filter.Attr>Color</Filter.Attr>
 				<Filter.ColorAttr>
@@ -73,8 +73,8 @@ Filter.propTypes = {
 	dispatchFetchCategory: PropTypes.func.isRequired,
 	dispatchFetchProductsInCategory: PropTypes.func.isRequired,
 	departmentCategories: PropTypes.array.isRequired,
-	selectedCategory: PropTypes.string,
-	attributeValues: PropTypes.array.isRequired,
+	selectedCategory: PropTypes.object,
+	attributeValues: PropTypes.object.isRequired,
 	allCategories: PropTypes.array.isRequired,
 	routeParams: PropTypes.object.isRequired,
 }
@@ -111,6 +111,11 @@ Filter.Container = styled.div`
   overflow-y: scroll;
 	padding: 15px;
 	color: #4A4A4A;
+	@media screen and (max-width: 425px) {
+		margin-top: 60px;
+		position: absolute;
+		display: ${({ showFilter }) => (showFilter === true ? 'block' : 'none')};
+	}
 `
 
 Filter.ColorAttr = styled.ul`

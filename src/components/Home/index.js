@@ -7,55 +7,63 @@ import menTie from '../../assets/men_tie.svg';
 import gameBegin from '../../assets/game_begin.svg';
 import NonAuthFooter from '../Footer/NonAuthFooter';
 
-const Home = () => (
-	<Home.Container>
-		<Home.Hero>
-			<h1>
+const Home = (props) => {
+	const { history: { push } } = props
+	return (
+		<Home.Container>
+			<Home.Hero>
+				<h1>
 				BackGround and <br /> Development
-			</h1>
-			<p>
+				</h1>
+				<p>
 				Convergent the dictates of the consumer:
-				<br />
+					<br />
 				background and development
-			</p>
-			<br />
-			<Home.Cta rank="secondary"> View All </Home.Cta>
-		</Home.Hero>
-		<Home.Promo>
-			<PromoLeft>
-				<div>
-					<h1>WOW</h1>
-					<h4>
+				</p>
+				<br />
+				<Home.Cta
+					onClick={() => { push('/products') }}
+					rank="secondary"
+				> View All
+				</Home.Cta>
+			</Home.Hero>
+			<Home.Promo>
+				<PromoLeft>
+					<div>
+						<h1>WOW</h1>
+						<h4>
 						Check <br /> WHAT!
-					</h4>
-				</div>
-				<div>
-					<h1>AWESOME STUFF!</h1>
-				</div>
-			</PromoLeft>
-			<PromoRight>
-				<img src={gameBegin} alt="gameBegin" />
-				<PopBadge>POP</PopBadge>
-				<h1>Let the Game begin</h1>
-				<p>Registration is on - get ready for the Open</p>
-				<Home.Cta rank="primary"> Register </Home.Cta>
-			</PromoRight>
-		</Home.Promo>
-		<Home.Subscibe>
-			<SubscibeTitle>10% Discount for your subscription</SubscibeTitle>
-			<p>
+						</h4>
+					</div>
+					<div>
+						<h1>AWESOME STUFF!</h1>
+					</div>
+				</PromoLeft>
+				<PromoRight>
+					<img src={gameBegin} alt="gameBegin" />
+					<PopBadge>POP</PopBadge>
+					<h1>Let the Game begin</h1>
+					<p>Registration is on - get ready for the Open</p>
+					<Home.Cta rank="primary"> Register </Home.Cta>
+				</PromoRight>
+			</Home.Promo>
+			<Home.Subscibe>
+				<SubscibeTitle>10% Discount for your subscription</SubscibeTitle>
+				<p>
 				Carry the day in style with this extra-large tote crafted in our chic
 				B.B. Collection textured PVC. Featuring colorful faux leather trim, this
 				tote offers a roomy interior.
-			</p>
-			<Home.SubscibeForm>
-				<input placeholder="Your email here" />
-				<SubscibeCta>Subscribe</SubscibeCta>
-			</Home.SubscibeForm>
-		</Home.Subscibe>
-		<Home.Footer />
-	</Home.Container>
-);
+				</p>
+				<Home.SubscibeForm>
+					<input placeholder="Your email here" />
+					<SubscibeCta>Subscribe</SubscibeCta>
+				</Home.SubscibeForm>
+			</Home.Subscibe>
+			<Home.Footer />
+		</Home.Container>
+	);
+}
+export default Home;
 
 Home.Container = styled.div`
 	margin: auto;
@@ -166,5 +174,3 @@ Home.Footer = styled(NonAuthFooter)`
 	font-size: 16px;
 	margin-left: 10px;
 `;
-
-export default Home;

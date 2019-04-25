@@ -86,7 +86,7 @@ class Header extends Component {
 	}
 
 	render() {
-		const { push, cart: { cartItems } } = this.props
+		const { push, location, cart: { cartItems } } = this.props
 		const { searchText, visibleModal } = this.state
 		return (
 			<Header.Container>
@@ -97,25 +97,29 @@ class Header extends Component {
 						onClick={() =>	push('/products')
 						}
 					/>
-					<Header.Departments>
-						{this.renderDepartments()}
-					</Header.Departments>
-					<Header.Search>
-						<Header.CTASearch onClick={this.search} />
-						<Header.SearchInput
-							autoFocus
-							placeholder="search anything"
-							onChange={e => this.onSearchTextChange(e)}
-							value={searchText}
-							onSubmit={this.search}
-							onKeyPress={this.onKeyPress}
+					<Header.Actions>
+						<Header.Departments>
+							{this.renderDepartments()}
+						</Header.Departments>
+						<Header.Search
+							display={location.pathname !== '/products' && 'none'}
+						>
+							<Header.CTASearch onClick={this.search} />
+							<Header.SearchInput
+								autoFocus
+								placeholder="search anything"
+								onChange={e => this.onSearchTextChange(e)}
+								value={searchText}
+								onSubmit={this.search}
+								onKeyPress={this.onKeyPress}
+							/>
+							<span onClick={this.clearSearchText}>x</span>
+						</Header.Search>
+						<CartUI
+							onClick={() => this.setState({ visibleModal: 'checkout' })}
+							count={cartItems.length}
 						/>
-						<span onClick={this.clearSearchText}>x</span>
-					</Header.Search>
-					<CartUI
-						onClick={() => this.setState({ visibleModal: 'checkout' })}
-						count={cartItems.length}
-					/>
+					</Header.Actions>
 				</Header.Links>
 				{visibleModal !== null && (
 					<ModalManager
@@ -169,6 +173,10 @@ Header.Logo = styled.img`
 Header.Container = styled.div`
 	background-color: #2E2E2E;
 	min-width: 960px;
+	@media screen and (max-width: 425px) {
+		width: 100vw;
+		min-width: 100%;
+	}
 `
 Header.Links = styled.div`
 	width: 960px;
@@ -178,6 +186,11 @@ Header.Links = styled.div`
 	padding: 0 30px;
 	align-items: center;
 	justify-content: space-between;
+	@media screen and (max-width: 425px) {
+		width: 93%;
+		padding: 15px 10px;
+		flex-direction: column;
+	}
 `
 Header.Departments = styled.div`
 	color: white;
@@ -191,11 +204,18 @@ Header.SearchInput = styled.input`
   color: white;
 	width: 210px;
   padding-left: 40px;
+	@media screen and (max-width: 425px) {
+		width: 130px;
+	}
+
 `
 Header.Cart = styled.div`
 	position: relative;
   bottom: 0;
 	width: 29px;
+	@media screen and (max-width: 425px) {
+	display: none;
+	}
 `
 Header.ItemsCount = styled.div`
 	text-align: center;
@@ -218,10 +238,14 @@ Header.Search = styled.div`
 	color: white;
 	position: relative;
 	width: 260px;
+	display: ${({ display }) => display && display};
 	> span {
 		position: absolute;
     right: 10px;
 		top: 7px;
+	}
+	@media screen and (max-width: 425px) {
+		width: 160px
 	}
 `
 Header.CTASearch = styled.div`
@@ -243,4 +267,10 @@ Header.Dept = styled.div`
 		text-decoration: underline;
 		
 	}
+`
+Header.Actions = styled.div`
+	display: flex;
+	flex-grow: 1;
+	justify-content: space-between;
+
 `

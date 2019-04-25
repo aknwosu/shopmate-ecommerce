@@ -5,6 +5,8 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { getCurrentUser } from '../selectors'
 import { createOrder } from '../actionCreators/cart'
+import Cta from '../ui/CTABtn'
+
 
 import ModalManager from './ModalManager'
 
@@ -34,6 +36,7 @@ class Checkout extends Component {
 						<Checkout.Tr>
 							<Checkout.Th>Item</Checkout.Th>
 							<Checkout.Th>Quantity</Checkout.Th>
+							<Checkout.Th>Color</Checkout.Th>
 							<Checkout.Th>Price</Checkout.Th>
 						</Checkout.Tr>
 						<tbody>
@@ -41,6 +44,7 @@ class Checkout extends Component {
 								<Checkout.Tr>
 									<Checkout.Td>{item.name}</Checkout.Td>
 									<Checkout.Td>{item.quantity}</Checkout.Td>
+									<Checkout.Td>{item.color}</Checkout.Td>
 									<Checkout.Td>{item.price}</Checkout.Td>
 								</Checkout.Tr>
 							))}
@@ -69,7 +73,9 @@ class Checkout extends Component {
 
 	render() {
 		const { visibleModal } = this.state
-		const { totalPrice, shippingType, tax } = this.props
+		const {
+			totalPrice, shippingType, tax, push
+		} = this.props
 		const salesTax = tax.find(taxType => taxType.tax_id === 1)
 		let paymentTotal = Number(totalPrice) + Number(shippingType.shipping_cost)
 		if (salesTax) {
@@ -83,16 +89,15 @@ class Checkout extends Component {
 					{this.renderAddress()}
 				</Checkout.Details>
 				<Checkout.Hr />
-				<div> Checkout page</div>
-				<div>Summary</div>
+				<div>Purchase Summary</div>
 				<div>Product total: {`$ ${totalPrice}`}</div>
 				<div>{`Shipping: $ ${shippingType.shipping_cost}`}</div>
 				{salesTax && <div>Sales Tax: {salesTax.tax_type}</div>}
-				<div>{`Total Payment: $ ${paymentTotal}`}</div>
-				<div>stuff</div>
-				<div onClick={this.completePayment}>Complete Payment</div>
+				<div>{`Total Payment: $ ${paymentTotal.toFixed(0)}`}</div>
+				<Cta onClick={this.completePayment}>Complete Payment</Cta>
 				{visibleModal !== null && (
 					<ModalManager
+						push={push}
 						visibleModal={visibleModal}
 						isOpen={!!visibleModal}
 						closeModal={() => this.setState({ visibleModal: null })}
@@ -157,6 +162,9 @@ Checkout.Details = styled.div`
 		flex: 1;
 		background:grey
 	}
+	@media screen and (max-width: 425px) {
+		flex-direction: column;
+  }
 `
 Checkout.Hr = styled.div`
 	margin: 25px 55px;

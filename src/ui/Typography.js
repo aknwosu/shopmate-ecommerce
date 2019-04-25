@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export const SecondaryTitle = styled.div`
-  font-size: 16px;
+  font-size: 14px;
   font-weight: bold;
   text-align: inherit;
   color: #F62F5E;
