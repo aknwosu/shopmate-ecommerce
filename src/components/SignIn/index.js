@@ -11,7 +11,7 @@ import { getCurrentUser } from '../../selectors'
 import Modal from '../../ui/ModalBase'
 import Cta from '../../ui/CTABtn'
 
-class SignIn extends Component {
+export class SignIn extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -127,7 +127,6 @@ class SignIn extends Component {
 SignIn.propTypes = {
 	visibleModal: PropTypes.string.isRequired,
 	closeModal: PropTypes.func.isRequired,
-	// CTA: PropTypes.func.isRequired
 }
 const mapStateToProps = (state, ownProps) => ({
 	currentUser: getCurrentUser(state),

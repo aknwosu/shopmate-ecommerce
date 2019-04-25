@@ -7,7 +7,7 @@ import menTie from '../../assets/men_tie.svg';
 import gameBegin from '../../assets/game_begin.svg';
 import NonAuthFooter from '../Footer/NonAuthFooter';
 
-const Home = (props) => {
+export const Home = (props) => {
 	const { history: { push } } = props
 	return (
 		<Home.Container>
@@ -24,7 +24,7 @@ const Home = (props) => {
 				<Home.Cta
 					onClick={() => { push('/products') }}
 					rank="secondary"
-				> View All
+				>View All
 				</Home.Cta>
 			</Home.Hero>
 			<Home.Promo>
@@ -43,8 +43,7 @@ const Home = (props) => {
 					<img src={gameBegin} alt="gameBegin" />
 					<PopBadge>POP</PopBadge>
 					<h1>Let the Game begin</h1>
-					<p>Registration is on - get ready for the Open</p>
-					<Home.Cta rank="primary"> Register </Home.Cta>
+					<div onClick={() => { push('/products') }}>CLICK HERE TO BEGIN</div>
 				</PromoRight>
 			</Home.Promo>
 			<Home.Subscibe>

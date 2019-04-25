@@ -61,7 +61,7 @@ export const register = (name, email, password) => async (dispatch) => {
 export const updateCustomer = user => async (dispatch) => {
 	try {
 		dispatch({ type: UPDATE_USER_REQUEST });
-		const request = await axios.put(`${REACT_APP_ROOT_URL}/customer`, { ...user });
+		const request = await axios.put(`${REACT_APP_ROOT_URL}/customer`, { ...user }, { headers });
 		dispatch({
 			type: UPDATE_USER_SUCCESS,
 			payload: request.data,
@@ -84,23 +84,7 @@ export const login = (email, password) => async (dispatch) => {
 	} catch (error) {
 		dispatch({ type: LOGIN_USER_ERROR, payload: error, error: true });
 	}
-};
-
-
-export const loginFacebook = (email, password) => async (dispatch) => {
-	try {
-		dispatch({ type: LOGIN_USER_REQUEST });
-		const request = await axios.post(`${REACT_APP_ROOT_URL}/customers/login`, { email, password });
-		dispatch({
-			type: LOGIN_USER_SUCCESS,
-			payload: request.data,
-		});
-		localStorage.setItem('accessToken', request.data.accessToken);
-	} catch (error) {
-		dispatch({ type: LOGIN_USER_ERROR, payload: error, error: true });
-	}
-};
-
+}
 
 export const updateCustomersAddress = data => async (dispatch) => {
 	try {

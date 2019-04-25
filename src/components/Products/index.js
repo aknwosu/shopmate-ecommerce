@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router'
 import {
-	fetchProducts, fetchProductDetail, fetchProductsInDepartment, fetchProductsInCategory
+	fetchProducts, fetchProductDetail, fetchProductsInDepartment, fetchProductsInCategory, fetchProductReviews
 } from '../../actionCreators/products'
 import { addToCart } from '../../actionCreators/cart'
 import { fetchDepartmentCategories } from '../../actionCreators/categories'
@@ -17,7 +17,7 @@ import Pagination from '../Pagination';
 import BurgerIcon from '../../assets/burger-menu.svg'
 
 
-class Products extends Component {
+export class Products extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -33,9 +33,12 @@ class Products extends Component {
 	}
 
 	renderProductDetails = (id) => {
-		const { dispatchFetchProductDetail, dispatchFetchProductAttributes, push } = this.props
+		const {
+			dispatchFetchProductDetail, dispatchFetchProductAttributes, push, dispatchFetchProductReviews
+		} = this.props
 		dispatchFetchProductDetail(id)
 		dispatchFetchProductAttributes(id)
+		dispatchFetchProductReviews(id)
 		push(`/products/${id}`)
 	}
 
@@ -99,7 +102,8 @@ const mapDispatchToProps = dispatch => ({
 	dispatchFetchProductAttributes: bindActionCreators(fetchProductAttributes, dispatch),
 	dispatchFetchProductsInDepartment: bindActionCreators(fetchProductsInDepartment, dispatch),
 	dispatchFetchDepartmentCategories: bindActionCreators(fetchDepartmentCategories, dispatch),
-	dispatchFetchProductsInCategory: bindActionCreators(fetchProductsInCategory, dispatch)
+	dispatchFetchProductsInCategory: bindActionCreators(fetchProductsInCategory, dispatch),
+	dispatchFetchProductReviews: bindActionCreators(fetchProductReviews, dispatch),
 })
 
 Products.propTypes = {
@@ -113,7 +117,8 @@ Products.propTypes = {
 	match: PropTypes.object,
 	productsCount: PropTypes.number.isRequired,
 	dispatchFetchProducts: PropTypes.func.isRequired,
-	push: PropTypes.func.isRequired
+	push: PropTypes.func.isRequired,
+	dispatchFetchProductReviews: PropTypes.func.isRequired
 }
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Products))
 

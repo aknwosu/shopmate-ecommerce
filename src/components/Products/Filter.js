@@ -77,6 +77,7 @@ Filter.propTypes = {
 	attributeValues: PropTypes.object.isRequired,
 	allCategories: PropTypes.array.isRequired,
 	routeParams: PropTypes.object.isRequired,
+	showFilter: PropTypes.bool
 }
 
 function mapStateToProps(state, ownProps) {

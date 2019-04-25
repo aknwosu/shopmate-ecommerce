@@ -16,7 +16,7 @@ import ModalManager from '../ModalManager'
 import CartItem from './Item'
 import { PrimaryTitle } from '../../ui/Typography'
 
-class CartItems extends Component {
+export class CartItems extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -53,7 +53,14 @@ class CartItems extends Component {
 		} = this.props
 
 		return (
-			cartItems.map(item => <CartItem dispatchDeleteCartItem={dispatchDeleteCartItem} dispatchAddToCart={dispatchAddToCart} cartItem={item} />)
+			cartItems.map(item => (
+				<CartItem
+					key={`${item.product_id}${item.color}${item.size}`}
+					dispatchDeleteCartItem={dispatchDeleteCartItem}
+					dispatchAddToCart={dispatchAddToCart}
+					cartItem={item}
+				/>
+			))
 		)
 	}
 
