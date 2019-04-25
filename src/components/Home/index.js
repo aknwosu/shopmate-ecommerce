@@ -43,8 +43,7 @@ export const Home = (props) => {
 					<img src={gameBegin} alt="gameBegin" />
 					<PopBadge>POP</PopBadge>
 					<h1>Let the Game begin</h1>
-					<p>Registration is on - get ready for the Open</p>
-					<Home.Cta rank="primary"> Register </Home.Cta>
+					<div onClick={() => { push('/products') }}>CLICK HERE TO BEGIN</div>
 				</PromoRight>
 			</Home.Promo>
 			<Home.Subscibe>
