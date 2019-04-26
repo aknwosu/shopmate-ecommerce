@@ -9,8 +9,12 @@ const Pagination = (props) => {
 	const paginationCount = [];
 	for (let i = 1; i <= pagesCount; i += 1) {
 		paginationCount.push(
-			<Pagination.Number key={i} isActive={currentPage === i}>
-				<span onClick={() => onPageChanged(i)}>{i}</span>
+			<Pagination.Number
+				key={i}
+				isActive={currentPage === i}
+				onClick={() => onPageChanged(i)}
+			>
+				<span>{i}</span>
 			</Pagination.Number>
 		);
 	}
@@ -37,9 +41,6 @@ export default Pagination;
 
 Pagination.Container = styled.div`
 	width: 100%;
-	@media screen and (max-width: 425px) {
-		width: auto;
-	}
 `
 Pagination.Wrapper = styled.ul`
 	display: flex;
@@ -56,9 +57,8 @@ Pagination.Number = styled.li`
 	line-height: 14px;
 	overflow: hidden;
 	text-decoration: none;
-	background: #fafafa;
-	background: -webkit-linear-gradient(#FFF,#F6F6F6);
-	background: -ms-linear-gradient(#FFF,#F6F6F6);
-	background: linear-gradient(#FFF,#F6F6F6);
+	background: ${({ isActive }) => (isActive ? 'none' : '-webkit-linear-gradient(#FFF,#F6F6F6)')};
+	background: ${({ isActive }) => (isActive ? 'none' : '-ms-linear-gradient(#FFF,#F6F6F6)')};
+	background: ${({ isActive }) => (isActive ? 'none' : 'linear-gradient(#FFF,#F6F6F6)')};
 	border: ${({ isActive }) => (isActive ? 'none' : '1px solid #d3d3d4')};
 `

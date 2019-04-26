@@ -33,6 +33,7 @@ export const fetchProducts = page => async (dispatch) => {
 		dispatch({
 			type: FETCH_PRODUCTS_SUCCESS,
 			payload: request.data,
+			currentPage: page || 1
 		});
 	} catch (error) {
 		dispatch({ type: FETCH_PRODUCTS_ERROR, payload: error, error: true });
@@ -98,6 +99,7 @@ export const fetchProductsInDepartment = (deptId, pageNumber) => async (dispatch
 		dispatch({
 			type: FETCH_PRODUCTS_IN_DEPARTMENT_SUCCESS,
 			payload: request.data,
+			currentPage: pageNumber || 1
 		});
 	} catch (error) {
 		dispatch({ type: FETCH_PRODUCTS_IN_DEPARTMENT_ERROR, payload: error, error: true });

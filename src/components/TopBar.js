@@ -96,7 +96,7 @@ TopBar.propTypes = {
 	dispatchFetchCategories: PropTypes.func.isRequired
 }
 const mapStateToProps = state => ({
-	currentUser: getCurrentUser(state),
+	currentUser: state.customers.user,
 	cart: state.cart,
 })
 const mapDispatchToProps = dispatch => ({
@@ -112,6 +112,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(TopBar)
 
 const CTAText = styled.span`
 	color: #F62F5E;
+	cursor: pointer;
 `
 TopBar.Container = styled.div`
 	font-size: 15px;
@@ -126,7 +127,7 @@ TopBar.Container = styled.div`
 	}
 `
 TopBar.Links = styled.div`
-	width: 960px;
+	max-width: 960px;
 	margin: auto;
 	font-weight: bold;
 	color: #2E2E2E;
@@ -159,4 +160,7 @@ const Currency = styled.div`
 `
 TopBar.SignIn = styled.div`
 	display: flex;
+	@media screen and (max-width: 425px) {
+		flex-wrap: wrap;
+	}
 `

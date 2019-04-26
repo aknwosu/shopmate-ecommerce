@@ -77,6 +77,12 @@ export default function cartReducer(state = initialState, action) {
 			shoppingCart: action.payload,
 		}
 	}
+	case 'CLEAR_CART_CONTENT': {
+		return {
+			...state,
+			...initialState
+		}
+	}
 
 	default: return state;
 	}

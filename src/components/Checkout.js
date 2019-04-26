@@ -84,10 +84,13 @@ class Checkout extends Component {
 			totalPrice, shippingType, tax, push
 		} = this.props
 		const salesTax = tax.find(taxType => taxType.tax_id === 1)
-		let paymentTotal = Number(totalPrice) + Number(shippingType.shipping_cost)
+
+		let paymentTotal
 		if (salesTax) {
 			const taxPercentage = (Number(salesTax.tax_percentage) / 100) + 1
-			paymentTotal *= taxPercentage
+			paymentTotal = (Number(totalPrice) * taxPercentage) + Number(shippingType.shipping_cost)
+		} else {
+			paymentTotal = Number(totalPrice) + Number(shippingType.shipping_cost)
 		}
 		return (
 			<Checkout.Container>

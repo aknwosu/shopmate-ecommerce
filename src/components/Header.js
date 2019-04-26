@@ -36,6 +36,12 @@ class Header extends Component {
 		dispatchFetchProducts()
 	}
 
+	productsHome = () => {
+		const { dispatchFetchProducts, push } = this.props
+		dispatchFetchProducts()
+		push('/products')
+	}
+
 	getDepartmentData = (dept) => {
 		const { dispatchFetchProductsInDepartment, dispatchFetchDepartmentCategories, push } = this.props
 		const { name, department_id } = dept
@@ -94,8 +100,7 @@ class Header extends Component {
 					<Header.Logo
 						src={Logo}
 						alt="shopmate"
-						onClick={() =>	push('/products')
-						}
+						onClick={this.productsHome}
 					/>
 					<Header.Actions>
 						<Header.Departments>
@@ -168,7 +173,7 @@ const mapDispatchToProps = dispatch => ({
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header))
 
 Header.Logo = styled.img`
-	
+	cursor: pointer;
 `
 
 Header.Container = styled.div`
@@ -180,7 +185,7 @@ Header.Container = styled.div`
 	}
 `
 Header.Links = styled.div`
-	width: 960px;
+  max-width: 960px;
 	margin: auto;
 	height: 72px;
 	display: flex;
@@ -189,8 +194,9 @@ Header.Links = styled.div`
 	justify-content: space-between;
 	@media screen and (max-width: 425px) {
 		width: 93%;
-		padding: 15px 10px;
+		padding: 10px 10px;
 		flex-direction: column;
+		height: unset;
 	}
 `
 Header.Departments = styled.div`
@@ -206,7 +212,7 @@ Header.SearchInput = styled.input`
 	width: 210px;
   padding-left: 40px;
 	@media screen and (max-width: 425px) {
-		width: 130px;
+		width: 180px;
 	}
 
 `
@@ -246,7 +252,7 @@ Header.Search = styled.div`
 		top: 7px;
 	}
 	@media screen and (max-width: 425px) {
-		width: 160px
+		width: 230px
 	}
 `
 Header.CTASearch = styled.div`
@@ -266,12 +272,17 @@ Header.Dept = styled.div`
 	margin: auto 20px;
 	:hover{
 		text-decoration: underline;
-		
+	}
+	@media screen and (max-width: 425px) {
+		margin: 10px 20px;
 	}
 `
 Header.Actions = styled.div`
 	display: flex;
 	flex-grow: 1;
 	justify-content: space-between;
-
+	align-items: center;
+	@media screen and (max-width: 425px) {
+		flex-wrap: wrap;
+	}
 `

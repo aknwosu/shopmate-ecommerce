@@ -3,14 +3,16 @@ const initialState = {
 	productDetail: {},
 	productReviews: [],
 	productRating: 0,
-	count: 0
+	count: 0,
+	currentPage: 1
 };
 export default function productsReducer(state = initialState, action) {
 	switch (action.type) {
 	case 'FETCH_PRODUCTS_SUCCESS': {
 		return Object.assign({}, state, {
 			allProducts: action.payload.rows,
-			count: action.payload.count
+			count: action.payload.count,
+			currentPage: action.currentPage
 		});
 	}
 	case 'SEARCH_PRODUCTS_SUCCESS': {

@@ -58,7 +58,7 @@ export class Products extends Component {
 
 	render() {
 		const {
-			products, dispatchAddToCart, productDetail, productsCount, match: { params }
+			products, dispatchAddToCart, productDetail, productsCount, currentPage, match: { params }
 		} = this.props
 		const { showFilter } = this.state
 		return (
@@ -68,7 +68,7 @@ export class Products extends Component {
 						<Products.MenuIcon onClick={this.showHideFilter} />
 						<Filter routeParams={params} showFilter={showFilter} />
 						<Products.List>
-							<Pagination totalCount={productsCount} onPageChanged={this.onPageChanged} />
+							<Pagination totalCount={productsCount} onPageChanged={this.onPageChanged} currentPage={currentPage} />
 							{products && Object.keys(products).map(product => (
 								<Product
 									key={product}
@@ -91,6 +91,7 @@ function mapStateToProps(state, ownProps) {
 		cartItems: state.cart.cartItems,
 		products: state.products.allProducts,
 		productsCount: state.products.count,
+		currentPage: state.products.currentPage,
 		productDetail: state.products.productDetail,
 		push: ownProps.history.push,
 	}

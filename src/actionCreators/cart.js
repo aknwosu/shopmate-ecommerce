@@ -31,6 +31,8 @@ const CREATE_ORDER_ERROR = 'CREATE_ORDER_ERROR'
 const FETCH_ORDER_SUCCESS = 'FETCH_ORDER_SUCCESS'
 const FETCH_ORDER_ERROR = 'FETCH_ORDER_ERROR'
 
+const CLEAR_CART_CONTENT = 'CLEAR_CART_CONTENT'
+
 export const addToCart = cartItem => async dispatch => dispatch({ type: ADD_PRODUCT_TO_CART, payload: cartItem })
 
 
@@ -123,3 +125,4 @@ export const fetchOrder = () => async (dispatch, getState) => {
 
 
 export const deleteCartItem = cartItem => async dispatch => dispatch({ type: DELETE_CART_ITEM, payload: cartItem })
+export const clearCart = () => async dispatch => dispatch({ type: CLEAR_CART_CONTENT })

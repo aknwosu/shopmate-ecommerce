@@ -87,10 +87,12 @@ export class CartItems extends Component {
 								onClick={this.backToProducts}
 							>Back to Shop
 							</Cta>
-							<Cta
-								onClick={this.proceedToCheckout}
-							>Proceed to Checkout
-							</Cta>
+							{cartItems.length > 0 && (
+								<Cta
+									onClick={this.proceedToCheckout}
+								>Proceed to Checkout
+								</Cta>
+							)}
 						</CartItems.CtaGroup>
 					</CartItems.Container>
 				</Modal>

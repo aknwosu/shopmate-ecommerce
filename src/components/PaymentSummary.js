@@ -32,12 +32,12 @@ class PaySummary extends Component {
 	}
 }
 const mapStateToProps = (state, ownProps) => ({
-		currentUser: state.customers.user,
-		shippingType: state.shipping.shippingType,
-		totalPrice: state.cart.totalPrice,
-		orderID: state.order.orderID,
-		push: ownProps.push
-	})
+	currentUser: state.customers.user,
+	shippingType: state.shipping.shippingType,
+	totalPrice: state.cart.totalPrice,
+	orderID: state.order.orderID,
+	push: ownProps.push
+})
 const mapDispatchToProps = dispatch => ({
 	dispatchFetchOrder: bindActionCreators(fetchOrder, dispatch),
 })

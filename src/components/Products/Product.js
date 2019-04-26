@@ -7,10 +7,11 @@ import { SecondaryTitle, PrimaryTitle } from '../../ui/Typography'
 export const Product = (props) => {
 	const { REACT_APP_IMAGE_URL } = process.env
 	const {
-		onAddToCart, renderProductDetails, product, product: {
-			price, product_id, name, thumbnail, errors
+		renderProductDetails,
+		product: {
+			price, product_id, name, thumbnail
 		}
-	} = props
+	} = props;
 	return (
 		<Product.Container>
 			<Product.Info>

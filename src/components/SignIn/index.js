@@ -146,6 +146,9 @@ SignIn.LogInContainer = styled.div`
 	height: 100%;
 	background-color: #ffffff;
 	transition: all 0.6s ease-in-out;
+	@media screen and (max-width: 425px) {
+		width: 100%
+	}
 `
 SignIn.Form = styled.div`
 	display: flex;
