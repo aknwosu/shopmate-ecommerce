@@ -40,12 +40,13 @@ export const fetchProducts = page => async (dispatch) => {
 	}
 };
 
-export const searchProducts = searchValue => async (dispatch) => {
+export const searchProducts = (searchValue, page) => async (dispatch) => {
 	try {
 		const request = await axios.get(`${REACT_APP_ROOT_URL}/products/search?query_string=${searchValue}`)
 		dispatch({
 			type: SEARCH_PRODUCTS_SUCCESS,
 			payload: request.data,
+			currentPage: 1
 		});
 	} catch (error) {
 		dispatch({ type: SEARCH_PRODUCTS_ERROR, payload: error, error: true });

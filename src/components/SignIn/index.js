@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'
 import { login, register } from '../../actionCreators/customers'
 import { getCurrentUser } from '../../selectors'
-
+import { ErrorText } from '../../ui/Typography'
 
 import Modal from '../../ui/ModalBase'
 import Cta from '../../ui/CTABtn'
@@ -22,7 +22,12 @@ export class SignIn extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		if (this.props.currentUser !== prevProps.currentUser) {
+		const { loginError, registerError, closeModal } = this.props
+		if (loginError || registerError) {
+			return
+		}
+		if (this.props.currentUser.email) {
+			closeModal()
 			this.props.history.push('/products')
 		}
 	}
@@ -39,7 +44,6 @@ export class SignIn extends Component {
 		const { email, password } = this.state
 		dispatchLogin(email, password)
 		this.clearState()
-		closeModal()
 	}
 
 	onClickRegister = () => {
@@ -47,7 +51,6 @@ export class SignIn extends Component {
 		const { name, email, password } = this.state
 		dispatchRegister(name, email, password)
 		this.clearState()
-		closeModal()
 	}
 
 	clearState() {
@@ -59,7 +62,9 @@ export class SignIn extends Component {
 	}
 
 	render() {
-		const { visibleModal, closeModal } = this.props
+		const {
+			visibleModal, closeModal, loginError, registerError
+		} = this.props
 		const { email, password, name } = this.state
 		return (
 			<Modal
@@ -85,6 +90,7 @@ export class SignIn extends Component {
 									onChange={this.handleChange}
 								/>
 								<Cta onClick={this.onClickSignin}>Sign In</Cta>
+								{loginError && <ErrorText>{loginError}</ErrorText>}
 							</Fragment>
 						)}
 						{visibleModal === 'register' && (
@@ -112,7 +118,7 @@ export class SignIn extends Component {
 									onChange={this.handleChange}
 								/>
 								<Cta onClick={this.onClickRegister}>Sign Up</Cta>
-								<div>Have an account?</div>
+								{registerError && <ErrorText>{registerError}</ErrorText>}
 							</Fragment>
 
 						)}
@@ -130,6 +136,8 @@ SignIn.propTypes = {
 }
 const mapStateToProps = (state, ownProps) => ({
 	currentUser: getCurrentUser(state),
+	loginError: state.customers.loginError,
+	registerError: state.customers.registerError,
 })
 const mapDispatchToProps = (dispatch, ownProps) => ({
 	dispatchLogin: bindActionCreators(login, dispatch),

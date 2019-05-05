@@ -3,9 +3,8 @@ import axios from 'axios';
 const REACT_APP_ROOT_URL = 'https://backendapi.turing.com';
 const headers = {
 	'Content-Type': 'application/json',
-	'USER-KEY': localStorage.getItem('accessToken'),
+	'user-key': localStorage.getItem('accessToken')
 };
-
 
 export const FETCH_USER_REQUEST = 'FETCH_USER_REQUEST';
 export const FETCH_USER_SUCCESS = 'FETCH_USER_SUCCESS';
@@ -54,7 +53,7 @@ export const register = (name, email, password) => async (dispatch) => {
 			payload: request.data,
 		});
 	} catch (error) {
-		dispatch({ type: REGISTER_USER_ERROR, payload: error, error: true });
+		dispatch({ type: REGISTER_USER_ERROR, payload: error.response.data.error.message, error: true });
 	}
 };
 
@@ -82,7 +81,7 @@ export const login = (email, password) => async (dispatch) => {
 		});
 		localStorage.setItem('accessToken', request.data.accessToken);
 	} catch (error) {
-		dispatch({ type: LOGIN_USER_ERROR, payload: error, error: true });
+		dispatch({ type: LOGIN_USER_ERROR, payload: error.response.data.error.message, error: true });
 	}
 }
 

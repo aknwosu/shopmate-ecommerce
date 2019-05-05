@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-// import SectionHeader from '<molecules>/SectionHeader/SectionHeader'
 const modalRoot = document.getElementById('modal-root')
 class Modal extends React.Component {
 	handleModalClick = (event) => {

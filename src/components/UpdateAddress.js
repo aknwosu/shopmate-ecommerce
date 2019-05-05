@@ -212,7 +212,6 @@ class UpdateAddress extends Component {
 							type="text"
 							onChange={this.onChange('address_1')}
 							value={address_1}
-							autoFocus
 						/>
 						<Input
 							label="Address line 2"

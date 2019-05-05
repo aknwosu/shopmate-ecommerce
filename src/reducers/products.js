@@ -18,7 +18,9 @@ export default function productsReducer(state = initialState, action) {
 	case 'SEARCH_PRODUCTS_SUCCESS': {
 		return {
 			...state,
-			allProducts: action.payload.rows
+			allProducts: action.payload.rows,
+			currentPage: action.currentPage,
+			count: action.payload.count,
 		}
 	}
 	case 'FETCH_PRODUCT_DETAIL_SUCCESS': {
